@@ -12,7 +12,14 @@ CODES_API_URL = "https://raw.githubusercontent.com/babalae/genshin-redeem-code/m
 def load_notified():
     if os.path.exists(NOTIFIED_FILE):
         with open(NOTIFIED_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+            content = f.read().strip()
+            # ファイルが空（0バイト）の場合は空のリストを返す
+            if not content:
+                return []
+            try:
+                return json.loads(content)
+            except json.JSONDecodeError:
+                return []
     return []
 
 def save_notified(codes):
