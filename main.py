@@ -60,14 +60,13 @@ def check_codes():
     notified_codes = load_notified()
     new_found = False
 
-    # 1. 原神のコードチェック（デバッグ出力付き）
+    # 1. 原神のコードチェック
     try:
         print(f"Fetching Genshin codes from {GENSHIN_CODES_URL}...")
         res = requests.get(GENSHIN_CODES_URL, timeout=10)
         print(f"Genshin API Status: {res.status_code}")
         if res.status_code == 200:
             data = res.json()
-            print(f"Genshin Data received: {type(data)}, length: {len(data) if isinstance(data, list) else 'Not a list'}")
             for item in data:
                 code = item.get("code")
                 reward = item.get("reward", "報酬情報なし")
@@ -87,14 +86,13 @@ def check_codes():
     except Exception as e:
         print(f"原神コードの取得エラー: {e}")
 
-    # 2. 崩壊スターレイルのコードチェック（デバッグ出力付き）
+    # 2. 崩壊スターレイルのコードチェック
     try:
         print(f"Fetching HSR codes from {HSR_CODES_URL}...")
         res = requests.get(HSR_CODES_URL, timeout=10)
         print(f"HSR API Status: {res.status_code}")
         if res.status_code == 200:
             data = res.json()
-            print(f"HSR Data received: {type(data)}, length: {len(data) if isinstance(data, list) else 'Not a list'}")
             for item in data:
                 code = item.get("code")
                 reward = item.get("reward", "報酬情報なし")
@@ -155,5 +153,6 @@ def main():
     else:
         print("新しい通知対象はありませんでした。")
 
-if __name__ == "main__":
+# 【修正点】__main__ の前後にアンダースコアを正しく2つずつ配置
+if __name__ == "__main__":
     main()
