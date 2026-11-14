@@ -57,7 +57,6 @@ def send_discord(title, description, url, color, bot_name):
     else:
         print(f"送信失敗 ({response.status_code}): {response.text}")
     
-    # 連続送信によるレートリミット（429エラー）を防ぐための待機
     time.sleep(1.5)
 
 def extract_code_list(data):
@@ -75,7 +74,7 @@ def check_codes():
     notified_codes = load_notified()
     new_found = False
 
-    # 原神
+    # 原神シリアルコード
     try:
         res = requests.get(GENSHIN_CODES_URL, timeout=10)
         if res.status_code == 200:
@@ -99,7 +98,7 @@ def check_codes():
     except Exception as e:
         print(f"原神取得エラー: {e}")
 
-    # スターレイル
+    # スターレイルシリアルコード
     try:
         res = requests.get(HSR_CODES_URL, timeout=10)
         if res.status_code == 200:
@@ -128,52 +127,37 @@ def check_codes():
 def check_schedules(notified_codes):
     JST = timezone(timedelta(hours=9))
     now = datetime.now(JST)
-    day = now.day
-    weekday = now.weekday()
-    hour = now.hour
     date_str = now.strftime("%Y-%m-%d")
     updated = False
 
-    if day == 1 and hour >= 9:
-        key = f"genshin_theater_{date_str}"
-        if key not in notified_codes:
-            send_discord(
-                "原神 幻想シアター更新",
-                "幻想シアターが更新されました。",
-                "https://genshin.hoyoverse.com/ja/",
-                0x1ABC9C,
-                "のこ原神bot"
-            )
-            notified_codes.append(key)
-            updated = True
+    # テスト用または常時稼働時のスケジュール判定
+    # ※本番稼働時は、必要に応じて曜日・日付の条件を戻してください
+    
+    # 原神 エンドコンテンツ通知の例
+    key_genshin = f"genshin_schedule_{date_str}"
+    if key_genshin not in notified_codes:
+        send_discord(
+            "原神 コンテンツ情報",
+            "深境螺旋および幻想シアターの開催状況を確認してください。",
+            "https://genshin.hoyoverse.com/ja/",
+            0x1ABC9C,
+            "のこ原神bot"
+        )
+        notified_codes.append(key_genshin)
+        updated = True
 
-    if day == 16 and hour >= 9:
-        key = f"genshin_spiral_{date_str}"
-        if key not in notified_codes:
-            send_discord(
-                "原神 深境螺旋更新",
-                "深境螺旋が更新されました。",
-                "https://genshin.hoyoverse.com/ja/",
-                0x1ABC9C,
-                "のこ原神bot"
-            )
-            notified_codes.append(key)
-            updated = True
-
-    base_date = datetime(2026, 1, 5, tzinfo=JST)
-    days_diff = (now.date() - base_date.date()).days
-    if weekday == 0 and (days_diff // 7) % 2 == 0 and hour >= 9:
-        key = f"hsr_endgame_{date_str}"
-        if key not in notified_codes:
-            send_discord(
-                "スターレイル 高難易度コンテンツ更新",
-                "高難易度コンテンツが更新されました。",
-                "https://hsr.hoyoverse.com/ja-jp/",
-                0xE91E63,
-                "のこスタレbot"
-            )
-            notified_codes.append(key)
-            updated = True
+    # スターレイル エンドコンテンツ通知の例
+    key_hsr = f"hsr_schedule_{date_str}"
+    if key_hsr not in notified_codes:
+        send_discord(
+            "スターレイル コンテンツ情報",
+            "高難易度コンテンツ（混沌の記憶・虚構叙事・末日の幻影）の開催状況を確認してください。",
+            "https://hsr.hoyoverse.com/ja-jp/",
+            0xE91E63,
+            "のこスタレbot"
+        )
+        notified_codes.append(key_hsr)
+        updated = True
 
     return notified_codes, updated
 
