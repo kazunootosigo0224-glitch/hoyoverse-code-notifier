@@ -6,7 +6,6 @@ from datetime import datetime, timezone, timedelta
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
 NOTIFIED_FILE = "notified_codes.json"
 
-# 各ゲームのコード取得先（オープンソースのJSON）
 GENSHIN_CODES_URL = "https://raw.githubusercontent.com/babalae/genshin-redeem-code/main/codes.json"
 HSR_CODES_URL = "https://raw.githubusercontent.com/Constellation-Lab/StarRail-Codes/main/codes.json"
 
@@ -61,21 +60,26 @@ def check_codes():
     notified_codes = load_notified()
     new_found = False
 
-    # 1. 原神のコードチェック
+    # 1. 原神のコードチェック（デバッグ出力付き）
     try:
+        print(f"Fetching Genshin codes from {GENSHIN_CODES_URL}...")
         res = requests.get(GENSHIN_CODES_URL, timeout=10)
+        print(f"Genshin API Status: {res.status_code}")
         if res.status_code == 200:
-            for item in res.json():
+            data = res.json()
+            print(f"Genshin Data received: {type(data)}, length: {len(data) if isinstance(data, list) else 'Not a list'}")
+            for item in data:
                 code = item.get("code")
                 reward = item.get("reward", "報酬情報なし")
                 unique_key = f"genshin_{code}"
                 
                 if code and unique_key not in notified_codes:
+                    print(f"新着原神コード発見: {code}")
                     send_discord(
                         "🎁 【原神】新着シリアルコード発見！",
                         f"コード: `{code}`\n報酬: {reward}",
                         f"https://genshin.hoyoverse.com/en/gift?code={code}",
-                        0x00FFCC,  # 原神カラー（シアン系）
+                        0x00FFCC,
                         "原神"
                     )
                     notified_codes.append(unique_key)
@@ -83,21 +87,26 @@ def check_codes():
     except Exception as e:
         print(f"原神コードの取得エラー: {e}")
 
-    # 2. 崩壊スターレイルのコードチェック
+    # 2. 崩壊スターレイルのコードチェック（デバッグ出力付き）
     try:
+        print(f"Fetching HSR codes from {HSR_CODES_URL}...")
         res = requests.get(HSR_CODES_URL, timeout=10)
+        print(f"HSR API Status: {res.status_code}")
         if res.status_code == 200:
-            for item in res.json():
+            data = res.json()
+            print(f"HSR Data received: {type(data)}, length: {len(data) if isinstance(data, list) else 'Not a list'}")
+            for item in data:
                 code = item.get("code")
                 reward = item.get("reward", "報酬情報なし")
                 unique_key = f"hsr_{code}"
                 
                 if code and unique_key not in notified_codes:
+                    print(f"新着スタレコード発見: {code}")
                     send_discord(
                         "🎁 【崩壊：スターレイル】新着シリアルコード発見！",
-            f"コード: `{code}`\n報酬: {reward}",
+                        f"コード: `{code}`\n報酬: {reward}",
                         f"https://hsr.hoyoverse.com/gift?code={code}",
-                        0x9933FF,  # スタレカラー（パープル系）
+                        0x9933FF,
                         "スターレイル"
                     )
                     notified_codes.append(unique_key)
@@ -108,7 +117,6 @@ def check_codes():
     return notified_codes, new_found
 
 def check_endgame_schedule():
-    """高難易度コンテンツ（深境螺旋など）のリセット日判定通知"""
     JST = timezone(timedelta(hours=9))
     now = datetime.now(JST)
     day = now.day
@@ -118,7 +126,6 @@ def check_endgame_schedule():
     notified_codes = load_notified()
     schedule_notified = False
 
-    # 原神：深境螺旋リセット日（毎月1日、16日の朝9時以降）
     if day in [1, 16] and hour >= 9:
         key = f"genshin_spiral_{date_str}"
         if key not in notified_codes:
@@ -148,5 +155,5 @@ def main():
     else:
         print("新しい通知対象はありませんでした。")
 
-if __name__ == "__main__":
+if __name__ == "main__":
     main()
