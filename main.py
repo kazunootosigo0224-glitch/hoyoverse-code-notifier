@@ -9,6 +9,31 @@ NOTIFIED_FILE = "notified_codes.json"
 GENSHIN_CODES_URL = "https://hoyo-codes.seria.moe/codes?game=genshin"
 HSR_CODES_URL = "https://hoyo-codes.seria.moe/codes?game=hkrpg"
 
+# 現在有効なエンドコンテンツの定義（期数が変わった際はキーを更新してください）
+CURRENT_ENDGAMES = [
+    {
+        "key": "genshin_spiral_2026_11_phase1",
+        "bot": "のこ原神bot",
+        "title": "深境螺旋更新",
+        "description": "深境螺旋が更新されました。",
+        "color": 0x1ABC9C
+    },
+    {
+        "key": "genshin_theater_2026_11",
+        "bot": "のこ原神bot",
+        "title": "幻想シアター更新",
+        "description": "幻想シアターが更新されました。",
+        "color": 0x1ABC9C
+    },
+    {
+        "key": "hsr_endgame_2026_11_phase1",
+        "bot": "のこスタレbot",
+        "title": "高難易度コンテンツ更新",
+        "description": "混沌の記憶、虚構叙事、または末日の幻影が更新されました。",
+        "color": 0xE91E63
+    }
+]
+
 def load_notified():
     if os.path.exists(NOTIFIED_FILE):
         with open(NOTIFIED_FILE, "r", encoding="utf-8") as f:
@@ -122,17 +147,20 @@ def check_codes():
 
     return notified_codes, new_found
 
-def check_endgame_updates(notified_codes):
-    """
-    日付判定を行わず、外部データソース等の更新情報（差分）をもとに通知を行う関数。
-    新しいコンテンツIDや更新データが検出された場合のみ実行されます。
-    """
-    updated = False
-    
-    # 例：外部API等から「最新の更新識別子（例: 螺旋の期数やイベントID）」を取得した場合の処理
-    # 取得した情報が notified_codes に含まれていない場合のみ通知し、リストに追加します。
-    
-    return notified_codes, updated
+def check_endgames(notified_codes):
+    new_found = False
+    for endgame in CURRENT_ENDGAMES:
+        key = endgame["key"]
+        if key not in notified_codes:
+            send_discord(
+                endgame["title"],
+                endgame["description"],
+                endgame["color"],
+                endgame["bot"]
+            )
+            notified_codes.append(key)
+            new_found = True
+    return notified_codes, new_found
 
 def main():
     if not WEBHOOK_URL:
@@ -140,9 +168,9 @@ def main():
         return
 
     codes_list, found_codes = check_codes()
-    codes_list, found_schedule = check_endgame_updates(codes_list)
+    codes_list, found_endgames = check_endgames(codes_list)
 
-    if found_codes or found_schedule:
+    if found_codes or found_endgames:
         save_notified(codes_list)
         print("通知済みリストを更新しました。")
     else:
