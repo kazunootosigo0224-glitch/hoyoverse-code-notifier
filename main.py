@@ -6,8 +6,9 @@ from datetime import datetime, timezone, timedelta
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
 NOTIFIED_FILE = "notified_codes.json"
 
-GENSHIN_CODES_URL = "https://raw.githubusercontent.com/babalae/genshin-redeem-code/main/codes.json"
-HSR_CODES_URL = "https://raw.githubusercontent.com/Constellation-Lab/StarRail-Codes/main/codes.json"
+# より安定した公開APIに変更
+GENSHIN_CODES_URL = "https://hoyo-codes.seria.moe/codes?game=genshin"
+HSR_CODES_URL = "https://hoyo-codes.seria.moe/codes?game=hkrpg"
 
 def load_notified():
     if os.path.exists(NOTIFIED_FILE):
@@ -67,22 +68,23 @@ def check_codes():
         print(f"Genshin API Status: {res.status_code}")
         if res.status_code == 200:
             data = res.json()
-            for item in data:
-                code = item.get("code")
-                reward = item.get("reward", "報酬情報なし")
-                unique_key = f"genshin_{code}"
-                
-                if code and unique_key not in notified_codes:
-                    print(f"新着原神コード発見: {code}")
-                    send_discord(
-                        "🎁 【原神】新着シリアルコード発見！",
-                        f"コード: `{code}`\n報酬: {reward}",
-                        f"https://genshin.hoyoverse.com/en/gift?code={code}",
-                        0x00FFCC,
-                        "原神"
-                    )
-                    notified_codes.append(unique_key)
-                    new_found = True
+            if isinstance(data, list):
+                for item in data:
+                    code = item.get("code")
+                    reward = item.get("reward", "報酬情報なし")
+                    unique_key = f"genshin_{code}"
+                    
+                    if code and unique_key not in notified_codes:
+                        print(f"新着原神コード発見: {code}")
+                        send_discord(
+                            "🎁 【原神】新着シリアルコード発見！",
+                            f"コード: `{code}`\n報酬: {reward}",
+                            f"https://genshin.hoyoverse.com/en/gift?code={code}",
+                            0x00FFCC,
+                            "原神"
+                        )
+                        notified_codes.append(unique_key)
+                        new_found = True
     except Exception as e:
         print(f"原神コードの取得エラー: {e}")
 
@@ -93,22 +95,23 @@ def check_codes():
         print(f"HSR API Status: {res.status_code}")
         if res.status_code == 200:
             data = res.json()
-            for item in data:
-                code = item.get("code")
-                reward = item.get("reward", "報酬情報なし")
-                unique_key = f"hsr_{code}"
-                
-                if code and unique_key not in notified_codes:
-                    print(f"新着スタレコード発見: {code}")
-                    send_discord(
-                        "🎁 【崩壊：スターレイル】新着シリアルコード発見！",
-                        f"コード: `{code}`\n報酬: {reward}",
-                        f"https://hsr.hoyoverse.com/gift?code={code}",
-                        0x9933FF,
-                        "スターレイル"
-                    )
-                    notified_codes.append(unique_key)
-                    new_found = True
+            if isinstance(data, list):
+                for item in data:
+                    code = item.get("code")
+                    reward = item.get("reward", "報酬情報なし")
+                    unique_key = f"hsr_{code}"
+                    
+                    if code and unique_key not in notified_codes:
+                        print(f"新着スタレコード発見: {code}")
+                        send_discord(
+                            "🎁 【崩壊：スターレイル】新着シリアルコード発見！",
+                            f"コード: `{code}`\n報酬: {reward}",
+                            f"https://hsr.hoyoverse.com/gift?code={code}",
+                            0x9933FF,
+                            "スターレイル"
+                        )
+                        notified_codes.append(unique_key)
+                        new_found = True
     except Exception as e:
         print(f"スタレコードの取得エラー: {e}")
 
@@ -153,6 +156,5 @@ def main():
     else:
         print("新しい通知対象はありませんでした。")
 
-# 【修正点】__main__ の前後にアンダースコアを正しく2つずつ配置
 if __name__ == "__main__":
     main()
