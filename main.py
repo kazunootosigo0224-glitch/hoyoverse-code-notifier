@@ -2,7 +2,6 @@ import os
 import json
 import time
 import requests
-from datetime import datetime, timezone, timedelta
 
 WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
 NOTIFIED_FILE = "notified_codes.json"
@@ -26,7 +25,7 @@ def save_notified(codes):
     with open(NOTIFIED_FILE, "w", encoding="utf-8") as f:
         json.dump(codes, f, ensure_ascii=False, indent=2)
 
-def send_discord(title, description, url, color, bot_name):
+def send_discord(title, description, color, bot_name, url=None):
     if not WEBHOOK_URL:
         print("Webhook URLが設定されていません。")
         return
@@ -39,7 +38,6 @@ def send_discord(title, description, url, color, bot_name):
     }
     
     if url:
-        embed["url"] = url
         embed["fields"].append({
             "name": "交換リンク",
             "value": url,
@@ -89,9 +87,9 @@ def check_codes():
                     send_discord(
                         "原神 シリアルコード",
                         f"コード: `{code}`\n報酬: {reward}",
-                        f"https://genshin.hoyoverse.com/ja/gift?code={code}",
                         0x00FFCC,
-                        "のこ原神bot"
+                        "のこ原神bot",
+                        url=f"https://genshin.hoyoverse.com/ja/gift?code={code}"
                     )
                     notified_codes.append(unique_key)
                     new_found = True
@@ -113,9 +111,9 @@ def check_codes():
                     send_discord(
                         "スターレイル シリアルコード",
                         f"コード: `{code}`\n報酬: {reward}",
-                        f"https://hsr.hoyoverse.com/gift?code={code}",
                         0x9933FF,
-                        "のこスタレbot"
+                        "のこスタレbot",
+                        url=f"https://hsr.hoyoverse.com/gift?code={code}"
                     )
                     notified_codes.append(unique_key)
                     new_found = True
@@ -124,41 +122,16 @@ def check_codes():
 
     return notified_codes, new_found
 
-def check_schedules(notified_codes):
-    JST = timezone(timedelta(hours=9))
-    now = datetime.now(JST)
-    date_str = now.strftime("%Y-%m-%d")
+def check_endgame_updates(notified_codes):
+    """
+    日付判定を行わず、外部データソース等の更新情報（差分）をもとに通知を行う関数。
+    新しいコンテンツIDや更新データが検出された場合のみ実行されます。
+    """
     updated = False
-
-    # テスト用または常時稼働時のスケジュール判定
-    # ※本番稼働時は、必要に応じて曜日・日付の条件を戻してください
     
-    # 原神 エンドコンテンツ通知の例
-    key_genshin = f"genshin_schedule_{date_str}"
-    if key_genshin not in notified_codes:
-        send_discord(
-            "原神 コンテンツ情報",
-            "深境螺旋および幻想シアターの開催状況を確認してください。",
-            "https://genshin.hoyoverse.com/ja/",
-            0x1ABC9C,
-            "のこ原神bot"
-        )
-        notified_codes.append(key_genshin)
-        updated = True
-
-    # スターレイル エンドコンテンツ通知の例
-    key_hsr = f"hsr_schedule_{date_str}"
-    if key_hsr not in notified_codes:
-        send_discord(
-            "スターレイル コンテンツ情報",
-            "高難易度コンテンツ（混沌の記憶・虚構叙事・末日の幻影）の開催状況を確認してください。",
-            "https://hsr.hoyoverse.com/ja-jp/",
-            0xE91E63,
-            "のこスタレbot"
-        )
-        notified_codes.append(key_hsr)
-        updated = True
-
+    # 例：外部API等から「最新の更新識別子（例: 螺旋の期数やイベントID）」を取得した場合の処理
+    # 取得した情報が notified_codes に含まれていない場合のみ通知し、リストに追加します。
+    
     return notified_codes, updated
 
 def main():
@@ -167,7 +140,7 @@ def main():
         return
 
     codes_list, found_codes = check_codes()
-    codes_list, found_schedule = check_schedules(codes_list)
+    codes_list, found_schedule = check_endgame_updates(codes_list)
 
     if found_codes or found_schedule:
         save_notified(codes_list)
