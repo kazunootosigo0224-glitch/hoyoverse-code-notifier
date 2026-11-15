@@ -8,6 +8,28 @@ import main
 
 
 class NotifierTests(unittest.TestCase):
+    def test_runtime_issue_is_collected_once(self):
+        main.RUNTIME_ERRORS.clear()
+        main.record_runtime_issue("error", "genshin", "テスト障害", "接続失敗")
+        main.record_runtime_issue("error", "genshin", "テスト障害", "接続失敗")
+        self.assertEqual(len(main.RUNTIME_ERRORS), 1)
+
+    def test_runtime_issue_redacts_webhook_secret(self):
+        main.RUNTIME_ERRORS.clear()
+        secret = "https://discord.example/webhook-secret"
+        with patch.dict(main.WEBHOOKS, {"genshin": secret}):
+            main.record_runtime_issue("error", "genshin", "送信失敗", secret)
+        self.assertNotIn(secret, main.RUNTIME_ERRORS[0])
+        self.assertIn("[Webhook URL redacted]", main.RUNTIME_ERRORS[0])
+
+    def test_corrupt_state_is_not_silently_reset(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "state.json")
+            with open(path, "w", encoding="utf-8") as file:
+                file.write("{broken")
+            with self.assertRaises(RuntimeError):
+                main.load_state(path)
+
     def test_legacy_state_is_migrated(self):
         with tempfile.TemporaryDirectory() as directory:
             path = os.path.join(directory, "state.json")
