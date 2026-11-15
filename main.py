@@ -249,6 +249,26 @@ def featured_icon_url(values: Any) -> Optional[str]:
     return valid[0][1] if valid else None
 
 
+def featured_icon_url(values: Any) -> Optional[str]:
+    """Return the first featured 5-star character/weapon icon URL, if supplied."""
+    if not isinstance(values, list):
+        return None
+    valid = []
+    for value in values:
+        if not isinstance(value, dict):
+            continue
+        icon = value.get("icon") or value.get("image_url")
+        if not isinstance(icon, str) or not icon.startswith("https://"):
+            continue
+        rarity = value.get("rarity")
+        try:
+            is_five_star = int(rarity) == 5
+        except (TypeError, ValueError):
+            is_five_star = False
+        valid.append((not is_five_star, icon))
+    return valid[0][1] if valid else None
+
+
 def format_names(values: Any) -> str:
     if not isinstance(values, list):
         return ""
@@ -396,8 +416,11 @@ def calendar_payload_to_items(
                 "version": version,
                 "type_name": raw.get("type_name") or raw.get("type"),
                 "characters": characters,
+                "characters_image_url": featured_icon_url(raw.get("characters")),
                 "weapons": weapons,
+                "weapons_image_url": featured_icon_url(raw.get("weapons")),
                 "light_cones": light_cones,
+                "light_cones_image_url": featured_icon_url(raw.get("light_cones")),
                 "characters_image_url": featured_icon_url(raw.get("characters")),
                 "weapons_image_url": featured_icon_url(raw.get("weapons")),
                 "light_cones_image_url": featured_icon_url(raw.get("light_cones")),
@@ -557,8 +580,8 @@ def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str
         else NOTIFICATION_COLORS["preview"]
     )
 
-    # Each banner gets its own embed so its featured-unit image stays paired
-    # with the corresponding banner text. Discord allows up to 10 embeds per message.
+    # Keep each banner's text and pickup icon together in its own embed.
+    # Discord supports up to 10 embeds per message.
     embeds = []
     for item in ordered[:10]:
         period = []
@@ -569,15 +592,15 @@ def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str
 
         fields = []
         if item.get("characters"):
-            fields.append({"name": "ピックアップキャラクター", "value": item["characters"]})
+            fields.append({"name": "ピックアップキャラクター", "value": clip(item["characters"], 1024)})
         if item.get("weapons"):
-            fields.append({"name": "ピックアップ武器", "value": item["weapons"]})
+            fields.append({"name": "ピックアップ武器", "value": clip(item["weapons"], 1024)})
         if item.get("light_cones"):
-            fields.append({"name": "ピックアップ光円錐", "value": item["light_cones"]})
+            fields.append({"name": "ピックアップ光円錐", "value": clip(item["light_cones"], 1024)})
         if item.get("version"):
-            fields.append({"name": "バージョン", "value": str(item["version"])})
+            fields.append({"name": "バージョン", "value": clip(item["version"], 1024)})
         if period:
-            fields.append({"name": "開催期間", "value": " ｜ ".join(period)})
+            fields.append({"name": "開催期間", "value": clip(" ｜ ".join(period), 1024)})
 
         embed = {
             "title": clip(item.get("name") or "ピックアップ", 256),
