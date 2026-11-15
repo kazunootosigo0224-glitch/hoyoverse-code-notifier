@@ -609,9 +609,12 @@ def sync_banner_message(game: str, banners: List[dict], state: Dict[str, Any], n
         message_id = record.get("id")
         try:
             if message_id:
+                edit_payload = {
+                    key: value for key, value in payload.items() if key != "username"
+                }
                 response = requests.patch(
                     f"{webhook_url}/messages/{message_id}",
-                    json=payload,
+                    json=edit_payload,
                     timeout=REQUEST_TIMEOUT,
                 )
                 if response.status_code == 404:
