@@ -1,26 +1,814 @@
-[
-  "genshin_NEEIJB764CA3",
-  "genshin_NEEI8A8341OW",
-  "genshin_Y6JYMKV6JKSL",
-  "genshin_PNKZ3WLNN8G6",
-  "genshin_PJ2KEBRAYSRM",
-  "genshin_MIJIQ23V2437",
-  "genshin_CDOF4X83H7X2",
-  "genshin_KEEPUPWITHMITYA",
-  "genshin_QYJWFB784MFL",
-  "hsr_5S6ZHRWTDNJB",
-  "hsr_4TKSX77Y58QK",
-  "hsr_STARRAILGIFT",
-  "hsr_IFYOUAREREADINGTHIS",
-  "hsr_FAREWELL",
-  "hsr_CTK5DRQVT48F",
-  "hsr_CREATIONNYMPH",
-  "hsr_OMEGA",
-  "hsr_AEONAHA",
-  "hsr_NS4DU8AAGXBP",
-  "genshin_schedule_2026-11-15",
-  "hsr_schedule_2026-11-15",
-  "genshin_spiral_2026_11_phase1",
-  "genshin_theater_2026_11",
-  "hsr_endgame_2026_11_phase1"
-]
+{
+  "schema_version": 2,
+  "codes": [
+    "genshin_NEEIJB764CA3",
+    "genshin_NEEI8A8341OW",
+    "genshin_Y6JYMKV6JKSL",
+    "genshin_PNKZ3WLNN8G6",
+    "genshin_PJ2KEBRAYSRM",
+    "genshin_MIJIQ23V2437",
+    "genshin_CDOF4X83H7X2",
+    "genshin_KEEPUPWITHMITYA",
+    "genshin_QYJWFB784MFL",
+    "hsr_5S6ZHRWTDNJB",
+    "hsr_4TKSX77Y58QK",
+    "hsr_STARRAILGIFT",
+    "hsr_IFYOUAREREADINGTHIS",
+    "hsr_FAREWELL",
+    "hsr_CTK5DRQVT48F",
+    "hsr_CREATIONNYMPH",
+    "hsr_OMEGA",
+    "hsr_AEONAHA",
+    "hsr_NS4DU8AAGXBP",
+    "genshin_schedule_2026-11-15",
+    "hsr_schedule_2026-11-15",
+    "genshin_spiral_2026_11_phase1",
+    "genshin_theater_2026_11",
+    "hsr_endgame_2026_11_phase1"
+  ],
+  "items": {
+    "genshin:event:466": {
+      "signature": "2cfba8f478650a9cddac618cd1031d622d02edac3447692f5049a1d657c6e702",
+      "data": {
+        "key": "genshin:event:466",
+        "game": "genshin",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "幽境の激戦",
+        "description": "璃月の地中の塩付近で、再び謎の地脈の乱れが確認された。この異変を鎮めるには、何が起こるか予測もつかない秘境へと足を踏み入れ、待ち受ける強敵を倒さなければならないようだ。上手くいけば、思いもよらない秘宝が手に入るかもしれない…",
+        "start": 1794362400,
+        "end": 1797278399,
+        "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/4/41/Stygian_Onslaught.png/revision/latest?cb=20250623040614",
+        "url": null,
+        "version": null,
+        "type_name": "ActTypeHardChallenge",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "聖啓の塵 ×3、幻形の煌めき・真化 ×1、幻形の煌めき ×1、大英雄の経験 ×0、モラ ×0",
+        "signature": "2cfba8f478650a9cddac618cd1031d622d02edac3447692f5049a1d657c6e702"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:event:465": {
+      "signature": "c90e38bae2835735cd86a7ac5b04046a0ec57f0024cd0074f9f19c48e2d6ae92",
+      "data": {
+        "key": "genshin:event:465",
+        "game": "genshin",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "全域防衛・不当なる裁きへの叛逆",
+        "description": "「断罪の釘」により「聖土化」が拡大し、テイワット全土は危機に陥った。\\n各地の災厄を鎮めるべく、七国は共同戦線を張り、総力を挙げて立ち向かう…",
+        "start": 1793746800,
+        "end": 1797375600,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ActTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "知恵の冠 ×1、キャラクター ×1、「慈愛」の哲学 ×3、「不屈」の哲学 ×3、「栄光」の哲学 ×3、大英雄の経験 ×0、炎願のアゲート·欠片 ×3、澄明なラピスラズリ·欠片 ×3、成長のエメラルド·欠片 ×3、最勝のアメシスト·欠片 ×3、自由のターコイズ·欠片 ×3、哀切なアイスクリスタル·欠片 ×3、堅牢なトパーズ·欠片 ×3、「浮世」の導き ×3、「風雅」の導き ×3、「天光」の導き ×3、「忠言」の導き ×3、「創意」の導き ×3、「篤行」の導き ×3、「角逐」の導き ×3、「焚燼」の導き ×3、「紛争」の導き ×3、「慈愛」の導き ×3、「不屈」の導き ×3、「栄光」の導き ×3、仕上げ用魔鉱 ×0、祈聖のオイル ×0、モラ ×0",
+        "signature": "c90e38bae2835735cd86a7ac5b04046a0ec57f0024cd0074f9f19c48e2d6ae92"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:event:470": {
+      "signature": "19c0a638b5a8728b58cfb49cb4042893d2ec8ee77bc4c16db9fa196305c60af4",
+      "data": {
+        "key": "genshin:event:470",
+        "game": "genshin",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "鋳境の研鑽·無限疾戦",
+        "description": "",
+        "start": 1793746800,
+        "end": 1797375600,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ActTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "19c0a638b5a8728b58cfb49cb4042893d2ec8ee77bc4c16db9fa196305c60af4"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:event:468": {
+      "signature": "a578bc01650d41f59b747510c73615c26fca7bc2cd11623951a001f98809de75",
+      "data": {
+        "key": "genshin:event:468",
+        "game": "genshin",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "凛影の記録",
+        "description": "撮影技術の研究に情熱を注ぐエスフィルに、協力を依頼された。彼女は、映像の力でスネージナヤの人々に元気を与えたいそうだ…",
+        "start": null,
+        "end": null,
+        "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/d/da/Frames_of_Fierce_Splendor.png/revision/latest?cb=20261024092424",
+        "url": null,
+        "version": null,
+        "type_name": "ActTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "a578bc01650d41f59b747510c73615c26fca7bc2cd11623951a001f98809de75"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:event:467": {
+      "signature": "e6a58a9f54698f82933b85e9d0079b76784955f6f6d1be009302247c7a3a1a56",
+      "data": {
+        "key": "genshin:event:467",
+        "game": "genshin",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "ブロックスマッシュ・リフレッシュ",
+        "description": "「秋沙銭湯」の夢喰い獏のスタッフ二人が「のびのびリゾート」を訪れ、一風変わったゲームの運営を始めた。テストプレイヤーになって思う存分「リフレッシュ」しよう！",
+        "start": null,
+        "end": null,
+        "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/e/ee/Stress_Block_Smashing_Project.png/revision/latest?cb=20261024092430",
+        "url": null,
+        "version": null,
+        "type_name": "ActTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "e6a58a9f54698f82933b85e9d0079b76784955f6f6d1be009302247c7a3a1a56"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:event:464": {
+      "signature": "c59eaeaf4e76068e2bf712c3da00fba679815f8e82c9120315d16551de96baca",
+      "data": {
+        "key": "genshin:event:464",
+        "game": "genshin",
+        "kind": "event",
+        "event_subtype": "double_reward",
+        "name": "地脈の奔流",
+        "description": "",
+        "start": null,
+        "end": null,
+        "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/c/cc/Ley_Line_Overflow.png/revision/latest?cb=20220703201328",
+        "url": null,
+        "version": null,
+        "type_name": "ActTypeDouble",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "c59eaeaf4e76068e2bf712c3da00fba679815f8e82c9120315d16551de96baca"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:event:469": {
+      "signature": "6357f1c2ae2da40169254fd4e78b23e4624d6b57e24a20f6358260fe9f4831b2",
+      "data": {
+        "key": "genshin:event:469",
+        "game": "genshin",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "熱闘モード：奇策！スピード勝負",
+        "description": "キャッツテールで定期的に開催されるユニークな対戦では、特殊な「熱闘モード」ルールが採用される。\\n今回のルールは下記となっている。\\n両者はその場で選んだキャラカードを用い、ランダムに生成されたアクションカードを使って対戦する！",
+        "start": null,
+        "end": null,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ActTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "6357f1c2ae2da40169254fd4e78b23e4624d6b57e24a20f6358260fe9f4831b2"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:banner:239": {
+      "signature": "1eac885131aae6f04daa80021844a6beaf037316afda8f431e127b7582fce4d8",
+      "data": {
+        "key": "genshin:banner:239",
+        "game": "genshin",
+        "kind": "banner",
+        "event_subtype": null,
+        "name": "キャラクター祈願",
+        "description": "",
+        "start": 1793746800,
+        "end": 1795514340,
+        "image_url": null,
+        "url": null,
+        "version": "7.2",
+        "type_name": null,
+        "characters": "ミティヤ（★5）、バレリー（★4）、シャルロット（★4）、ロサリア（★4）",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "1eac885131aae6f04daa80021844a6beaf037316afda8f431e127b7582fce4d8"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:banner:240": {
+      "signature": "fd3d48ac031a8193c5414be78f1f6abfc09a93a6646566a541a66850e7ff1d11",
+      "data": {
+        "key": "genshin:banner:240",
+        "game": "genshin",
+        "kind": "banner",
+        "event_subtype": null,
+        "name": "キャラクター祈願2",
+        "description": "",
+        "start": 1793746800,
+        "end": 1795514340,
+        "image_url": null,
+        "url": null,
+        "version": "7.2",
+        "type_name": null,
+        "characters": "フリーナ（★5）、バレリー（★4）、シャルロット（★4）、ロサリア（★4）",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "fd3d48ac031a8193c5414be78f1f6abfc09a93a6646566a541a66850e7ff1d11"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:banner:241": {
+      "signature": "68b6a5d7184b15ea2c98c310d23468046417896d49826b11eedc68243ad50cbe",
+      "data": {
+        "key": "genshin:banner:241",
+        "game": "genshin",
+        "kind": "banner",
+        "event_subtype": null,
+        "name": "武器祈願",
+        "description": "",
+        "start": 1793746800,
+        "end": 1795514340,
+        "image_url": null,
+        "url": null,
+        "version": "7.2",
+        "type_name": null,
+        "characters": "",
+        "weapons": "秘星の聖典（★5）、静水流転の輝き（★5）、船渠剣（★4）、プロスペクタードリル（★4）、霜辰（★4）、雨裁（★4）、弓蔵（★4）",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "68b6a5d7184b15ea2c98c310d23468046417896d49826b11eedc68243ad50cbe"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:challenge:0": {
+      "signature": "2ec67b112612297132cdea795e2684d795493e524e2cd7d4f3ed69e81f46d803",
+      "data": {
+        "key": "genshin:challenge:0",
+        "game": "genshin",
+        "kind": "challenge",
+        "event_subtype": null,
+        "name": "淵月螺旋",
+        "description": "",
+        "start": 1792094400,
+        "end": 1794772799,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ActTypeTower",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "深秘の聖遺物箱・一等 ×4、大英雄の経験 ×24、深秘の聖遺物箱・二等 ×8、冒険家の経験 ×42、仕上げ用魔鉱 ×72、モラ ×585000",
+        "signature": "2ec67b112612297132cdea795e2684d795493e524e2cd7d4f3ed69e81f46d803"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": true,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:event:293": {
+      "signature": "133af5ad746d07c339cacdfbb18fbeb15de5d057ac9725a9474b4d6c6b0c7992",
+      "data": {
+        "key": "hsr:event:293",
+        "game": "hsr",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "アッハが思う必要なもの",
+        "description": "",
+        "start": 1794351600,
+        "end": 1797976740,
+        "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/9/92/Event_Aha_Reckons_You_Need_This.png/revision/latest?cb=20261111055513",
+        "url": null,
+        "version": null,
+        "type_name": "ActivityTypeSign",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "星軌専用チケット ×20",
+        "signature": "133af5ad746d07c339cacdfbb18fbeb15de5d057ac9725a9474b4d6c6b0c7992"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:event:292": {
+      "signature": "20cde1ebc52f5c4fb09e3b8a70c336a8429b5b851cd7f80d663110ffc4225016",
+      "data": {
+        "key": "hsr:event:292",
+        "game": "hsr",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "マジカル招待状",
+        "description": "",
+        "start": 1794351600,
+        "end": 1797976740,
+        "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/7/74/Event_Magic_Invitation.png/revision/latest?cb=20261111055532",
+        "url": null,
+        "version": null,
+        "type_name": "ActivityTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "黄泉 ×0、丹恒・飲月 ×0、景元 ×0",
+        "signature": "20cde1ebc52f5c4fb09e3b8a70c336a8429b5b851cd7f80d663110ffc4225016"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:event:291": {
+      "signature": "bb19812c3586bf41027d4253ac43cc0590d422dcf05202eef173c9365ddeb575",
+      "data": {
+        "key": "hsr:event:291",
+        "game": "hsr",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "星空の奇縁",
+        "description": "",
+        "start": 1794351600,
+        "end": 1797976740,
+        "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/6/68/Event_Affinitive_Starveil.png/revision/latest?cb=20261111054450",
+        "url": null,
+        "version": null,
+        "type_name": "ActivityTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "「黄泉」の奇縁星魂 ×0、「丹恒・飲月」の奇縁星魂 ×0、「景元」の奇縁星魂 ×0",
+        "signature": "bb19812c3586bf41027d4253ac43cc0590d422dcf05202eef173c9365ddeb575"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:event:295": {
+      "signature": "f7b12d0fc1688db86faf35a3561ec6f7c482b625a2fbbffe309862fb153edd4c",
+      "data": {
+        "key": "hsr:event:295",
+        "game": "hsr",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "劇場版もふもふ号：ドタバタキッチン",
+        "description": "『青天航路もふもふ号』を未完のまま終わらせる？とんでもない！誰よりも責任感の強い偉大な漫画家「二次元ホース」は、完結どころか、劇場版グルメ編まで描くつもりらしい！彼女があなたに残した遺産は受け継がれるのを待っている。しかし、その遺産を手に入れるためにはまず、この空前絶後の傑作を完成させなければならない。ただし、漫画を「描く」というのは、あなたが思うほど簡単なことではない……",
+        "start": 1794193200,
+        "end": 1797969599,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ActivityTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "自塑樹脂 ×1、運命の足跡 ×2、星玉 ×1200、キッチン一番！ ×0、漫遊指南 ×0、精製エーテル ×0、遺失晶塊 ×0、『もふもふ号』連載記念号 ×0、信用ポイント ×0",
+        "signature": "f7b12d0fc1688db86faf35a3561ec6f7c482b625a2fbbffe309862fb153edd4c"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:event:294": {
+      "signature": "0a847066d4a6e7e756063d8ec8a25f68b608238ac292688cc558c16cfee71e7e",
+      "data": {
+        "key": "hsr:event:294",
+        "game": "hsr",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "スターピースフェスティバル：スターへの道",
+        "description": "万人の注目を浴びるショーの新星になりたい？ステージに上がって強敵を倒し、素晴らしいパフォーマンスで歓声と拍手を勝ち取ろう！",
+        "start": 1794351600,
+        "end": 1797969599,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ActivityTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "運命の足跡 ×1、星玉 ×500、遺物残骸 ×0、漫遊指南 ×0、精製エーテル ×0、遺失砕金 ×0、信用ポイント ×0",
+        "signature": "0a847066d4a6e7e756063d8ec8a25f68b608238ac292688cc558c16cfee71e7e"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:event:296": {
+      "signature": "c47df9d9eaaa686d2027f1dfa7f35a3a5d60fa695e1ac7d3eec903bcac46c9ea",
+      "data": {
+        "key": "hsr:event:296",
+        "game": "hsr",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "奇物宝庫トレジャー",
+        "description": "",
+        "start": 1794193200,
+        "end": 1797969599,
+        "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/e/ec/Event_Relic_Recon.png/revision/latest?cb=20251105025213",
+        "url": null,
+        "version": null,
+        "type_name": "ActivityTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "c47df9d9eaaa686d2027f1dfa7f35a3a5d60fa695e1ac7d3eec903bcac46c9ea"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:event:7": {
+      "signature": "8e7f9f15693fca5bfe0ab7cfcaf91935080a20c87126effcf0e205adc5f322f7",
+      "data": {
+        "key": "hsr:event:7",
+        "game": "hsr",
+        "kind": "event",
+        "event_subtype": null,
+        "name": "千星、旅は道づれ",
+        "description": "",
+        "start": 1794351600,
+        "end": 1797976800,
+        "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/6/60/Event_Stellar_Companions_2025-04-09.png/revision/latest?cb=20250409032926",
+        "url": null,
+        "version": null,
+        "type_name": "ActivityTypeOther",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "金の伴星 ×0",
+        "signature": "8e7f9f15693fca5bfe0ab7cfcaf91935080a20c87126effcf0e205adc5f322f7"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:event:290": {
+      "signature": "e75664ba81573457ef06be5afc54bab992ad64c6c1f0c9cd03d5d1218fd1dfc5",
+      "data": {
+        "key": "hsr:event:290",
+        "game": "hsr",
+        "kind": "event",
+        "event_subtype": "double_reward",
+        "name": "次元界分裂",
+        "description": "イベント期間中、「模擬宇宙」または「階差宇宙」をクリアした際に獲得できる次元界オーナメントが2倍になります。",
+        "start": 1795402800,
+        "end": 1796612399,
+        "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/9/91/Event_Planar_Fissure.png/revision/latest?cb=20260726044453",
+        "url": null,
+        "version": null,
+        "type_name": "ActivityTypeDouble",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "e75664ba81573457ef06be5afc54bab992ad64c6c1f0c9cd03d5d1218fd1dfc5"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:event:289": {
+      "signature": "5e46da4d35861add79615ecc7afff215751960c9c3b83143b767c5b7962d76e8",
+      "data": {
+        "key": "hsr:event:289",
+        "game": "hsr",
+        "kind": "event",
+        "event_subtype": "double_reward",
+        "name": "世を満たす異器",
+        "description": "イベント期間中、「侵蝕トンネル」をクリアした際に獲得できる報酬が2倍になります。",
+        "start": 1796958000,
+        "end": 1797969599,
+        "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/f/fa/Event_Realm_of_the_Strange.png/revision/latest?cb=20260726044507",
+        "url": null,
+        "version": null,
+        "type_name": "ActivityTypeDouble",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "",
+        "signature": "5e46da4d35861add79615ecc7afff215751960c9c3b83143b767c5b7962d76e8"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:challenge:3021": {
+      "signature": "f4842bb62f1ff19e9f78a03b24ef1089820846d1a2ffef8995d33f60c6a96b49",
+      "data": {
+        "key": "hsr:challenge:3021",
+        "game": "hsr",
+        "kind": "challenge",
+        "event_subtype": null,
+        "name": "忘却の支配",
+        "description": "",
+        "start": 1791169200,
+        "end": 1794798000,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ChallengeTypeBoss",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
+        "signature": "f4842bb62f1ff19e9f78a03b24ef1089820846d1a2ffef8995d33f60c6a96b49"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": true,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:challenge:11": {
+      "signature": "c5b944fa92bfd19eb846e70e2f1a8fbf2a11a27af637e6915098a4ec8caec9cf",
+      "data": {
+        "key": "hsr:challenge:11",
+        "game": "hsr",
+        "kind": "challenge",
+        "event_subtype": null,
+        "name": "隠しステージ",
+        "description": "",
+        "start": 1794351600,
+        "end": 1797976800,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ChallengeTypePeak",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "孤星明塵 ×1200、干渉暗号キー ×1、自塑樹脂 ×3",
+        "signature": "c5b944fa92bfd19eb846e70e2f1a8fbf2a11a27af637e6915098a4ec8caec9cf"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:challenge:1036": {
+      "signature": "419df1ee64bef94d9d5a5bd012edcc9dbf65f8db5ffeb4558b94a7046a2c4054",
+      "data": {
+        "key": "hsr:challenge:1036",
+        "game": "hsr",
+        "kind": "challenge",
+        "event_subtype": null,
+        "name": "自然淘汰",
+        "description": "",
+        "start": 1793588400,
+        "end": 1797217200,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ChallengeTypeChasm",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
+        "signature": "419df1ee64bef94d9d5a5bd012edcc9dbf65f8db5ffeb4558b94a7046a2c4054"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:challenge:2027": {
+      "signature": "872b5a94c22f79c83ce811afc9d184ccb45108567fbf93866c1917e6f06cf1f4",
+      "data": {
+        "key": "hsr:challenge:2027",
+        "game": "hsr",
+        "kind": "challenge",
+        "event_subtype": null,
+        "name": "形象を取りて文と為す",
+        "description": "",
+        "start": 1792378800,
+        "end": 1796007600,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ChallengeTypeStory",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
+        "signature": "872b5a94c22f79c83ce811afc9d184ccb45108567fbf93866c1917e6f06cf1f4"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:challenge:3022": {
+      "signature": "99d5795954a34e33ef17a1779e72c80cede27059cc079e4051afd6ef49d89b0a",
+      "data": {
+        "key": "hsr:challenge:3022",
+        "game": "hsr",
+        "kind": "challenge",
+        "event_subtype": null,
+        "name": "冥茫の導き",
+        "description": "",
+        "start": 1794798000,
+        "end": 1798426800,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ChallengeTypeBoss",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
+        "signature": "99d5795954a34e33ef17a1779e72c80cede27059cc079e4051afd6ef49d89b0a"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:challenge:2028": {
+      "signature": "dba34f24e3e8c308d131e7e11dae07fc93142fda0688b0f28155806d60404fa6",
+      "data": {
+        "key": "hsr:challenge:2028",
+        "game": "hsr",
+        "kind": "challenge",
+        "event_subtype": null,
+        "name": "虚事、理を成す",
+        "description": "",
+        "start": 1796007600,
+        "end": 1799636400,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ChallengeTypeStory",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
+        "signature": "dba34f24e3e8c308d131e7e11dae07fc93142fda0688b0f28155806d60404fa6"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:challenge:1037": {
+      "signature": "dd3f9584398ca796a7af01b83801d69da86f080a66e6c624691ff1ad38c040a2",
+      "data": {
+        "key": "hsr:challenge:1037",
+        "game": "hsr",
+        "kind": "challenge",
+        "event_subtype": null,
+        "name": "漆黒の残響",
+        "description": "",
+        "start": 1797217200,
+        "end": 1800846000,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ChallengeTypeChasm",
+        "characters": "",
+        "weapons": "",
+        "light_cones": "",
+        "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
+        "signature": "dd3f9584398ca796a7af01b83801d69da86f080a66e6c624691ff1ad38c040a2"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    }
+  }
+}
