@@ -224,6 +224,34 @@ class NotifierTests(unittest.TestCase):
         self.assertTrue(any(call.args[2] == "updated" for call in send.call_args_list))
         self.assertFalse(state["items"][key]["notifications"]["24h"])
 
+    def test_notification_colors_follow_content_lifecycle(self):
+        now = 1_000_000
+        self.assertEqual(
+            main.notification_color({"start": now + 3600, "end": now + 7200}, "announced", now),
+            main.NOTIFICATION_COLORS["preview"],
+        )
+        self.assertEqual(
+            main.notification_color({"start": now - 3600, "end": now + 7200}, "announced", now),
+            main.NOTIFICATION_COLORS["active"],
+        )
+        self.assertEqual(
+            main.notification_color({"start": now - 3600, "end": now + 3600}, "24h", now),
+            main.NOTIFICATION_COLORS["ending"],
+        )
+        self.assertEqual(
+            main.notification_color({"start": now - 3600, "end": now + 86400}, "ended", now),
+            main.NOTIFICATION_COLORS["ending"],
+        )
+
+    def test_serial_code_notification_uses_dedicated_color(self):
+        state = {"schema_version": 2, "codes": [], "items": {}}
+        with patch.object(main, "fetch_json", return_value=[{"code": "NEW", "rewards": ["石"]}]), \
+             patch.object(main, "send_discord", return_value=True) as send:
+            main.check_codes("genshin", state)
+
+        self.assertEqual(state["codes"], ["genshin_NEW"])
+        self.assertEqual(send.call_args.kwargs["color"], main.NOTIFICATION_COLORS["code"])
+
     def test_webhook_is_selected_by_game(self):
         old = dict(main.WEBHOOKS)
         main.WEBHOOKS["genshin"] = "https://discord.example/genshin"
