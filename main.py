@@ -246,7 +246,7 @@ def featured_icon_url(values: Any) -> Optional[str]:
         except (TypeError, ValueError):
             is_five_star = False
         valid.append((not is_five_star, icon))
-    return valid[0][1] if valid else None
+    return sorted(valid)[0][1] if valid else None
 
 
 def featured_icon_url(values: Any) -> Optional[str]:
