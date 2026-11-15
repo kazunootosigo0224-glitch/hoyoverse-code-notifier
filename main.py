@@ -229,6 +229,26 @@ def send_discord(
     return False
 
 
+def featured_icon_url(values: Any) -> Optional[str]:
+    """Return the first featured 5-star character/weapon icon URL, if supplied."""
+    if not isinstance(values, list):
+        return None
+    valid = []
+    for value in values:
+        if not isinstance(value, dict):
+            continue
+        icon = value.get("icon") or value.get("image_url")
+        if not isinstance(icon, str) or not icon.startswith("https://"):
+            continue
+        rarity = value.get("rarity")
+        try:
+            is_five_star = int(rarity) == 5
+        except (TypeError, ValueError):
+            is_five_star = False
+        valid.append((not is_five_star, icon))
+    return valid[0][1] if valid else None
+
+
 def format_names(values: Any) -> str:
     if not isinstance(values, list):
         return ""
@@ -378,6 +398,9 @@ def calendar_payload_to_items(
                 "characters": characters,
                 "weapons": weapons,
                 "light_cones": light_cones,
+                "characters_image_url": featured_icon_url(raw.get("characters")),
+                "weapons_image_url": featured_icon_url(raw.get("weapons")),
+                "light_cones_image_url": featured_icon_url(raw.get("light_cones")),
                 "rewards": rewards,
             }
             signature_source = {key: value for key, value in item.items() if key not in ("key", "game")}
@@ -519,31 +542,6 @@ def fetch_news_entries(game: str) -> Any:
 
 def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str, Any]:
     ordered = sorted(banners, key=lambda item: (item.get("start") or 0, item.get("name") or ""))
-    fields = []
-    for item in ordered[:20]:
-        period = []
-        if item.get("start") is not None:
-            period.append(f"開始：{discord_time(item['start'])}")
-        if item.get("end") is not None:
-            period.append(f"終了：{discord_time(item['end'])}")
-        if item.get("characters"):
-            period.append(f"キャラクター：{item['characters']}")
-        if item.get("weapons"):
-            period.append(f"武器：{item['weapons']}")
-        if item.get("light_cones"):
-            period.append(f"光円錐：{item['light_cones']}")
-        if item.get("version"):
-            period.append(f"バージョン：{item['version']}")
-        fields.append({
-            "name": clip(item.get("name") or "ピックアップ", 256),
-            "value": clip(" ｜ ".join(period) or "開催情報を確認してください。", 1024),
-            "inline": False,
-        })
-
-    description = (
-        "この投稿は自動更新されます。開催中の内容と次回予定をここで確認できます。"
-        if fields else "現在、取得できるガチャ・跳躍情報はありません。"
-    )
     active = [
         item for item in ordered
         if (item.get("start") is None or item["start"] <= now)
@@ -558,17 +556,59 @@ def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str
         else NOTIFICATION_COLORS["active"] if active
         else NOTIFICATION_COLORS["preview"]
     )
-    embed = {
-        "title": f"{GAME_CONFIG[game]['game_name']}｜ガチャ・跳躍情報",
-        "description": description,
-        "color": color,
-        "fields": fields,
-        "footer": {"text": "のこHoYoverse通知 | この投稿は自動更新されます"},
-    }
+
+    # Each banner gets its own embed so its featured-unit image stays paired
+    # with the corresponding banner text. Discord allows up to 10 embeds per message.
+    embeds = []
+    for item in ordered[:10]:
+        period = []
+        if item.get("start") is not None:
+            period.append(f"開始：{discord_time(item['start'])}")
+        if item.get("end") is not None:
+            period.append(f"終了：{discord_time(item['end'])}")
+
+        fields = []
+        if item.get("characters"):
+            fields.append({"name": "ピックアップキャラクター", "value": item["characters"]})
+        if item.get("weapons"):
+            fields.append({"name": "ピックアップ武器", "value": item["weapons"]})
+        if item.get("light_cones"):
+            fields.append({"name": "ピックアップ光円錐", "value": item["light_cones"]})
+        if item.get("version"):
+            fields.append({"name": "バージョン", "value": str(item["version"])})
+        if period:
+            fields.append({"name": "開催期間", "value": " ｜ ".join(period)})
+
+        embed = {
+            "title": clip(item.get("name") or "ピックアップ", 256),
+            "description": "開催中" if item in active else "開催予定",
+            "color": color,
+            "fields": fields,
+        }
+        image_url = (
+            item.get("characters_image_url")
+            or item.get("weapons_image_url")
+            or item.get("light_cones_image_url")
+            or item.get("image_url")
+        )
+        if isinstance(image_url, str) and image_url.startswith("https://"):
+            embed["thumbnail"] = {"url": image_url}
+        embeds.append(embed)
+
+    if not embeds:
+        embeds.append({
+            "title": f"{GAME_CONFIG[game]['game_name']}｜ガチャ・跳躍情報",
+            "description": "現在、取得できるガチャ・跳躍情報はありません。",
+            "color": NOTIFICATION_COLORS["preview"],
+        })
+
     signature_data = [
         {
             key: item.get(key)
-            for key in ("key", "name", "start", "end", "characters", "weapons", "light_cones", "version")
+            for key in (
+                "key", "name", "start", "end", "characters", "weapons", "light_cones",
+                "characters_image_url", "weapons_image_url", "light_cones_image_url", "version",
+            )
         }
         for item in ordered
     ]
@@ -579,10 +619,9 @@ def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str
     return {
         "username": GAME_CONFIG[game]["bot_name"],
         "allowed_mentions": {"parse": []},
-        "embeds": [embed],
+        "embeds": embeds,
         "_signature": signature,
     }
-
 
 def sync_banner_message(game: str, banners: List[dict], state: Dict[str, Any], now: int) -> bool:
     """Create a persistent banner post once, then edit that same webhook message."""
