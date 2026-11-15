@@ -402,9 +402,9 @@ def calendar_payload_to_items(
                 "weapons_image_url": featured_icon_url(raw.get("weapons")),
                 "light_cones": light_cones,
                 "light_cones_image_url": featured_icon_url(raw.get("light_cones")),
-                "characters_image_url": featured_icon_url(raw.get("characters")),
-                "weapons_image_url": featured_icon_url(raw.get("weapons")),
-                "light_cones_image_url": featured_icon_url(raw.get("light_cones")),
+
+
+
                 "rewards": rewards,
             }
             signature_source = {key: value for key, value in item.items() if key not in ("key", "game")}
