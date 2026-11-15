@@ -1,15 +1,21 @@
-name: HoYoverse Code Notifier
+name: HoYoverse Notifier
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # 6時間おきに実行
-  workflow_dispatch:      # GitHub画面から手動実行も可能
+    - cron: '*/30 * * * *' # 30分ごと（終了前リマインド用）
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hoyoverse-notifier-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  check-codes:
+  notify:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # リポジトリへの自動コミット権限を付与
+    timeout-minutes: 10
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -17,21 +23,27 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install requests
+        run: pip install -r requirements.txt
 
-      - name: Run notifier script
+      - name: Run tests
+        run: python -m unittest discover -v
+
+      - name: Run notifier
         env:
+          DISCORD_WEBHOOK_GENSHIN: ${{ secrets.DISCORD_WEBHOOK_GENSHIN }}
+          DISCORD_WEBHOOK_HSR: ${{ secrets.DISCORD_WEBHOOK_HSR }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          python main.py
+        run: python main.py
 
-      - name: Commit and push if notified_codes.json changed
+      - name: Commit notification state
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add notified_codes.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update notified_codes.json [skip ci]" && git push)
+          if ! git diff --cached --quiet; then
+            git commit -m "Update notifier state [skip ci]"
+            git push
+          fi
