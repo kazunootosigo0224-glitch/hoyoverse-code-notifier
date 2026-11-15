@@ -512,6 +512,10 @@ def fetch_calendar(game: str) -> Any:
     return fetch_json(CALENDAR_URLS[game])
 
 
+def fetch_news_entries(game: str) -> Any:
+    return fetch_json(NEWS_URLS[game])
+
+
 def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str, Any]:
     ordered = sorted(banners, key=lambda item: (item.get("start") or 0, item.get("name") or ""))
     fields = []
@@ -660,7 +664,7 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
     try:
         payload = fetch_calendar(game)
         try:
-            news_entries = fetch_json(NEWS_URLS[game])
+            news_entries = fetch_news_entries(game)
         except (requests.RequestException, ValueError, TypeError) as news_exc:
             print(f"イベント記事URL取得エラー [{game}]。検索リンクを使用します: {news_exc}")
             news_entries = []
