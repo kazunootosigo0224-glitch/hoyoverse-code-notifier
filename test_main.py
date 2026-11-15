@@ -132,6 +132,51 @@ class NotifierTests(unittest.TestCase):
         self.assertTrue(record["notifications"]["ended"])
         self.assertTrue(any(call.args[2] == "ended" for call in send.call_args_list))
 
+    def test_24h_and_3h_reminders_fire_for_previously_announced_event(self):
+        now = 1_000_000
+        payload = {
+            "events": [{
+                "id": 88,
+                "name": "リマインダーテスト",
+                "start_time": now - 10_000,
+                "end_time": now + 23 * 3600,
+            }]
+        }
+        item = main.calendar_payload_to_items("genshin", payload, now=now)[0]
+        key = item["key"]
+        state = {
+            "schema_version": 2,
+            "codes": [],
+            "items": {
+                key: {
+                    "signature": item["signature"],
+                    "data": item,
+                    "notifications": {
+                        "announced": True,
+                        "started": True,
+                        "24h": False,
+                        "3h": False,
+                        "ended": False,
+                    },
+                }
+            },
+        }
+
+        with patch.object(main, "fetch_calendar", return_value=payload), \\
+             patch.object(main, "send_item", return_value=True) as send:
+            main.check_calendar("genshin", state, now=now)
+
+        self.assertTrue(state["items"][key]["notifications"]["24h"])
+        self.assertTrue(any(call.args[2] == "24h" for call in send.call_args_list))
+
+        later = item["end"] - 2 * 3600
+        with patch.object(main, "fetch_calendar", return_value=payload), \\
+             patch.object(main, "send_item", return_value=True) as send:
+            main.check_calendar("genshin", state, now=later)
+
+        self.assertTrue(state["items"][key]["notifications"]["3h"])
+        self.assertTrue(any(call.args[2] == "3h" for call in send.call_args_list))
+
     def test_changed_end_time_resets_reminder_flags_after_successful_update(self):
         now = 1_000_000
         old_end = now + 10 * 3600
