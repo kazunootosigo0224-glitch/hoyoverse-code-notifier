@@ -28,7 +28,7 @@
   ],
   "items": {
     "genshin:event:466": {
-      "signature": "2cfba8f478650a9cddac618cd1031d622d02edac3447692f5049a1d657c6e702",
+      "signature": "4495151226c9f8ef6e97d5c0b4ff6913194280349f47dc5c85a260d4a952fe05",
       "data": {
         "key": "genshin:event:466",
         "game": "genshin",
@@ -39,14 +39,17 @@
         "start": 1794362400,
         "end": 1797278399,
         "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/4/41/Stygian_Onslaught.png/revision/latest?cb=20250623040614",
-        "url": null,
+        "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
         "type_name": "ActTypeHardChallenge",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "聖啓の塵 ×3、幻形の煌めき・真化 ×1、幻形の煌めき ×1、大英雄の経験 ×0、モラ ×0",
-        "signature": "2cfba8f478650a9cddac618cd1031d622d02edac3447692f5049a1d657c6e702"
+        "signature": "4495151226c9f8ef6e97d5c0b4ff6913194280349f47dc5c85a260d4a952fe05"
       },
       "notifications": {
         "announced": true,
@@ -57,7 +60,7 @@
       }
     },
     "genshin:event:465": {
-      "signature": "c90e38bae2835735cd86a7ac5b04046a0ec57f0024cd0074f9f19c48e2d6ae92",
+      "signature": "0e5ba3e8051e8903b53540296ab3c37bfe462b04bdb7a6a915035df70640d0fa",
       "data": {
         "key": "genshin:event:465",
         "game": "genshin",
@@ -68,14 +71,17 @@
         "start": 1793746800,
         "end": 1797375600,
         "image_url": null,
-        "url": null,
+        "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
         "type_name": "ActTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "知恵の冠 ×1、キャラクター ×1、「慈愛」の哲学 ×3、「不屈」の哲学 ×3、「栄光」の哲学 ×3、大英雄の経験 ×0、炎願のアゲート·欠片 ×3、澄明なラピスラズリ·欠片 ×3、成長のエメラルド·欠片 ×3、最勝のアメシスト·欠片 ×3、自由のターコイズ·欠片 ×3、哀切なアイスクリスタル·欠片 ×3、堅牢なトパーズ·欠片 ×3、「浮世」の導き ×3、「風雅」の導き ×3、「天光」の導き ×3、「忠言」の導き ×3、「創意」の導き ×3、「篤行」の導き ×3、「角逐」の導き ×3、「焚燼」の導き ×3、「紛争」の導き ×3、「慈愛」の導き ×3、「不屈」の導き ×3、「栄光」の導き ×3、仕上げ用魔鉱 ×0、祈聖のオイル ×0、モラ ×0",
-        "signature": "c90e38bae2835735cd86a7ac5b04046a0ec57f0024cd0074f9f19c48e2d6ae92"
+        "signature": "0e5ba3e8051e8903b53540296ab3c37bfe462b04bdb7a6a915035df70640d0fa"
       },
       "notifications": {
         "announced": true,
@@ -86,7 +92,7 @@
       }
     },
     "genshin:event:470": {
-      "signature": "19c0a638b5a8728b58cfb49cb4042893d2ec8ee77bc4c16db9fa196305c60af4",
+      "signature": "7f9128e13c65e94baa6847a009acfa43b19d9d44eac9422e5932049f72174888",
       "data": {
         "key": "genshin:event:470",
         "game": "genshin",
@@ -97,14 +103,17 @@
         "start": 1793746800,
         "end": 1797375600,
         "image_url": null,
-        "url": null,
+        "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
         "type_name": "ActTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "19c0a638b5a8728b58cfb49cb4042893d2ec8ee77bc4c16db9fa196305c60af4"
+        "signature": "7f9128e13c65e94baa6847a009acfa43b19d9d44eac9422e5932049f72174888"
       },
       "notifications": {
         "announced": true,
@@ -115,7 +124,7 @@
       }
     },
     "genshin:event:468": {
-      "signature": "a578bc01650d41f59b747510c73615c26fca7bc2cd11623951a001f98809de75",
+      "signature": "e198acaecebf88d79d29e7b37c3285bfdaeefe2d14991b6734d9994d36dae803",
       "data": {
         "key": "genshin:event:468",
         "game": "genshin",
@@ -126,14 +135,17 @@
         "start": null,
         "end": null,
         "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/d/da/Frames_of_Fierce_Splendor.png/revision/latest?cb=20261024092424",
-        "url": null,
+        "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
         "type_name": "ActTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "a578bc01650d41f59b747510c73615c26fca7bc2cd11623951a001f98809de75"
+        "signature": "e198acaecebf88d79d29e7b37c3285bfdaeefe2d14991b6734d9994d36dae803"
       },
       "notifications": {
         "announced": true,
@@ -144,7 +156,7 @@
       }
     },
     "genshin:event:467": {
-      "signature": "e6a58a9f54698f82933b85e9d0079b76784955f6f6d1be009302247c7a3a1a56",
+      "signature": "4c10eea062b5c854d52413760c709b8c5ddf830f548afb2b3d6fb821edf91071",
       "data": {
         "key": "genshin:event:467",
         "game": "genshin",
@@ -155,14 +167,17 @@
         "start": null,
         "end": null,
         "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/e/ee/Stress_Block_Smashing_Project.png/revision/latest?cb=20261024092430",
-        "url": null,
+        "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
         "type_name": "ActTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "e6a58a9f54698f82933b85e9d0079b76784955f6f6d1be009302247c7a3a1a56"
+        "signature": "4c10eea062b5c854d52413760c709b8c5ddf830f548afb2b3d6fb821edf91071"
       },
       "notifications": {
         "announced": true,
@@ -173,7 +188,7 @@
       }
     },
     "genshin:event:464": {
-      "signature": "c59eaeaf4e76068e2bf712c3da00fba679815f8e82c9120315d16551de96baca",
+      "signature": "66a227defb2faa4f93251e83c64bd2ee0e6539392dab8d14833a84122bb34d8e",
       "data": {
         "key": "genshin:event:464",
         "game": "genshin",
@@ -184,14 +199,17 @@
         "start": null,
         "end": null,
         "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/c/cc/Ley_Line_Overflow.png/revision/latest?cb=20220703201328",
-        "url": null,
+        "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
         "type_name": "ActTypeDouble",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "c59eaeaf4e76068e2bf712c3da00fba679815f8e82c9120315d16551de96baca"
+        "signature": "66a227defb2faa4f93251e83c64bd2ee0e6539392dab8d14833a84122bb34d8e"
       },
       "notifications": {
         "announced": true,
@@ -202,7 +220,7 @@
       }
     },
     "genshin:event:469": {
-      "signature": "6357f1c2ae2da40169254fd4e78b23e4624d6b57e24a20f6358260fe9f4831b2",
+      "signature": "c1f411d60490b1ea910fa8d1011a75ad0b0e76bf4b6a9d756b8d466a4efbcf54",
       "data": {
         "key": "genshin:event:469",
         "game": "genshin",
@@ -213,14 +231,17 @@
         "start": null,
         "end": null,
         "image_url": null,
-        "url": null,
+        "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
         "type_name": "ActTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "6357f1c2ae2da40169254fd4e78b23e4624d6b57e24a20f6358260fe9f4831b2"
+        "signature": "c1f411d60490b1ea910fa8d1011a75ad0b0e76bf4b6a9d756b8d466a4efbcf54"
       },
       "notifications": {
         "announced": true,
@@ -231,7 +252,7 @@
       }
     },
     "genshin:banner:239": {
-      "signature": "1eac885131aae6f04daa80021844a6beaf037316afda8f431e127b7582fce4d8",
+      "signature": "33683883a75a6f3a5109b6c0ca8bc5505c1834b1402415cbfac7c8020db6c30d",
       "data": {
         "key": "genshin:banner:239",
         "game": "genshin",
@@ -246,10 +267,13 @@
         "version": "7.2",
         "type_name": null,
         "characters": "ミティヤ（★5）、バレリー（★4）、シャルロット（★4）、ロサリア（★4）",
+        "characters_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/6aea6776/a024f93489bf998b23dd8a41746bbc17.png",
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "1eac885131aae6f04daa80021844a6beaf037316afda8f431e127b7582fce4d8"
+        "signature": "33683883a75a6f3a5109b6c0ca8bc5505c1834b1402415cbfac7c8020db6c30d"
       },
       "notifications": {
         "announced": true,
@@ -260,7 +284,7 @@
       }
     },
     "genshin:banner:240": {
-      "signature": "fd3d48ac031a8193c5414be78f1f6abfc09a93a6646566a541a66850e7ff1d11",
+      "signature": "9dec0f804adb9fc1864afdf7e3aee1d33efaf3dced8795c570dc5a28d32beb4d",
       "data": {
         "key": "genshin:banner:240",
         "game": "genshin",
@@ -275,10 +299,13 @@
         "version": "7.2",
         "type_name": null,
         "characters": "フリーナ（★5）、バレリー（★4）、シャルロット（★4）、ロサリア（★4）",
+        "characters_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/67c7f6c8/0a024f0f2e06e99d67f112cd12eef4af.png",
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "fd3d48ac031a8193c5414be78f1f6abfc09a93a6646566a541a66850e7ff1d11"
+        "signature": "9dec0f804adb9fc1864afdf7e3aee1d33efaf3dced8795c570dc5a28d32beb4d"
       },
       "notifications": {
         "announced": true,
@@ -289,7 +316,7 @@
       }
     },
     "genshin:banner:241": {
-      "signature": "68b6a5d7184b15ea2c98c310d23468046417896d49826b11eedc68243ad50cbe",
+      "signature": "20beb4fa75a7b35fe939535b788e36ea84e823a4c728f35bacf03d14f820788d",
       "data": {
         "key": "genshin:banner:241",
         "game": "genshin",
@@ -304,10 +331,13 @@
         "version": "7.2",
         "type_name": null,
         "characters": "",
+        "characters_image_url": null,
         "weapons": "秘星の聖典（★5）、静水流転の輝き（★5）、船渠剣（★4）、プロスペクタードリル（★4）、霜辰（★4）、雨裁（★4）、弓蔵（★4）",
+        "weapons_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/6aea6776/ec4643eca7890833b5b415f7ad5dc79b.png",
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "68b6a5d7184b15ea2c98c310d23468046417896d49826b11eedc68243ad50cbe"
+        "signature": "20beb4fa75a7b35fe939535b788e36ea84e823a4c728f35bacf03d14f820788d"
       },
       "notifications": {
         "announced": true,
@@ -318,7 +348,7 @@
       }
     },
     "genshin:challenge:0": {
-      "signature": "2ec67b112612297132cdea795e2684d795493e524e2cd7d4f3ed69e81f46d803",
+      "signature": "46b99eaec33d9d87531998eb737c46b4b28b2e9bacf34c28ab58550261eef726",
       "data": {
         "key": "genshin:challenge:0",
         "game": "genshin",
@@ -333,10 +363,13 @@
         "version": null,
         "type_name": "ActTypeTower",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "深秘の聖遺物箱・一等 ×4、大英雄の経験 ×24、深秘の聖遺物箱・二等 ×8、冒険家の経験 ×42、仕上げ用魔鉱 ×72、モラ ×585000",
-        "signature": "2ec67b112612297132cdea795e2684d795493e524e2cd7d4f3ed69e81f46d803"
+        "signature": "46b99eaec33d9d87531998eb737c46b4b28b2e9bacf34c28ab58550261eef726"
       },
       "notifications": {
         "announced": true,
@@ -347,7 +380,7 @@
       }
     },
     "hsr:event:293": {
-      "signature": "133af5ad746d07c339cacdfbb18fbeb15de5d057ac9725a9474b4d6c6b0c7992",
+      "signature": "969bff39620f4cc991b4a4ba63464e8d579283f8dcc8ab675103e3ae771274bc",
       "data": {
         "key": "hsr:event:293",
         "game": "hsr",
@@ -358,14 +391,17 @@
         "start": 1794351600,
         "end": 1797976740,
         "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/9/92/Event_Aha_Reckons_You_Need_This.png/revision/latest?cb=20261111055513",
-        "url": null,
+        "url": "https://gamewith.jp/houkaistarrail/article/show/396226",
         "version": null,
         "type_name": "ActivityTypeSign",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "星軌専用チケット ×20",
-        "signature": "133af5ad746d07c339cacdfbb18fbeb15de5d057ac9725a9474b4d6c6b0c7992"
+        "signature": "969bff39620f4cc991b4a4ba63464e8d579283f8dcc8ab675103e3ae771274bc"
       },
       "notifications": {
         "announced": true,
@@ -376,7 +412,7 @@
       }
     },
     "hsr:event:292": {
-      "signature": "20cde1ebc52f5c4fb09e3b8a70c336a8429b5b851cd7f80d663110ffc4225016",
+      "signature": "c9c0f5f1c147d9aecf36fc341921e34358080f7d1b7201c0e8c6d25d4c5a2826",
       "data": {
         "key": "hsr:event:292",
         "game": "hsr",
@@ -387,14 +423,17 @@
         "start": 1794351600,
         "end": 1797976740,
         "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/7/74/Event_Magic_Invitation.png/revision/latest?cb=20261111055532",
-        "url": null,
+        "url": "https://gamewith.jp/houkaistarrail/article/show/396226",
         "version": null,
         "type_name": "ActivityTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "黄泉 ×0、丹恒・飲月 ×0、景元 ×0",
-        "signature": "20cde1ebc52f5c4fb09e3b8a70c336a8429b5b851cd7f80d663110ffc4225016"
+        "signature": "c9c0f5f1c147d9aecf36fc341921e34358080f7d1b7201c0e8c6d25d4c5a2826"
       },
       "notifications": {
         "announced": true,
@@ -405,7 +444,7 @@
       }
     },
     "hsr:event:291": {
-      "signature": "bb19812c3586bf41027d4253ac43cc0590d422dcf05202eef173c9365ddeb575",
+      "signature": "88ddd2eb137bb090efc50528bc6a9f6ef82cba44a21a6ec02888c119b4782734",
       "data": {
         "key": "hsr:event:291",
         "game": "hsr",
@@ -416,14 +455,17 @@
         "start": 1794351600,
         "end": 1797976740,
         "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/6/68/Event_Affinitive_Starveil.png/revision/latest?cb=20261111054450",
-        "url": null,
+        "url": "https://gamewith.jp/houkaistarrail/article/show/396226",
         "version": null,
         "type_name": "ActivityTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "「黄泉」の奇縁星魂 ×0、「丹恒・飲月」の奇縁星魂 ×0、「景元」の奇縁星魂 ×0",
-        "signature": "bb19812c3586bf41027d4253ac43cc0590d422dcf05202eef173c9365ddeb575"
+        "signature": "88ddd2eb137bb090efc50528bc6a9f6ef82cba44a21a6ec02888c119b4782734"
       },
       "notifications": {
         "announced": true,
@@ -434,7 +476,7 @@
       }
     },
     "hsr:event:295": {
-      "signature": "f7b12d0fc1688db86faf35a3561ec6f7c482b625a2fbbffe309862fb153edd4c",
+      "signature": "c6ab38edb3074511a34d65fe3a6482dc3ad1208adc1be7888fa3b2fbbbd5807b",
       "data": {
         "key": "hsr:event:295",
         "game": "hsr",
@@ -445,14 +487,17 @@
         "start": 1794193200,
         "end": 1797969599,
         "image_url": null,
-        "url": null,
+        "url": "https://gamewith.jp/houkaistarrail/article/show/396226",
         "version": null,
         "type_name": "ActivityTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "自塑樹脂 ×1、運命の足跡 ×2、星玉 ×1200、キッチン一番！ ×0、漫遊指南 ×0、精製エーテル ×0、遺失晶塊 ×0、『もふもふ号』連載記念号 ×0、信用ポイント ×0",
-        "signature": "f7b12d0fc1688db86faf35a3561ec6f7c482b625a2fbbffe309862fb153edd4c"
+        "signature": "c6ab38edb3074511a34d65fe3a6482dc3ad1208adc1be7888fa3b2fbbbd5807b"
       },
       "notifications": {
         "announced": true,
@@ -463,7 +508,7 @@
       }
     },
     "hsr:event:294": {
-      "signature": "0a847066d4a6e7e756063d8ec8a25f68b608238ac292688cc558c16cfee71e7e",
+      "signature": "6bdc01d592fd8914477d92106cdde4f5107c621d3e23234db0abebfb55c1b93f",
       "data": {
         "key": "hsr:event:294",
         "game": "hsr",
@@ -474,14 +519,17 @@
         "start": 1794351600,
         "end": 1797969599,
         "image_url": null,
-        "url": null,
+        "url": "https://gamewith.jp/houkaistarrail/article/show/396226",
         "version": null,
         "type_name": "ActivityTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "運命の足跡 ×1、星玉 ×500、遺物残骸 ×0、漫遊指南 ×0、精製エーテル ×0、遺失砕金 ×0、信用ポイント ×0",
-        "signature": "0a847066d4a6e7e756063d8ec8a25f68b608238ac292688cc558c16cfee71e7e"
+        "signature": "6bdc01d592fd8914477d92106cdde4f5107c621d3e23234db0abebfb55c1b93f"
       },
       "notifications": {
         "announced": true,
@@ -492,7 +540,7 @@
       }
     },
     "hsr:event:296": {
-      "signature": "c47df9d9eaaa686d2027f1dfa7f35a3a5d60fa695e1ac7d3eec903bcac46c9ea",
+      "signature": "98a9d1594bb949551132b0431dd5067520abb2f7fb24842807196ee20ef5316e",
       "data": {
         "key": "hsr:event:296",
         "game": "hsr",
@@ -503,14 +551,17 @@
         "start": 1794193200,
         "end": 1797969599,
         "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/e/ec/Event_Relic_Recon.png/revision/latest?cb=20251105025213",
-        "url": null,
+        "url": "https://gamewith.jp/houkaistarrail/article/show/396226",
         "version": null,
         "type_name": "ActivityTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "c47df9d9eaaa686d2027f1dfa7f35a3a5d60fa695e1ac7d3eec903bcac46c9ea"
+        "signature": "98a9d1594bb949551132b0431dd5067520abb2f7fb24842807196ee20ef5316e"
       },
       "notifications": {
         "announced": true,
@@ -521,7 +572,7 @@
       }
     },
     "hsr:event:7": {
-      "signature": "8e7f9f15693fca5bfe0ab7cfcaf91935080a20c87126effcf0e205adc5f322f7",
+      "signature": "fd61369bb5647a28e8379f3478d51e7da5cce96b90711c6ef04c4f0f4595740c",
       "data": {
         "key": "hsr:event:7",
         "game": "hsr",
@@ -532,14 +583,17 @@
         "start": 1794351600,
         "end": 1797976800,
         "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/6/60/Event_Stellar_Companions_2025-04-09.png/revision/latest?cb=20250409032926",
-        "url": null,
+        "url": "https://gamewith.jp/houkaistarrail/article/show/396226",
         "version": null,
         "type_name": "ActivityTypeOther",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "金の伴星 ×0",
-        "signature": "8e7f9f15693fca5bfe0ab7cfcaf91935080a20c87126effcf0e205adc5f322f7"
+        "signature": "fd61369bb5647a28e8379f3478d51e7da5cce96b90711c6ef04c4f0f4595740c"
       },
       "notifications": {
         "announced": true,
@@ -550,7 +604,7 @@
       }
     },
     "hsr:event:290": {
-      "signature": "e75664ba81573457ef06be5afc54bab992ad64c6c1f0c9cd03d5d1218fd1dfc5",
+      "signature": "a3760e5089c0eafb5bd2bfd54780a94c8134bd2b72e4fbcdce57f1d005137132",
       "data": {
         "key": "hsr:event:290",
         "game": "hsr",
@@ -561,14 +615,17 @@
         "start": 1795402800,
         "end": 1796612399,
         "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/9/91/Event_Planar_Fissure.png/revision/latest?cb=20260726044453",
-        "url": null,
+        "url": "https://gamewith.jp/houkaistarrail/article/show/396226",
         "version": null,
         "type_name": "ActivityTypeDouble",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "e75664ba81573457ef06be5afc54bab992ad64c6c1f0c9cd03d5d1218fd1dfc5"
+        "signature": "a3760e5089c0eafb5bd2bfd54780a94c8134bd2b72e4fbcdce57f1d005137132"
       },
       "notifications": {
         "announced": true,
@@ -579,7 +636,7 @@
       }
     },
     "hsr:event:289": {
-      "signature": "5e46da4d35861add79615ecc7afff215751960c9c3b83143b767c5b7962d76e8",
+      "signature": "d1e41ddf915072b491b07ea1e6e103566ed5246256b872a20d74cad9cd39378f",
       "data": {
         "key": "hsr:event:289",
         "game": "hsr",
@@ -590,14 +647,17 @@
         "start": 1796958000,
         "end": 1797969599,
         "image_url": "https://static.wikia.nocookie.net/houkai-star-rail/images/f/fa/Event_Realm_of_the_Strange.png/revision/latest?cb=20260726044507",
-        "url": null,
+        "url": "https://gamewith.jp/houkaistarrail/article/show/396226",
         "version": null,
         "type_name": "ActivityTypeDouble",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "",
-        "signature": "5e46da4d35861add79615ecc7afff215751960c9c3b83143b767c5b7962d76e8"
+        "signature": "d1e41ddf915072b491b07ea1e6e103566ed5246256b872a20d74cad9cd39378f"
       },
       "notifications": {
         "announced": true,
@@ -608,7 +668,7 @@
       }
     },
     "hsr:challenge:3021": {
-      "signature": "f4842bb62f1ff19e9f78a03b24ef1089820846d1a2ffef8995d33f60c6a96b49",
+      "signature": "955e7bea42d0cda5c570156aa75f7d567256251a64dcfcfa32ae928b5bb0be41",
       "data": {
         "key": "hsr:challenge:3021",
         "game": "hsr",
@@ -623,10 +683,13 @@
         "version": null,
         "type_name": "ChallengeTypeBoss",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
-        "signature": "f4842bb62f1ff19e9f78a03b24ef1089820846d1a2ffef8995d33f60c6a96b49"
+        "signature": "955e7bea42d0cda5c570156aa75f7d567256251a64dcfcfa32ae928b5bb0be41"
       },
       "notifications": {
         "announced": true,
@@ -637,7 +700,7 @@
       }
     },
     "hsr:challenge:11": {
-      "signature": "c5b944fa92bfd19eb846e70e2f1a8fbf2a11a27af637e6915098a4ec8caec9cf",
+      "signature": "3c058c0067ca30fe0c58163090432076d0a0188f5b4508bc3a3960038be0d100",
       "data": {
         "key": "hsr:challenge:11",
         "game": "hsr",
@@ -652,10 +715,13 @@
         "version": null,
         "type_name": "ChallengeTypePeak",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "孤星明塵 ×1200、干渉暗号キー ×1、自塑樹脂 ×3",
-        "signature": "c5b944fa92bfd19eb846e70e2f1a8fbf2a11a27af637e6915098a4ec8caec9cf"
+        "signature": "3c058c0067ca30fe0c58163090432076d0a0188f5b4508bc3a3960038be0d100"
       },
       "notifications": {
         "announced": true,
@@ -666,7 +732,7 @@
       }
     },
     "hsr:challenge:1036": {
-      "signature": "419df1ee64bef94d9d5a5bd012edcc9dbf65f8db5ffeb4558b94a7046a2c4054",
+      "signature": "3eeee112a343e0406d24d0c6a8e7976de0b3c3a624246fc79253658316cdd108",
       "data": {
         "key": "hsr:challenge:1036",
         "game": "hsr",
@@ -681,10 +747,13 @@
         "version": null,
         "type_name": "ChallengeTypeChasm",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
-        "signature": "419df1ee64bef94d9d5a5bd012edcc9dbf65f8db5ffeb4558b94a7046a2c4054"
+        "signature": "3eeee112a343e0406d24d0c6a8e7976de0b3c3a624246fc79253658316cdd108"
       },
       "notifications": {
         "announced": true,
@@ -695,7 +764,7 @@
       }
     },
     "hsr:challenge:2027": {
-      "signature": "872b5a94c22f79c83ce811afc9d184ccb45108567fbf93866c1917e6f06cf1f4",
+      "signature": "21348c10310edd5d05ac8f5757b570a08015a7f4f58220154aad434300bf367c",
       "data": {
         "key": "hsr:challenge:2027",
         "game": "hsr",
@@ -710,10 +779,13 @@
         "version": null,
         "type_name": "ChallengeTypeStory",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
-        "signature": "872b5a94c22f79c83ce811afc9d184ccb45108567fbf93866c1917e6f06cf1f4"
+        "signature": "21348c10310edd5d05ac8f5757b570a08015a7f4f58220154aad434300bf367c"
       },
       "notifications": {
         "announced": true,
@@ -724,7 +796,7 @@
       }
     },
     "hsr:challenge:3022": {
-      "signature": "99d5795954a34e33ef17a1779e72c80cede27059cc079e4051afd6ef49d89b0a",
+      "signature": "a6aa99ef723de066b6649bfc16b0b327080bac0731dd6be14bbda05fc7160e3f",
       "data": {
         "key": "hsr:challenge:3022",
         "game": "hsr",
@@ -739,10 +811,13 @@
         "version": null,
         "type_name": "ChallengeTypeBoss",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
-        "signature": "99d5795954a34e33ef17a1779e72c80cede27059cc079e4051afd6ef49d89b0a"
+        "signature": "a6aa99ef723de066b6649bfc16b0b327080bac0731dd6be14bbda05fc7160e3f"
       },
       "notifications": {
         "announced": true,
@@ -753,7 +828,7 @@
       }
     },
     "hsr:challenge:2028": {
-      "signature": "dba34f24e3e8c308d131e7e11dae07fc93142fda0688b0f28155806d60404fa6",
+      "signature": "60b9dff40a4569bbe178a08960724bf4c3dd0d8677bfc3897b835de37949a03f",
       "data": {
         "key": "hsr:challenge:2028",
         "game": "hsr",
@@ -768,10 +843,13 @@
         "version": null,
         "type_name": "ChallengeTypeStory",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
-        "signature": "dba34f24e3e8c308d131e7e11dae07fc93142fda0688b0f28155806d60404fa6"
+        "signature": "60b9dff40a4569bbe178a08960724bf4c3dd0d8677bfc3897b835de37949a03f"
       },
       "notifications": {
         "announced": true,
@@ -782,7 +860,7 @@
       }
     },
     "hsr:challenge:1037": {
-      "signature": "dd3f9584398ca796a7af01b83801d69da86f080a66e6c624691ff1ad38c040a2",
+      "signature": "67f101be8f998d97aa0b660553a7c1167fbdcb983c08fdf9f2587caa6a336410",
       "data": {
         "key": "hsr:challenge:1037",
         "game": "hsr",
@@ -797,10 +875,13 @@
         "version": null,
         "type_name": "ChallengeTypeChasm",
         "characters": "",
+        "characters_image_url": null,
         "weapons": "",
+        "weapons_image_url": null,
         "light_cones": "",
+        "light_cones_image_url": null,
         "rewards": "星玉 ×900、璧羽 ×600、漫遊指南 ×24、精製エーテル ×12、遺失晶塊 ×24、流光の残照 ×96、信用ポイント ×360000",
-        "signature": "dd3f9584398ca796a7af01b83801d69da86f080a66e6c624691ff1ad38c040a2"
+        "signature": "67f101be8f998d97aa0b660553a7c1167fbdcb983c08fdf9f2587caa6a336410"
       },
       "notifications": {
         "announced": true,
@@ -809,6 +890,12 @@
         "3h": false,
         "ended": false
       }
+    }
+  },
+  "banner_messages": {
+    "genshin": {
+      "id": "1571399303929274422",
+      "signature": "1286c03310a9c1eb9e89018f1305a16bc9c8658acf792062026770d43e1afa7b"
     }
   }
 }
