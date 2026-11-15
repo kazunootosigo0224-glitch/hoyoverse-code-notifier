@@ -424,10 +424,14 @@ def calendar_payload_to_items(
             description = raw.get("description") or raw.get("desc") or ""
             rewards = format_rewards(raw.get("rewards"))
             version = raw.get("version")
-            item_id = raw.get("id")
-            if item_id is None:
+            source_id = raw.get("id")
+            # Some calendar entries use 0 as a placeholder ID. A placeholder
+            # cannot uniquely identify multiple challenge rotations.
+            if source_id in (None, "", 0, "0"):
                 identity = f"{kind}|{name}|{start or ''}"
                 item_id = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16]
+            else:
+                item_id = source_id
 
             search_text = f"{name} {description}".lower()
             double_reward_terms = (
@@ -443,6 +447,7 @@ def calendar_payload_to_items(
                 "key": f"{game}:{kind}:{item_id}",
                 "game": game,
                 "kind": kind,
+                "source_id": source_id,
                 "event_subtype": event_subtype,
                 "name": str(name),
                 "description": str(description),
@@ -470,7 +475,10 @@ def calendar_payload_to_items(
 
                 "rewards": rewards,
             }
-            signature_source = {key: value for key, value in item.items() if key not in ("key", "game")}
+            signature_source = {
+                key: value for key, value in item.items()
+                if key not in ("key", "game", "source_id")
+            }
             item["signature"] = hashlib.sha256(
                 json.dumps(signature_source, ensure_ascii=False, sort_keys=True).encode("utf-8")
             ).hexdigest()
@@ -815,6 +823,15 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
             f"カレンダー取得 [{game}]: events={event_count}, "
             f"banners={len(banner_items)}, challenges={challenge_count}"
         )
+        if isinstance(raw_calendar, dict):
+            for raw_challenge in raw_calendar.get("challenges", [])[:10]:
+                if isinstance(raw_challenge, dict):
+                    print(
+                        f"  高難度データ [{game}]: id={raw_challenge.get('id')}, "
+                        f"name={raw_challenge.get('name') or raw_challenge.get('title')}, "
+                        f"start={raw_challenge.get('start_time') or raw_challenge.get('startTime')}, "
+                        f"end={raw_challenge.get('end_time') or raw_challenge.get('endTime')}"
+                    )
         if not banner_items:
             record_runtime_issue("warning", game, "ガチャ情報が0件", "固定ガチャ案内は既存の内容を維持します。")
         sync_banner_message(game, banner_items, state, current_time)
@@ -829,20 +846,84 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
         fetch_succeeded = False
 
     if fetch_succeeded:
+        # Preserve the old shared-ID record during one-time migration. If two
+        # current challenges share source ID 0, one may match its old record by
+        # name while the other is seeded as already announced instead of pinging
+        # everyone again.
+        placeholder_groups: Dict[Any, int] = {}
+        for candidate in items:
+            source_id = candidate.get("source_id")
+            if source_id in (0, "0"):
+                group = (candidate.get("kind"), str(source_id))
+                placeholder_groups[group] = placeholder_groups.get(group, 0) + 1
+        legacy_placeholder_records: Dict[Any, dict] = {}
+        for group, count in placeholder_groups.items():
+            if count > 1:
+                legacy_key = f"{game}:{group[0]}:{group[1]}"
+                legacy_record = records.get(legacy_key)
+                if isinstance(legacy_record, dict):
+                    legacy_placeholder_records[group] = legacy_record
+
         for item in items:
             key = item["key"]
             record = records.get(key)
+            migrated = False
             if not isinstance(record, dict):
-                record = {
-                    "signature": item["signature"],
-                    "data": item,
-                    "notifications": {
-                        "announced": False, "started": False,
-                        "24h": False, "3h": False, "ended": False,
-                    },
-                }
-                records[key] = record
-                print(f"新規スケジュール検出 [{game}]: {item['name']}")
+                # Find a pre-existing record for the same game/type/name even if
+                # its old API ID was a shared placeholder.
+                matching_record = next(
+                    (
+                        (old_key, old_record)
+                        for old_key, old_record in records.items()
+                        if old_key != key
+                        and isinstance(old_record, dict)
+                        and isinstance(old_record.get("data"), dict)
+                        and old_record["data"].get("game") == game
+                        and old_record["data"].get("kind") == item.get("kind")
+                        and old_record["data"].get("name") == item.get("name")
+                    ),
+                    None,
+                )
+                if matching_record:
+                    old_key, record = matching_record
+                    records.pop(old_key, None)
+                    records[key] = record
+                    record["data"] = item
+                    migrated = True
+                    print(f"通知履歴の識別子を修正 [{game}]: {item['name']}")
+                else:
+                    group = (item.get("kind"), str(item.get("source_id")))
+                    legacy_record = legacy_placeholder_records.get(group)
+                    if legacy_record is not None:
+                        # This entry shared an ID with an already tracked item.
+                        # Avoid replaying its initial announcement during migration.
+                        start_time = item.get("start")
+                        end_time = item.get("end")
+                        record = {
+                            "signature": item["signature"],
+                            "data": item,
+                            "notifications": {
+                                "announced": True,
+                                "started": start_time is not None and start_time <= current_time,
+                                "24h": end_time is not None and 0 < end_time - current_time <= 24 * 60 * 60,
+                                "3h": end_time is not None and 0 < end_time - current_time <= 3 * 60 * 60,
+                                "ended": end_time is not None and current_time >= end_time,
+                            },
+                        }
+                        records[key] = record
+                        migrated = True
+                        print(f"重複IDの履歴を分離 [{game}]: {item['name']}")
+                    else:
+                        record = {
+                            "signature": item["signature"],
+                            "data": item,
+                            "notifications": {
+                                "announced": False, "started": False,
+                                "24h": False, "3h": False, "ended": False,
+                            },
+                        }
+                        records[key] = record
+                        print(f"新規スケジュール検出 [{game}]: {item['name']}")
             else:
                 notifications = record.get("notifications")
                 if not isinstance(notifications, dict):
@@ -857,6 +938,14 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
                     end_changed = old_data.get("end") != item.get("end")
                     start_changed = old_data.get("start") != item.get("start")
                     if item.get("kind") == "banner":
+                        record["signature"] = item["signature"]
+                        record["data"] = item
+                    elif item.get("kind") == "challenge" and not any(
+                        old_data.get(field) != item.get(field)
+                        for field in ("name", "start", "end", "type_name", "version")
+                    ):
+                        # API metadata/reward text can fluctuate without changing
+                        # the actual challenge schedule. Update silently.
                         record["signature"] = item["signature"]
                         record["data"] = item
                     elif send_item(game, item, "updated"):
