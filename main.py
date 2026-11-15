@@ -491,6 +491,16 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
                 # describes the active item; avoid sending a duplicate start message.
                 if current_data.get("start") is not None and current_data["start"] <= current_time:
                     notifications["started"] = True
+                # The initial active-event announcement already includes the end time.
+                # Avoid sending an immediate reminder in the same run when first seen
+                # inside a reminder window; future runs can still send later stages.
+                end_time = current_data.get("end")
+                if end_time is not None and end_time > current_time:
+                    remaining = end_time - current_time
+                    if remaining <= 24 * 60 * 60:
+                        notifications["24h"] = True
+                    if remaining <= 3 * 60 * 60:
+                        notifications["3h"] = True
 
     # Run reminders from persisted data even if the calendar service is temporarily
     # unavailable or has already removed an expired item from its current listing.
