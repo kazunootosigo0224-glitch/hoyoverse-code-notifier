@@ -251,6 +251,54 @@ class NotifierTests(unittest.TestCase):
 
         self.assertEqual(state["codes"], ["genshin_NEW"])
         self.assertEqual(send.call_args.kwargs["color"], main.NOTIFICATION_COLORS["code"])
+        self.assertTrue(send.call_args.kwargs["url"].startswith("https://genshin.hoyoverse.com/ja/gift?code="))
+
+    def test_event_link_prefers_direct_and_matched_official_article(self):
+        direct = "https://official.example/event"
+        self.assertEqual(main.resolve_event_url("genshin", direct, "イベント", []), direct)
+        article = "https://www.hoyolab.com/article/123"
+        self.assertEqual(
+            main.resolve_event_url(
+                "genshin", None, "地脈の奔流",
+                [{"title": "地脈の奔流イベント開催！", "url": article}],
+            ),
+            article,
+        )
+        self.assertIn(
+            "google.com/search",
+            main.resolve_event_url("hsr", None, "模擬宇宙イベント", []),
+        )
+
+    def test_banner_message_is_created_once_then_edited(self):
+        banner = {
+            "key": "genshin:banner:1",
+            "name": "キャラクター祈願",
+            "start": 2000,
+            "end": 3000,
+            "characters": "キャラクター（★5）",
+            "weapons": "武器（★5）",
+            "light_cones": "",
+            "version": "7.2",
+        }
+        state = {"banner_messages": {}}
+        created = MagicMock(status_code=200)
+        created.json.return_value = {"id": "987654"}
+        with patch.object(main.requests, "post", return_value=created) as post, \\
+             patch.object(main.time, "sleep"):
+            self.assertTrue(main.sync_banner_message("genshin", [banner], state, now=1000))
+        self.assertTrue(post.call_args.args[0].endswith("?wait=true"))
+        self.assertEqual(state["banner_messages"]["genshin"]["id"], "987654")
+
+        updated = MagicMock(status_code=200)
+        with patch.object(main.requests, "patch", return_value=updated) as patch_request, \\
+             patch.object(main.time, "sleep"):
+            changed = dict(banner, characters="新キャラクター（★5）")
+            self.assertTrue(main.sync_banner_message("genshin", [changed], state, now=1000))
+        self.assertTrue(patch_request.call_args.args[0].endswith("/messages/987654"))
+        self.assertIn(
+            "新キャラクター",
+            patch_request.call_args.kwargs["json"]["embeds"][0]["fields"][0]["value"],
+        )
 
     def test_webhook_is_selected_by_game(self):
         old = dict(main.WEBHOOKS)
