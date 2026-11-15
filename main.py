@@ -36,6 +36,11 @@ CALENDAR_URLS = {
     "hsr": "https://api.ennead.cc/mihoyo/starrail/calendar?lang=ja",
 }
 
+NEWS_URLS = {
+    "genshin": "https://api.ennead.cc/mihoyo/genshin/news/events?lang=ja-jp",
+    "hsr": "https://api.ennead.cc/mihoyo/starrail/news/events?lang=ja",
+}
+
 GAME_CONFIG = {
     "genshin": {
         "bot_name": "のこ原神bot",
@@ -53,29 +58,31 @@ GAME_CONFIG = {
 def load_state(path: str = NOTIFIED_FILE) -> Dict[str, Any]:
     """Load state, migrating the previous list-only JSON format in-place."""
     if not os.path.exists(path):
-        return {"schema_version": 2, "codes": [], "items": {}}
+        return {"schema_version": 2, "codes": [], "items": {}, "banner_messages": {}}
 
     try:
         with open(path, "r", encoding="utf-8") as file:
             content = json.load(file)
     except (OSError, json.JSONDecodeError) as exc:
         print(f"通知履歴の読み込みに失敗しました。新しい履歴を使用します: {exc}")
-        return {"schema_version": 2, "codes": [], "items": {}}
+        return {"schema_version": 2, "codes": [], "items": {}, "banner_messages": {}}
 
     # Existing repository state is a JSON array of notified serial-code keys.
     if isinstance(content, list):
-        return {"schema_version": 2, "codes": content, "items": {}}
+        return {"schema_version": 2, "codes": content, "items": {}, "banner_messages": {}}
 
     if not isinstance(content, dict):
         print("通知履歴の形式が不正です。新しい履歴を使用します。")
-        return {"schema_version": 2, "codes": [], "items": {}}
+        return {"schema_version": 2, "codes": [], "items": {}, "banner_messages": {}}
 
     codes = content.get("codes", content.get("notified_codes", []))
     items = content.get("items", {})
+    banner_messages = content.get("banner_messages", {})
     return {
         "schema_version": 2,
         "codes": codes if isinstance(codes, list) else [],
         "items": items if isinstance(items, dict) else {},
+        "banner_messages": banner_messages if isinstance(banner_messages, dict) else {},
     }
 
 
@@ -252,7 +259,48 @@ def format_rewards(values: Any) -> str:
     return "、".join(result)
 
 
-def calendar_payload_to_items(game: str, payload: Any, now: Optional[int] = None) -> List[dict]:
+def normalize_search_text(value: Any) -> str:
+    return "".join(char.lower() for char in str(value or "") if char.isalnum())
+
+
+def event_search_url(game: str, name: str) -> str:
+    game_label = "原神" if game == "genshin" else "崩壊：スターレイル"
+    query = quote_plus(f'"{name}" {game_label} イベント 公式 攻略')
+    return f"https://www.google.com/search?q={query}"
+
+
+def resolve_event_url(
+    game: str,
+    direct_url: Optional[str],
+    name: str,
+    news_entries: Optional[Any] = None,
+) -> str:
+    if isinstance(direct_url, str) and direct_url.startswith("https://"):
+        return direct_url
+
+    target = normalize_search_text(name)
+    candidates = []
+    entries = news_entries
+    if isinstance(entries, dict):
+        entries = entries.get("data", entries.get("result", entries))
+    if isinstance(entries, list) and target:
+        for entry in entries:
+            if not isinstance(entry, dict):
+                continue
+            title = entry.get("title") or entry.get("name") or ""
+            title_normalized = normalize_search_text(title)
+            url = entry.get("url") or entry.get("article_url")
+            if isinstance(url, str) and url.startswith("https://") and title_normalized:
+                if target in title_normalized or title_normalized in target:
+                    candidates.append((len(title_normalized), url))
+    if candidates:
+        return max(candidates, key=lambda candidate: candidate[0])[1]
+    return event_search_url(game, name)
+
+
+def calendar_payload_to_items(
+    game: str, payload: Any, now: Optional[int] = None, news_entries: Optional[Any] = None
+) -> List[dict]:
     """Normalize events, banners and rotating challenge schedules."""
     if isinstance(payload, dict):
         for wrapper in ("data", "result"):
@@ -315,7 +363,14 @@ def calendar_payload_to_items(game: str, payload: Any, now: Optional[int] = None
                 "start": start,
                 "end": end,
                 "image_url": raw.get("image_url") or raw.get("image"),
-                "url": raw.get("url") or raw.get("web_url"),
+                "url": resolve_event_url(
+                    game, raw.get("url") or raw.get("web_url"), str(name), news_entries
+                ) if kind == "event" else (
+                    raw.get("url") or raw.get("web_url")
+                    if isinstance(raw.get("url") or raw.get("web_url"), str)
+                    and (raw.get("url") or raw.get("web_url")).startswith("https://")
+                    else None
+                ),
                 "version": version,
                 "type_name": raw.get("type_name") or raw.get("type"),
                 "characters": characters,
@@ -451,12 +506,162 @@ def fetch_calendar(game: str) -> Any:
     return fetch_json(CALENDAR_URLS[game])
 
 
+def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str, Any]:
+    ordered = sorted(banners, key=lambda item: (item.get("start") or 0, item.get("name") or ""))
+    fields = []
+    for item in ordered[:20]:
+        period = []
+        if item.get("start") is not None:
+            period.append(f"開始：{discord_time(item['start'])}")
+        if item.get("end") is not None:
+            period.append(f"終了：{discord_time(item['end'])}")
+        if item.get("characters"):
+            period.append(f"キャラクター：{item['characters']}")
+        if item.get("weapons"):
+            period.append(f"武器：{item['weapons']}")
+        if item.get("light_cones"):
+            period.append(f"光円錐：{item['light_cones']}")
+        if item.get("version"):
+            period.append(f"バージョン：{item['version']}")
+        fields.append({
+            "name": clip(item.get("name") or "ピックアップ", 256),
+            "value": clip("\\n".join(period) or "開催情報を確認してください。", 1024),
+            "inline": False,
+        })
+
+    description = (
+        "この投稿は自動更新されます。開催中の内容と次回予定をここで確認できます。"
+        if fields else "現在、取得できるガチャ・跳躍情報はありません。"
+    )
+    active = [
+        item for item in ordered
+        if (item.get("start") is None or item["start"] <= now)
+        and (item.get("end") is None or item["end"] > now)
+    ]
+    ending_soon = any(
+        item.get("end") is not None and 0 < item["end"] - now <= 24 * 60 * 60
+        for item in active
+    )
+    color = (
+        NOTIFICATION_COLORS["ending"] if ending_soon
+        else NOTIFICATION_COLORS["active"] if active
+        else NOTIFICATION_COLORS["preview"]
+    )
+    embed = {
+        "title": f"{GAME_CONFIG[game]['game_name']}｜ガチャ・跳躍情報",
+        "description": description,
+        "color": color,
+        "fields": fields,
+        "footer": {"text": "のこHoYoverse通知 | この投稿は自動更新されます"},
+    }
+    signature_data = [
+        {
+            key: item.get(key)
+            for key in ("key", "name", "start", "end", "characters", "weapons", "light_cones", "version")
+        }
+        for item in ordered
+    ]
+    signature_data.append({"status": "ending" if ending_soon else "active" if active else "preview"})
+    signature = hashlib.sha256(
+        json.dumps(signature_data, ensure_ascii=False, sort_keys=True).encode("utf-8")
+    ).hexdigest()
+    return {
+        "username": GAME_CONFIG[game]["bot_name"],
+        "allowed_mentions": {"parse": []},
+        "embeds": [embed],
+        "_signature": signature,
+    }
+
+
+def sync_banner_message(game: str, banners: List[dict], state: Dict[str, Any], now: int) -> bool:
+    """Create a persistent banner post once, then edit that same webhook message."""
+    if not banners:
+        return True
+    webhook_url = WEBHOOKS.get(game)
+    if not webhook_url:
+        print(f"Webhook未設定 [{game}]。ガチャ案内の更新を保留します。")
+        return False
+
+    records = state.setdefault("banner_messages", {})
+    if not isinstance(records, dict):
+        records = {}
+        state["banner_messages"] = records
+    record = records.get(game)
+    if not isinstance(record, dict):
+        record = {}
+    payload = banner_message_payload(game, banners, now)
+    signature = payload.pop("_signature")
+    if record.get("signature") == signature and record.get("id"):
+        return True
+
+    for attempt in range(3):
+        message_id = record.get("id")
+        try:
+            if message_id:
+                response = requests.patch(
+                    f"{webhook_url}/messages/{message_id}",
+                    json=payload,
+                    timeout=REQUEST_TIMEOUT,
+                )
+                if response.status_code == 404:
+                    print(f"固定ガチャ投稿が見つかりません [{game}]。新しい投稿を作成します。")
+                    record = {}
+                    records[game] = record
+                    continue
+                if response.status_code == 200:
+                    record["signature"] = signature
+                    records[game] = record
+                    print(f"固定ガチャ投稿を更新しました [{game}]")
+                    return True
+            else:
+                response = requests.post(
+                    f"{webhook_url}?wait=true",
+                    json=payload,
+                    timeout=REQUEST_TIMEOUT,
+                )
+                if response.status_code == 200:
+                    message = response.json()
+                    new_id = message.get("id") if isinstance(message, dict) else None
+                    if new_id:
+                        records[game] = {"id": str(new_id), "signature": signature}
+                        print(f"固定ガチャ投稿を作成しました [{game}]。この投稿をピン留めしてください。")
+                        return True
+                    print(f"固定ガチャ投稿のIDを取得できませんでした [{game}]")
+                    return False
+
+            if response.status_code == 429 and attempt < 2:
+                try:
+                    retry_after = float(response.json().get("retry_after", 1.5))
+                except (ValueError, TypeError, AttributeError):
+                    retry_after = 1.5
+                time.sleep(min(max(retry_after, 1.0), 10.0))
+                continue
+            if response.status_code >= 500 and attempt < 2:
+                time.sleep(1.5 * (attempt + 1))
+                continue
+            print(f"固定ガチャ投稿の更新失敗 [{game}] ({response.status_code}): {response.text[:500]}")
+            return False
+        except (requests.RequestException, ValueError) as exc:
+            print(f"固定ガチャ投稿の通信エラー [{game}]: {exc}")
+            if attempt < 2:
+                time.sleep(1.5 * (attempt + 1))
+    return False
+
+
 def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) -> None:
     current_time = now if now is not None else int(time.time())
     records = state.setdefault("items", {})
     try:
         payload = fetch_calendar(game)
-        items = calendar_payload_to_items(game, payload, current_time)
+        try:
+            news_entries = fetch_json(NEWS_URLS[game])
+        except (requests.RequestException, ValueError, TypeError) as news_exc:
+            print(f"イベント記事URL取得エラー [{game}]。検索リンクを使用します: {news_exc}")
+            news_entries = []
+        items = calendar_payload_to_items(game, payload, current_time, news_entries)
+        sync_banner_message(
+            game, [item for item in items if item.get("kind") == "banner"], state, current_time
+        )
         fetch_succeeded = True
     except (requests.RequestException, ValueError, TypeError) as exc:
         print(f"カレンダー取得エラー [{game}]: {exc}")
@@ -495,17 +700,20 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
                 if record.get("signature") != item["signature"]:
                     end_changed = old_data.get("end") != item.get("end")
                     start_changed = old_data.get("start") != item.get("start")
-                    if send_item(game, item, "updated"):
+                    if item.get("kind") == "banner":
                         record["signature"] = item["signature"]
                         record["data"] = item
-                        if end_changed:
-                            notifications["24h"] = False
-                            notifications["3h"] = False
-                            notifications["ended"] = False
-                        if start_changed:
-                            notifications["started"] = False
+                    elif send_item(game, item, "updated"):
+                        record["signature"] = item["signature"]
+                        record["data"] = item
                     else:
                         continue
+                    if end_changed:
+                        notifications["24h"] = False
+                        notifications["3h"] = False
+                        notifications["ended"] = False
+                    if start_changed:
+                        notifications["started"] = False
 
             notifications = record.get("notifications")
             if not isinstance(notifications, dict):
@@ -518,9 +726,12 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
                 current_data = item
                 record["data"] = item
             if not notifications.get("announced"):
-                if not send_item(game, current_data, "announced"):
-                    continue
-                notifications["announced"] = True
+                if current_data.get("kind") == "banner":
+                    notifications["announced"] = True
+                else:
+                    if not send_item(game, current_data, "announced"):
+                        continue
+                    notifications["announced"] = True
                 # If first discovered after the start, the information notice already
                 # describes the active item; avoid sending a duplicate start message.
                 if current_data.get("start") is not None and current_data["start"] <= current_time:
@@ -601,7 +812,8 @@ def check_codes(game: str, state: Dict[str, Any]) -> None:
             game=game,
             title=f"{config['game_name']} シリアルコード",
             description=f"コード：{code}\n報酬：{rewards}",
-            fields=[{"name": "交換ページ", "value": config["gift_url"].format(code=code)}],
+            fields=[{"name": "公式交換ページ", "value": config["gift_url"].format(code=code)}],
+            url=config["gift_url"].format(code=code),
             color=NOTIFICATION_COLORS["code"],
         ):
             notified.append(unique_key)
