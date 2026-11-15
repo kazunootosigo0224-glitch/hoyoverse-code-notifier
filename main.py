@@ -13,12 +13,6 @@ WEBHOOKS = {
     "hsr": os.environ.get("DISCORD_WEBHOOK_HSR"),
 }
 
-# The previous single-webhook secret is accepted only as a migration fallback.
-# Remove DISCORD_WEBHOOK_URL after both game-specific secrets are configured.
-if os.environ.get("DISCORD_WEBHOOK_URL"):
-    WEBHOOKS["genshin"] = WEBHOOKS["genshin"] or os.environ["DISCORD_WEBHOOK_URL"]
-    WEBHOOKS["hsr"] = WEBHOOKS["hsr"] or os.environ["DISCORD_WEBHOOK_URL"]
-
 NOTIFIED_FILE = "notified_codes.json"
 REQUEST_TIMEOUT = 20
 REMINDER_WINDOWS = (("24h", 24 * 60 * 60), ("3h", 3 * 60 * 60))
