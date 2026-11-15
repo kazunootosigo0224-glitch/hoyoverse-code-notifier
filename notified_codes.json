@@ -347,38 +347,6 @@
         "ended": false
       }
     },
-    "genshin:challenge:0": {
-      "signature": "46b99eaec33d9d87531998eb737c46b4b28b2e9bacf34c28ab58550261eef726",
-      "data": {
-        "key": "genshin:challenge:0",
-        "game": "genshin",
-        "kind": "challenge",
-        "event_subtype": null,
-        "name": "淵月螺旋",
-        "description": "",
-        "start": 1792094400,
-        "end": 1794772799,
-        "image_url": null,
-        "url": null,
-        "version": null,
-        "type_name": "ActTypeTower",
-        "characters": "",
-        "characters_image_url": null,
-        "weapons": "",
-        "weapons_image_url": null,
-        "light_cones": "",
-        "light_cones_image_url": null,
-        "rewards": "深秘の聖遺物箱・一等 ×4、大英雄の経験 ×24、深秘の聖遺物箱・二等 ×8、冒険家の経験 ×42、仕上げ用魔鉱 ×72、モラ ×585000",
-        "signature": "46b99eaec33d9d87531998eb737c46b4b28b2e9bacf34c28ab58550261eef726"
-      },
-      "notifications": {
-        "announced": true,
-        "started": true,
-        "24h": true,
-        "3h": false,
-        "ended": false
-      }
-    },
     "hsr:event:293": {
       "signature": "969bff39620f4cc991b4a4ba63464e8d579283f8dcc8ab675103e3ae771274bc",
       "data": {
@@ -1079,6 +1047,72 @@
         "announced": true,
         "started": false,
         "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:challenge:a671b009db2610a7": {
+      "signature": "c71fb73674fa681b9b9d86ed67b70d577658d5c22b208004dc911ba4e6157b35",
+      "data": {
+        "key": "genshin:challenge:a671b009db2610a7",
+        "game": "genshin",
+        "kind": "challenge",
+        "source_id": 0,
+        "event_subtype": null,
+        "name": "幻想シアター",
+        "description": "",
+        "start": 1793476800,
+        "end": 1796068799,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ActTypeRoleCombat",
+        "characters": "",
+        "characters_image_url": null,
+        "weapons": "",
+        "weapons_image_url": null,
+        "light_cones": "",
+        "light_cones_image_url": null,
+        "rewards": "祈聖のエリクシル ×2、おもちゃの勲章 ×3、刹那樹脂 ×1、祈聖のエキス ×26、モラ ×600000、「栄光」の導き ×6、「不屈」の導き ×6、「慈愛」の導き ×6、祈聖のオイル ×28、「栄光」の教え ×12、「不屈」の教え ×12、「慈愛」の教え ×12",
+        "signature": "c71fb73674fa681b9b9d86ed67b70d577658d5c22b208004dc911ba4e6157b35"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:challenge:7444d932365a6f30": {
+      "signature": "46b99eaec33d9d87531998eb737c46b4b28b2e9bacf34c28ab58550261eef726",
+      "data": {
+        "key": "genshin:challenge:7444d932365a6f30",
+        "game": "genshin",
+        "kind": "challenge",
+        "source_id": 0,
+        "event_subtype": null,
+        "name": "淵月螺旋",
+        "description": "",
+        "start": 1792094400,
+        "end": 1794772799,
+        "image_url": null,
+        "url": null,
+        "version": null,
+        "type_name": "ActTypeTower",
+        "characters": "",
+        "characters_image_url": null,
+        "weapons": "",
+        "weapons_image_url": null,
+        "light_cones": "",
+        "light_cones_image_url": null,
+        "rewards": "深秘の聖遺物箱・一等 ×4、大英雄の経験 ×24、深秘の聖遺物箱・二等 ×8、冒険家の経験 ×42、仕上げ用魔鉱 ×72、モラ ×585000",
+        "signature": "46b99eaec33d9d87531998eb737c46b4b28b2e9bacf34c28ab58550261eef726"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": true,
         "3h": false,
         "ended": false
       }
