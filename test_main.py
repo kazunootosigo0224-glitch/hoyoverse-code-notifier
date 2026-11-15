@@ -363,6 +363,62 @@ class NotifierTests(unittest.TestCase):
         ]
         self.assertEqual(len(main.banner_message_payload("hsr", banners, now=1000)["embeds"]), 10)
 
+    def test_star_rail_banners_without_names_are_preserved(self):
+        payload = {
+            "banners": [
+                {
+                    "id": 11,
+                    "version": "4.0",
+                    "start_time": 2000,
+                    "end_time": 3000,
+                    "characters": [
+                        {"id": 1, "name": "キャラクターA", "rarity": 5, "icon": "https://cdn.example/a.png"},
+                        {"id": 2, "name": "キャラクターB", "rarity": 4, "icon": "https://cdn.example/b.png"},
+                    ],
+                    "light_cones": [],
+                },
+                {
+                    "id": 12,
+                    "version": "4.0",
+                    "start_time": 2000,
+                    "end_time": 3000,
+                    "characters": [],
+                    "light_cones": [
+                        {"id": 3, "name": "光円錐A", "rarity": 5, "icon": "https://cdn.example/lc.png"},
+                    ],
+                },
+            ]
+        }
+        items = main.calendar_payload_to_items("hsr", payload, now=1000)
+        self.assertEqual(len(items), 2)
+        character_banner = next(item for item in items if item["characters"])
+        light_cone_banner = next(item for item in items if item["light_cones"])
+        self.assertEqual(character_banner["name"], "キャラクター跳躍｜キャラクターA")
+        self.assertEqual(light_cone_banner["name"], "光円錐跳躍｜光円錐A")
+        self.assertEqual(character_banner["characters_image_url"], "https://cdn.example/a.png")
+        self.assertEqual(light_cone_banner["light_cones_image_url"], "https://cdn.example/lc.png")
+
+    def test_star_rail_avatar_list_and_equip_list_aliases(self):
+        payload = {
+            "banners": [{
+                "id": 13,
+                "start_time": 2000,
+                "end_time": 3000,
+                "avatar_list": [{"name": "キャラクターC", "rarity": 5, "icon": "https://cdn.example/c.png"}],
+                "equip_list": [{"name": "光円錐C", "rarity": 5, "icon": "https://cdn.example/lc-c.png"}],
+            }]
+        }
+        items = main.calendar_payload_to_items("hsr", payload, now=1000)
+        self.assertEqual(items[0]["characters"], "キャラクターC（★5）")
+        self.assertEqual(items[0]["light_cones"], "光円錐C（★5）")
+
+    def test_empty_banner_feed_does_not_replace_saved_post(self):
+        state = {"banner_messages": {"hsr": {"id": "123", "signature": "old"}}}
+        with patch.dict(main.WEBHOOKS, {"hsr": "https://discord.example/hsr"}):
+            with patch.object(main.requests, "patch") as patch_request:
+                self.assertTrue(main.sync_banner_message("hsr", [], state, now=1000))
+                patch_request.assert_not_called()
+
     def test_webhook_is_selected_by_game(self):
         old = dict(main.WEBHOOKS)
         main.WEBHOOKS["genshin"] = "https://discord.example/genshin"
