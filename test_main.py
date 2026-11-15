@@ -268,9 +268,9 @@ class NotifierTests(unittest.TestCase):
             ),
             article,
         )
-        self.assertIn(
-            "google.com/search",
+        self.assertEqual(
             main.resolve_event_url("hsr", None, "模擬宇宙イベント", []),
+            "https://gamewith.jp/houkaistarrail/article/show/396226",
         )
 
     def test_banner_message_is_created_once_then_edited(self):
