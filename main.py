@@ -17,6 +17,14 @@ NOTIFIED_FILE = "notified_codes.json"
 REQUEST_TIMEOUT = 20
 REMINDER_WINDOWS = (("24h", 24 * 60 * 60), ("3h", 3 * 60 * 60))
 
+# Embed colors describe notification status, not the game.
+NOTIFICATION_COLORS = {
+    "preview": 0x3498DB,  # Blue: upcoming content
+    "active": 0x2ECC71,   # Green: currently available
+    "ending": 0xE67E22,   # Orange: ending soon or ended
+    "code": 0x9B59B6,     # Purple: newly detected serial code
+}
+
 CODE_URLS = {
     "genshin": "https://hoyo-codes.seria.moe/codes?game=genshin",
     "hsr": "https://hoyo-codes.seria.moe/codes?game=hkrpg",
@@ -32,13 +40,11 @@ GAME_CONFIG = {
     "genshin": {
         "bot_name": "のこ原神bot",
         "game_name": "原神",
-        "color": 0x1ABC9C,
         "gift_url": "https://genshin.hoyoverse.com/ja/gift?code={code}",
     },
     "hsr": {
         "bot_name": "のこスタレbot",
         "game_name": "崩壊：スターレイル",
-        "color": 0x9B59B6,
         "gift_url": "https://hsr.hoyoverse.com/gift?code={code}",
     },
 }
@@ -149,6 +155,7 @@ def send_discord(
     fields: Optional[List[dict]] = None,
     url: Optional[str] = None,
     image_url: Optional[str] = None,
+    color: Optional[int] = None,
 ) -> bool:
     """Send one embed. Return True only after Discord accepts the message."""
     webhook_url = WEBHOOKS.get(game)
@@ -158,7 +165,7 @@ def send_discord(
 
     embed: Dict[str, Any] = {
         "title": clip(title, 256),
-        "color": GAME_CONFIG[game]["color"],
+        "color": color if color is not None else NOTIFICATION_COLORS["active"],
         "fields": [],
         "footer": {"text": "のこHoYoverse通知 | 日時はDiscordの閲覧者のタイムゾーンで表示"},
     }
@@ -388,6 +395,38 @@ def notification_title(item: dict, phase: str) -> str:
     return f"{prefix}：{name}"
 
 
+def notification_color(item: dict, phase: str, now: Optional[int] = None) -> int:
+    """Choose an embed color from the content's lifecycle stage."""
+    current_time = now if now is not None else int(time.time())
+
+    if phase in ("24h", "3h", "ended"):
+        return NOTIFICATION_COLORS["ending"]
+    if phase == "started":
+        return NOTIFICATION_COLORS["active"]
+
+    start = item.get("start")
+    end = item.get("end")
+
+    if phase == "updated":
+        if end is not None and 0 < end - current_time <= 24 * 60 * 60:
+            return NOTIFICATION_COLORS["ending"]
+        if end is not None and end <= current_time:
+            return NOTIFICATION_COLORS["ending"]
+        if start is not None and start > current_time:
+            return NOTIFICATION_COLORS["preview"]
+        return NOTIFICATION_COLORS["active"]
+
+    # An announcement for future content is blue. If first discovered after
+    # the start time, it is already active and therefore green.
+    if start is not None and start <= current_time:
+        if end is not None and end <= current_time:
+            return NOTIFICATION_COLORS["ending"]
+        if end is not None and 0 < end - current_time <= 24 * 60 * 60:
+            return NOTIFICATION_COLORS["ending"]
+        return NOTIFICATION_COLORS["active"]
+    return NOTIFICATION_COLORS["preview"]
+
+
 def send_item(game: str, item: dict, phase: str) -> bool:
     descriptions = {
         "announced": item.get("description") or "新しい開催情報を確認しました。",
@@ -404,6 +443,7 @@ def send_item(game: str, item: dict, phase: str) -> bool:
         fields=item_fields(item),
         url=item.get("url"),
         image_url=item.get("image_url"),
+        color=notification_color(item, phase),
     )
 
 
@@ -562,6 +602,7 @@ def check_codes(game: str, state: Dict[str, Any]) -> None:
             title=f"{config['game_name']} シリアルコード",
             description=f"コード：{code}\n報酬：{rewards}",
             fields=[{"name": "交換ページ", "value": config["gift_url"].format(code=code)}],
+            color=NOTIFICATION_COLORS["code"],
         ):
             notified.append(unique_key)
 
