@@ -246,27 +246,8 @@ def featured_icon_url(values: Any) -> Optional[str]:
         except (TypeError, ValueError):
             is_five_star = False
         valid.append((not is_five_star, icon))
-    return sorted(valid)[0][1] if valid else None
-
-
-def featured_icon_url(values: Any) -> Optional[str]:
-    """Return the first featured 5-star character/weapon icon URL, if supplied."""
-    if not isinstance(values, list):
-        return None
-    valid = []
-    for value in values:
-        if not isinstance(value, dict):
-            continue
-        icon = value.get("icon") or value.get("image_url")
-        if not isinstance(icon, str) or not icon.startswith("https://"):
-            continue
-        rarity = value.get("rarity")
-        try:
-            is_five_star = int(rarity) == 5
-        except (TypeError, ValueError):
-            is_five_star = False
-        valid.append((not is_five_star, icon))
-    return valid[0][1] if valid else None
+    featured_five_star = next((icon for is_not_five_star, icon in valid if not is_not_five_star), None)
+    return featured_five_star or (valid[0][1] if valid else None)
 
 
 def format_names(values: Any) -> str:
