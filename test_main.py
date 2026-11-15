@@ -98,6 +98,119 @@ class NotifierTests(unittest.TestCase):
         challenge = next(item for item in items if item["kind"] == "challenge")
         self.assertEqual(challenge["type_name"], "Memory of Chaos")
 
+    def test_zero_placeholder_ids_produce_distinct_challenge_keys(self):
+        payload = {
+            "challenges": [
+                {"id": 0, "name": "幻想シアター", "start_time": 1000, "end_time": 900000},
+                {"id": 0, "name": "淵月螺旋", "start_time": 1000, "end_time": 900000},
+            ]
+        }
+        items = main.calendar_payload_to_items("genshin", payload, now=2000)
+        self.assertEqual(len(items), 2)
+        self.assertEqual(len({item["key"] for item in items}), 2)
+        self.assertTrue(all(item["key"] != "genshin:challenge:0" for item in items))
+
+    def test_duplicate_challenge_id_migrates_history_without_reannouncing(self):
+        now = 1_000_000
+        old_payload = {
+            "challenges": [{
+                "id": 0,
+                "name": "淵月螺旋",
+                "type_name": "ActTypeTower",
+                "start_time": now - 3600,
+                "end_time": now + 5 * 86400,
+            }]
+        }
+        old_item = main.calendar_payload_to_items("genshin", old_payload, now=now)[0]
+        old_data = dict(old_item, key="genshin:challenge:0")
+        state = {
+            "schema_version": 2,
+            "codes": [],
+            "items": {
+                "genshin:challenge:0": {
+                    "signature": old_item["signature"],
+                    "data": old_data,
+                    "notifications": {
+                        "announced": True, "started": True,
+                        "24h": False, "3h": False, "ended": False,
+                    },
+                }
+            },
+        }
+        payload = {
+            "challenges": [
+                {
+                    "id": 0,
+                    "name": "幻想シアター",
+                    "type_name": "ActTypeTheater",
+                    "start_time": now - 3600,
+                    "end_time": now + 5 * 86400,
+                },
+                old_payload["challenges"][0],
+            ]
+        }
+
+        with patch.object(main, "fetch_news_entries", return_value=[]), \\
+             patch.object(main, "fetch_calendar", return_value=payload), \\
+             patch.object(main, "sync_banner_message", return_value=True), \\
+             patch.object(main, "send_item", return_value=True) as send:
+            main.check_calendar("genshin", state, now=now)
+
+        self.assertEqual(len(state["items"]), 2)
+        names = {record["data"]["name"] for record in state["items"].values()}
+        self.assertEqual(names, {"幻想シアター", "淵月螺旋"})
+        self.assertTrue(all(
+            record["notifications"]["announced"]
+            for record in state["items"].values()
+        ))
+        send.assert_not_called()
+
+    def test_challenge_reward_metadata_change_does_not_send_update(self):
+        now = 1_000_000
+        original_payload = {
+            "challenges": [{
+                "id": 42,
+                "name": "淵月螺旋",
+                "type_name": "ActTypeTower",
+                "start_time": now - 3600,
+                "end_time": now + 5 * 86400,
+                "rewards": [{"name": "原石", "amount": 600}],
+            }]
+        }
+        old_item = main.calendar_payload_to_items("genshin", original_payload, now=now)[0]
+        state = {
+            "schema_version": 2,
+            "codes": [],
+            "items": {
+                old_item["key"]: {
+                    "signature": old_item["signature"],
+                    "data": old_item,
+                    "notifications": {
+                        "announced": True, "started": True,
+                        "24h": False, "3h": False, "ended": False,
+                    },
+                }
+            },
+        }
+        changed_payload = {
+            "challenges": [{
+                **original_payload["challenges"][0],
+                "rewards": [{"name": "原石", "amount": 600}, {"name": "モラ", "amount": 0}],
+            }]
+        }
+
+        with patch.object(main, "fetch_news_entries", return_value=[]), \\
+             patch.object(main, "fetch_calendar", return_value=changed_payload), \\
+             patch.object(main, "sync_banner_message", return_value=True), \\
+             patch.object(main, "send_item", return_value=True) as send:
+            main.check_calendar("genshin", state, now=now)
+
+        send.assert_not_called()
+        self.assertEqual(
+            state["items"][old_item["key"]]["data"]["rewards"],
+            "原石 ×600、モラ ×0",
+        )
+
     def test_invalid_calendar_response_raises_instead_of_clearing_state(self):
         with self.assertRaises(ValueError):
             main.calendar_payload_to_items("genshin", {"message": "upstream error"}, now=1000)
