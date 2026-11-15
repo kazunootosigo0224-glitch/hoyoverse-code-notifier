@@ -162,7 +162,7 @@ class NotifierTests(unittest.TestCase):
             },
         }
 
-        with patch.object(main, "fetch_calendar", return_value=payload), \\
+        with patch.object(main, "fetch_calendar", return_value=payload), \
              patch.object(main, "send_item", return_value=True) as send:
             main.check_calendar("genshin", state, now=now)
 
@@ -170,7 +170,7 @@ class NotifierTests(unittest.TestCase):
         self.assertTrue(any(call.args[2] == "24h" for call in send.call_args_list))
 
         later = item["end"] - 2 * 3600
-        with patch.object(main, "fetch_calendar", return_value=payload), \\
+        with patch.object(main, "fetch_calendar", return_value=payload), \
              patch.object(main, "send_item", return_value=True) as send:
             main.check_calendar("genshin", state, now=later)
 
