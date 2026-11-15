@@ -454,7 +454,7 @@ class NotifierTests(unittest.TestCase):
         banner = {
             "key": "genshin:banner:1",
             "name": "キャラクター祈願",
-            "start": 2000,
+            "start": 900,
             "end": 3000,
             "characters": "キャラクター（★5）",
             "weapons": "武器（★5）",
@@ -508,7 +508,7 @@ class NotifierTests(unittest.TestCase):
             banners.append({
                 "key": f"hsr:banner:{index}",
                 "name": f"跳躍 {index + 1}",
-                "start": 2000,
+                "start": 900,
                 "end": 3000,
                 "characters": f"ピックアップ {index + 1}",
                 "characters_image_url": f"https://cdn.example/character-{index + 1}.png",
@@ -528,12 +528,51 @@ class NotifierTests(unittest.TestCase):
             )
             self.assertEqual(embed["fields"][0]["value"], f"ピックアップ {index + 1}")
 
+    def test_banner_summary_shows_only_current_phase_and_switches_at_boundary(self):
+        banners = [
+            {
+                "key": "hsr:banner:front",
+                "name": "前半ピックアップ",
+                "start": 500,
+                "end": 2000,
+                "characters": "前半キャラクター（★5）",
+            },
+            {
+                "key": "hsr:banner:back",
+                "name": "後半ピックアップ",
+                "start": 2000,
+                "end": 3500,
+                "characters": "後半キャラクター（★5）",
+            },
+        ]
+
+        front_payload = main.banner_message_payload("hsr", banners, now=1000)
+        self.assertEqual(len(front_payload["embeds"]), 1)
+        self.assertEqual(front_payload["embeds"][0]["title"], "前半ピックアップ")
+        self.assertNotIn("後半", str(front_payload["embeds"]))
+
+        # At the exact boundary the front banner has ended and the back banner
+        # is now active, so the same pinned message receives a new signature.
+        back_payload = main.banner_message_payload("hsr", banners, now=2000)
+        self.assertEqual(len(back_payload["embeds"]), 1)
+        self.assertEqual(back_payload["embeds"][0]["title"], "後半ピックアップ")
+        self.assertNotEqual(front_payload["_signature"], back_payload["_signature"])
+
+    def test_banner_summary_does_not_show_future_or_expired_banners(self):
+        banners = [
+            {"key": "front", "name": "開催中", "start": 500, "end": 1500},
+            {"key": "future", "name": "開催予定", "start": 1500, "end": 2500},
+            {"key": "expired", "name": "終了済み", "start": 100, "end": 900},
+        ]
+        payload = main.banner_message_payload("genshin", banners, now=1000)
+        self.assertEqual([embed["title"] for embed in payload["embeds"]], ["開催中"])
+
     def test_banner_embed_limit_is_ten(self):
         banners = [
             {
                 "key": f"hsr:banner:{index}",
                 "name": f"跳躍 {index}",
-                "start": 2000,
+                "start": 900,
                 "end": 3000,
             }
             for index in range(12)
