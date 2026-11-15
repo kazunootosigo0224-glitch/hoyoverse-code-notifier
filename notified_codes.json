@@ -1084,18 +1084,18 @@
         "ended": false
       }
     },
-    "genshin:challenge:7444d932365a6f30": {
+    "genshin:challenge:451b1df87b3953d4": {
       "signature": "46b99eaec33d9d87531998eb737c46b4b28b2e9bacf34c28ab58550261eef726",
       "data": {
-        "key": "genshin:challenge:7444d932365a6f30",
+        "key": "genshin:challenge:451b1df87b3953d4",
         "game": "genshin",
         "kind": "challenge",
         "source_id": 0,
         "event_subtype": null,
         "name": "淵月螺旋",
         "description": "",
-        "start": 1792094400,
-        "end": 1794772799,
+        "start": 1794772800,
+        "end": 1797364799,
         "image_url": null,
         "url": null,
         "version": null,
@@ -1107,7 +1107,7 @@
         "light_cones": "",
         "light_cones_image_url": null,
         "rewards": "深秘の聖遺物箱・一等 ×4、大英雄の経験 ×24、深秘の聖遺物箱・二等 ×8、冒険家の経験 ×42、仕上げ用魔鉱 ×72、モラ ×585000",
-        "signature": "46b99eaec33d9d87531998eb737c46b4b28b2e9bacf34c28ab58550261eef726"
+        "signature": "c0e69100306b948d1720e5640b0008e4fae7f4c015c8395b933bb17a619c89b8"
       },
       "notifications": {
         "announced": true,
