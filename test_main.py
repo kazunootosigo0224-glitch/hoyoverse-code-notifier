@@ -150,9 +150,9 @@ class NotifierTests(unittest.TestCase):
             ]
         }
 
-        with patch.object(main, "fetch_news_entries", return_value=[]), \\
-             patch.object(main, "fetch_calendar", return_value=payload), \\
-             patch.object(main, "sync_banner_message", return_value=True), \\
+        with patch.object(main, "fetch_news_entries", return_value=[]), \
+             patch.object(main, "fetch_calendar", return_value=payload), \
+             patch.object(main, "sync_banner_message", return_value=True), \
              patch.object(main, "send_item", return_value=True) as send:
             main.check_calendar("genshin", state, now=now)
 
@@ -199,9 +199,9 @@ class NotifierTests(unittest.TestCase):
             }]
         }
 
-        with patch.object(main, "fetch_news_entries", return_value=[]), \\
-             patch.object(main, "fetch_calendar", return_value=changed_payload), \\
-             patch.object(main, "sync_banner_message", return_value=True), \\
+        with patch.object(main, "fetch_news_entries", return_value=[]), \
+             patch.object(main, "fetch_calendar", return_value=changed_payload), \
+             patch.object(main, "sync_banner_message", return_value=True), \
              patch.object(main, "send_item", return_value=True) as send:
             main.check_calendar("genshin", state, now=now)
 
