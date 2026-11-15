@@ -35,7 +35,6 @@ jobs:
         env:
           DISCORD_WEBHOOK_GENSHIN: ${{ secrets.DISCORD_WEBHOOK_GENSHIN }}
           DISCORD_WEBHOOK_HSR: ${{ secrets.DISCORD_WEBHOOK_HSR }}
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python main.py
 
       - name: Commit notification state
