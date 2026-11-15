@@ -4,7 +4,6 @@ import os
 import time
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
-from urllib.parse import quote_plus
 
 import requests
 
@@ -265,9 +264,11 @@ def normalize_search_text(value: Any) -> str:
 
 
 def event_search_url(game: str, name: str) -> str:
-    game_label = "原神" if game == "genshin" else "崩壊：スターレイル"
-    query = quote_plus(f'"{name}" {game_label} イベント 公式 攻略')
-    return f"https://www.google.com/search?q={query}"
+    # Use stable Japanese GameWith event index pages when no specific article
+    # can be matched from the official HoYoLAB event-news feed.
+    if game == "genshin":
+        return "https://gamewith.jp/genshin/article/show/232506"
+    return "https://gamewith.jp/houkaistarrail/article/show/396226"
 
 
 def resolve_event_url(
