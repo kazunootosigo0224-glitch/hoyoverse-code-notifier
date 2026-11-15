@@ -235,7 +235,7 @@ class NotifierTests(unittest.TestCase):
             main.NOTIFICATION_COLORS["preview"],
         )
         self.assertEqual(
-            main.notification_color({"start": now - 3600, "end": now + 7200}, "announced", now),
+            main.notification_color({"start": now - 3600, "end": now + 48 * 3600}, "announced", now),
             main.NOTIFICATION_COLORS["active"],
         )
         self.assertEqual(
