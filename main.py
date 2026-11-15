@@ -710,6 +710,27 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
     records = state.setdefault("items", {})
     try:
         payload = fetch_calendar(game)
+        raw_calendar = payload
+        if isinstance(raw_calendar, dict):
+            for wrapper in ("data", "result"):
+                if isinstance(raw_calendar.get(wrapper), dict):
+                    raw_calendar = raw_calendar[wrapper]
+                    break
+        raw_banners = (
+            raw_calendar.get("banners", [])
+            if isinstance(raw_calendar, dict) else []
+        )
+        if not isinstance(raw_banners, list):
+            raw_banners = []
+        print(f"カレンダーAPI生データ [{game}]: banners={len(raw_banners)}")
+        for raw_banner in raw_banners[:10]:
+            if isinstance(raw_banner, dict):
+                print(
+                    f"  ガチャ生データ [{game}]: "
+                    f"name={raw_banner.get('name') or raw_banner.get('title')}, "
+                    f"start={raw_banner.get('start_time') or raw_banner.get('startTime')}, "
+                    f"end={raw_banner.get('end_time') or raw_banner.get('endTime')}"
+                )
         try:
             news_entries = fetch_news_entries(game)
         except (requests.RequestException, ValueError, TypeError) as news_exc:
