@@ -250,6 +250,24 @@ def featured_icon_url(values: Any) -> Optional[str]:
     return featured_five_star or (valid[0][1] if valid else None)
 
 
+def featured_item_name(values: Any) -> Optional[str]:
+    """Return the name of the first featured 5-star item."""
+    if not isinstance(values, list):
+        return None
+    for value in values:
+        if not isinstance(value, dict):
+            continue
+        try:
+            if int(value.get("rarity", 0)) != 5:
+                continue
+        except (TypeError, ValueError):
+            continue
+        name = value.get("name") or value.get("full_name") or value.get("title")
+        if name:
+            return str(name)
+    return None
+
+
 def format_names(values: Any) -> str:
     if not isinstance(values, list):
         return ""
@@ -343,10 +361,28 @@ def calendar_payload_to_items(
         entries = payload.get(collection_name, [])
         if not isinstance(entries, list):
             continue
-        for raw in entries:
+        for entry_index, raw in enumerate(entries, start=1):
             if not isinstance(raw, dict):
                 continue
-            name = raw.get("name") or raw.get("title")
+            raw_characters = (
+                raw.get("characters") or raw.get("avatar_list")
+                or raw.get("avatars") or raw.get("character_list") or []
+            )
+            raw_light_cones = (
+                raw.get("light_cones") or raw.get("equip_list")
+                or raw.get("lightcones") or raw.get("light_cone_list") or []
+            )
+            name = raw.get("name") or raw.get("title") or raw.get("pool_name") or raw.get("banner_name")
+            if not name and kind == "banner":
+                featured_character = featured_item_name(raw_characters)
+                featured_light_cone = featured_item_name(raw_light_cones)
+                if featured_character:
+                    name = f"キャラクター跳躍｜{featured_character}"
+                elif featured_light_cone:
+                    name = f"光円錐跳躍｜{featured_light_cone}"
+                else:
+                    item_label = raw.get("id") or entry_index
+                    name = f"ガチャ情報 {item_label}"
             if not name:
                 continue
 
@@ -355,9 +391,9 @@ def calendar_payload_to_items(
             if end is not None and end <= current_time:
                 continue
 
-            characters = format_names(raw.get("characters"))
+            characters = format_names(raw_characters)
             weapons = format_names(raw.get("weapons"))
-            light_cones = format_names(raw.get("light_cones"))
+            light_cones = format_names(raw_light_cones)
             description = raw.get("description") or raw.get("desc") or ""
             rewards = format_rewards(raw.get("rewards"))
             version = raw.get("version")
@@ -397,11 +433,11 @@ def calendar_payload_to_items(
                 "version": version,
                 "type_name": raw.get("type_name") or raw.get("type"),
                 "characters": characters,
-                "characters_image_url": featured_icon_url(raw.get("characters")),
+                "characters_image_url": featured_icon_url(raw_characters),
                 "weapons": weapons,
                 "weapons_image_url": featured_icon_url(raw.get("weapons")),
                 "light_cones": light_cones,
-                "light_cones_image_url": featured_icon_url(raw.get("light_cones")),
+                "light_cones_image_url": featured_icon_url(raw_light_cones),
 
 
 
@@ -641,7 +677,8 @@ def sync_banner_message(game: str, banners: List[dict], state: Dict[str, Any], n
     record = records.get(game)
     if not isinstance(record, dict):
         record = {}
-    if not banners and not record.get("id"):
+    if not banners:
+        print(f"ガチャ情報が0件のため、固定投稿は変更しません [{game}]")
         return True
     payload = banner_message_payload(game, banners, now)
     signature = payload.pop("_signature")
@@ -728,6 +765,9 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
                 print(
                     f"  ガチャ生データ [{game}]: "
                     f"name={raw_banner.get('name') or raw_banner.get('title')}, "
+                    f"keys={','.join(sorted(raw_banner.keys()))}, "
+                    f"characters={format_names(raw_banner.get('characters') or raw_banner.get('avatar_list'))[:100]}, "
+                    f"light_cones={format_names(raw_banner.get('light_cones') or raw_banner.get('equip_list'))[:100]}, "
                     f"start={raw_banner.get('start_time') or raw_banner.get('startTime')}, "
                     f"end={raw_banner.get('end_time') or raw_banner.get('endTime')}"
                 )
