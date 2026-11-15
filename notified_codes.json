@@ -1113,7 +1113,7 @@
         "announced": true,
         "started": true,
         "24h": true,
-        "3h": false,
+        "3h": true,
         "ended": false
       }
     }
