@@ -632,10 +632,13 @@ def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str
         else NOTIFICATION_COLORS["preview"]
     )
 
-    # Keep each banner's text and pickup icon together in its own embed.
+    # The pinned summary is a "currently available" view, not a full schedule.
+    # Future-phase banners are held back until their start time; expired banners
+    # disappear automatically. The next 30-minute run then edits the same post.
+    # Keep each active banner's text and pickup icon together in its own embed.
     # Discord supports up to 10 embeds per message.
     embeds = []
-    for item in ordered[:10]:
+    for item in active[:10]:
         period = []
         if item.get("start") is not None:
             period.append(f"開始：{discord_time(item['start'])}")
@@ -656,7 +659,7 @@ def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str
 
         embed = {
             "title": clip(item.get("name") or "ピックアップ", 256),
-            "description": "開催中" if item in active else "開催予定",
+            "description": "開催中",
             "color": color,
             "fields": fields,
         }
@@ -685,7 +688,7 @@ def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str
                 "characters_image_url", "weapons_image_url", "light_cones_image_url", "version",
             )
         }
-        for item in ordered
+        for item in active
     ]
     signature_data.append({"status": "ending" if ending_soon else "active" if active else "preview"})
     signature = hashlib.sha256(
