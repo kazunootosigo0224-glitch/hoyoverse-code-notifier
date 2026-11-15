@@ -958,7 +958,17 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
                         notifications["3h"] = False
                         notifications["ended"] = False
                     if start_changed:
-                        notifications["started"] = False
+                        # For a challenge already in progress, the update notice
+                        # already communicates the corrected schedule. Do not send
+                        # a second "content started" alert in the same run.
+                        if (
+                            item.get("kind") == "challenge"
+                            and item.get("start") is not None
+                            and item["start"] <= current_time
+                        ):
+                            notifications["started"] = True
+                        else:
+                            notifications["started"] = False
 
             notifications = record.get("notifications")
             if not isinstance(notifications, dict):
