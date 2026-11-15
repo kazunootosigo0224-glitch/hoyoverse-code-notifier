@@ -26,7 +26,7 @@ GitHubリポジトリの Settings → Secrets and variables → Actions に、�
 | DISCORD_WEBHOOK_GENSHIN | 原神通知チャンネルのWebhook URL |
 | DISCORD_WEBHOOK_HSR | スタレ通知チャンネルのWebhook URL |
 
-Webhook URLは認証情報として扱い、コードやIssue、チャットなどに貼らないでください。従来の DISCORD_WEBHOOK_URL は移行用に読み込めますが、2つの専用Secretを登録して動作確認した後に削除してください。
+Webhook URLは認証情報として扱い、コードやIssue、チャットなどに貼らないでください。旧Secret DISCORD_WEBHOOK_URL は使用しません。2つの専用Secretを必ず個別に登録してください。片方が未設定の場合、そのゲームの通知は送信されず、通知済み状態も更新されないため、Secret設定後の実行時に再試行されます。
 
 ## 実行方法
 
