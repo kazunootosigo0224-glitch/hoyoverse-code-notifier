@@ -4,6 +4,7 @@ import os
 import time
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
+from urllib.parse import quote_plus
 
 import requests
 
@@ -410,6 +411,11 @@ def item_fields(item: dict) -> List[dict]:
         fields.append({"name": "ピックアップ光円錐", "value": item["light_cones"]})
     if item.get("rewards"):
         fields.append({"name": "主な報酬", "value": item["rewards"]})
+    if item.get("url"):
+        fields.append({
+            "name": "関連情報",
+            "value": f"[公式情報・日本語攻略情報を開く]({item['url']})",
+        })
     return fields
 
 
@@ -525,7 +531,7 @@ def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str
             period.append(f"バージョン：{item['version']}")
         fields.append({
             "name": clip(item.get("name") or "ピックアップ", 256),
-            "value": clip("\\n".join(period) or "開催情報を確認してください。", 1024),
+            "value": clip(" ｜ ".join(period) or "開催情報を確認してください。", 1024),
             "inline": False,
         })
 
@@ -575,8 +581,6 @@ def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str
 
 def sync_banner_message(game: str, banners: List[dict], state: Dict[str, Any], now: int) -> bool:
     """Create a persistent banner post once, then edit that same webhook message."""
-    if not banners:
-        return True
     webhook_url = WEBHOOKS.get(game)
     if not webhook_url:
         print(f"Webhook未設定 [{game}]。ガチャ案内の更新を保留します。")
@@ -589,6 +593,8 @@ def sync_banner_message(game: str, banners: List[dict], state: Dict[str, Any], n
     record = records.get(game)
     if not isinstance(record, dict):
         record = {}
+    if not banners and not record.get("id"):
+        return True
     payload = banner_message_payload(game, banners, now)
     signature = payload.pop("_signature")
     if record.get("signature") == signature and record.get("id"):
@@ -812,7 +818,10 @@ def check_codes(game: str, state: Dict[str, Any]) -> None:
             game=game,
             title=f"{config['game_name']} シリアルコード",
             description=f"コード：{code}\n報酬：{rewards}",
-            fields=[{"name": "公式交換ページ", "value": config["gift_url"].format(code=code)}],
+            fields=[{
+                "name": "公式交換ページ",
+                "value": f"[公式交換ページを開く]({config['gift_url'].format(code=code)})",
+            }],
             url=config["gift_url"].format(code=code),
             color=NOTIFICATION_COLORS["code"],
         ):
