@@ -299,6 +299,7 @@ class NotifierTests(unittest.TestCase):
                 changed = dict(banner, characters="新キャラクター（★5）")
                 self.assertTrue(main.sync_banner_message("genshin", [changed], state, now=1000))
             self.assertTrue(patch_request.call_args.args[0].endswith("/messages/987654"))
+            self.assertNotIn("username", patch_request.call_args.kwargs["json"])
             self.assertIn(
                 "新キャラクター",
                 patch_request.call_args.kwargs["json"]["embeds"][0]["fields"][0]["value"],
