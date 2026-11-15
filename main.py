@@ -716,9 +716,16 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
             print(f"イベント記事URL取得エラー [{game}]。検索リンクを使用します: {news_exc}")
             news_entries = []
         items = calendar_payload_to_items(game, payload, current_time, news_entries)
-        sync_banner_message(
-            game, [item for item in items if item.get("kind") == "banner"], state, current_time
+        banner_items = [item for item in items if item.get("kind") == "banner"]
+        event_count = sum(item.get("kind") == "event" for item in items)
+        challenge_count = sum(item.get("kind") == "challenge" for item in items)
+        print(
+            f"カレンダー取得 [{game}]: events={event_count}, "
+            f"banners={len(banner_items)}, challenges={challenge_count}"
         )
+        if not banner_items:
+            print(f"警告 [{game}]: ガチャ情報がカレンダーAPIから返されていません。")
+        sync_banner_message(game, banner_items, state, current_time)
         fetch_succeeded = True
     except (requests.RequestException, ValueError, TypeError) as exc:
         print(f"カレンダー取得エラー [{game}]: {exc}")
