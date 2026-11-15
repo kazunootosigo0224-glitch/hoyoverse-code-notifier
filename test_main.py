@@ -305,6 +305,64 @@ class NotifierTests(unittest.TestCase):
                 patch_request.call_args.kwargs["json"]["embeds"][0]["fields"][0]["value"],
             )
 
+    def test_calendar_preserves_featured_pickup_icon_urls(self):
+        payload = {
+            "banners": [{
+                "id": 1,
+                "name": "イベント跳躍",
+                "start_time": 2000,
+                "end_time": 3000,
+                "characters": [
+                    {"name": "ピックアップ★4", "rarity": 4, "icon": "https://cdn.example/four.png"},
+                    {"name": "ピックアップ★5", "rarity": 5, "icon": "https://cdn.example/five.png"},
+                ],
+                "light_cones": [
+                    {"name": "光円錐★5", "rarity": 5, "icon": "https://cdn.example/cone.png"},
+                ],
+            }]
+        }
+        item = main.calendar_payload_to_items("hsr", payload, now=1000)[0]
+        self.assertEqual(item["characters_image_url"], "https://cdn.example/five.png")
+        self.assertEqual(item["light_cones_image_url"], "https://cdn.example/cone.png")
+
+    def test_each_banner_has_its_own_pickup_image_embed(self):
+        banners = []
+        for index in range(8):
+            banners.append({
+                "key": f"hsr:banner:{index}",
+                "name": f"跳躍 {index + 1}",
+                "start": 2000,
+                "end": 3000,
+                "characters": f"ピックアップ {index + 1}",
+                "characters_image_url": f"https://cdn.example/character-{index + 1}.png",
+                "weapons": "",
+                "weapons_image_url": None,
+                "light_cones": "",
+                "light_cones_image_url": None,
+                "version": "4.0",
+            })
+        payload = main.banner_message_payload("hsr", banners, now=1000)
+        embeds = payload["embeds"]
+        self.assertEqual(len(embeds), 8)
+        for index, embed in enumerate(embeds):
+            self.assertEqual(
+                embed["thumbnail"]["url"],
+                f"https://cdn.example/character-{index + 1}.png",
+            )
+            self.assertEqual(embed["fields"][0]["value"], f"ピックアップ {index + 1}")
+
+    def test_banner_embed_limit_is_ten(self):
+        banners = [
+            {
+                "key": f"hsr:banner:{index}",
+                "name": f"跳躍 {index}",
+                "start": 2000,
+                "end": 3000,
+            }
+            for index in range(12)
+        ]
+        self.assertEqual(len(main.banner_message_payload("hsr", banners, now=1000)["embeds"]), 10)
+
     def test_webhook_is_selected_by_game(self):
         old = dict(main.WEBHOOKS)
         main.WEBHOOKS["genshin"] = "https://discord.example/genshin"
