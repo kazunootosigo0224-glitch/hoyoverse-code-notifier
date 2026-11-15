@@ -64,16 +64,16 @@ def load_state(path: str = NOTIFIED_FILE) -> Dict[str, Any]:
         with open(path, "r", encoding="utf-8") as file:
             content = json.load(file)
     except (OSError, json.JSONDecodeError) as exc:
-        print(f"通知履歴の読み込みに失敗しました。新しい履歴を使用します: {exc}")
-        return {"schema_version": 2, "codes": [], "items": {}, "banner_messages": {}}
+        # Never silently reset persistent state: doing so can duplicate notifications
+        # and lose the IDs of pinned banner posts.
+        raise RuntimeError(f"通知履歴を読み込めません。ファイルを確認してください: {exc}") from exc
 
     # Existing repository state is a JSON array of notified serial-code keys.
     if isinstance(content, list):
         return {"schema_version": 2, "codes": content, "items": {}, "banner_messages": {}}
 
     if not isinstance(content, dict):
-        print("通知履歴の形式が不正です。新しい履歴を使用します。")
-        return {"schema_version": 2, "codes": [], "items": {}, "banner_messages": {}}
+        raise RuntimeError("通知履歴の形式が不正です。既存データを保護するため処理を中止します。")
 
     codes = content.get("codes", content.get("notified_codes", []))
     items = content.get("items", {})
@@ -155,6 +155,29 @@ def fetch_json(url: str) -> Any:
     return response.json()
 
 
+RUNTIME_ERRORS: List[str] = []
+RUNTIME_WARNINGS: List[str] = []
+
+
+def safe_error_text(value: Any) -> str:
+    """Remove webhook credentials before writing exception details to logs."""
+    text = str(value)
+    for webhook in WEBHOOKS.values():
+        if webhook:
+            text = text.replace(webhook, "[Webhook URL redacted]")
+    return text[:350]
+
+
+def record_runtime_issue(severity: str, game: str, context: str, detail: Any) -> None:
+    message = f"[{game}] {context}: {safe_error_text(detail)}"
+    target = RUNTIME_ERRORS if severity == "error" else RUNTIME_WARNINGS
+    if message not in target:
+        target.append(message)
+    escaped = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+    annotation = "::error::" if severity == "error" else "::warning::"
+    print(f"{annotation}{escaped}")
+
+
 def send_discord(
     game: str,
     title: str,
@@ -167,7 +190,7 @@ def send_discord(
     """Send one embed. Return True only after Discord accepts the message."""
     webhook_url = WEBHOOKS.get(game)
     if not webhook_url:
-        print(f"Webhook未設定 [{game}]。通知を保留します: {title}")
+        record_runtime_issue("error", game, "Discord Webhook未設定", f"通知を送信できません: {title}")
         return False
 
     embed: Dict[str, Any] = {
@@ -219,12 +242,16 @@ def send_discord(
                 time.sleep(1.5 * (attempt + 1))
                 continue
 
-            print(f"送信失敗 [{game}] ({response.status_code}): {response.text[:500]}")
+            detail = f"HTTP {response.status_code}: {response.text[:250]}"
+            print(f"送信失敗 [{game}] ({response.status_code}): {safe_error_text(response.text[:250])}")
+            record_runtime_issue("error", game, "Discordへの通知送信", detail)
             return False
         except requests.RequestException as exc:
-            print(f"送信エラー [{game}] ({attempt + 1}/3): {exc}")
+            print(f"送信エラー [{game}] ({attempt + 1}/3): {safe_error_text(exc)}")
             if attempt < 2:
                 time.sleep(1.5 * (attempt + 1))
+            else:
+                record_runtime_issue("error", game, "Discordへの通知送信（3回再試行後）", exc)
 
     return False
 
@@ -667,7 +694,7 @@ def sync_banner_message(game: str, banners: List[dict], state: Dict[str, Any], n
     """Create a persistent banner post once, then edit that same webhook message."""
     webhook_url = WEBHOOKS.get(game)
     if not webhook_url:
-        print(f"Webhook未設定 [{game}]。ガチャ案内の更新を保留します。")
+        record_runtime_issue("error", game, "Discord Webhook未設定", "固定ガチャ案内を更新できません。")
         return False
 
     records = state.setdefault("banner_messages", {})
@@ -733,12 +760,16 @@ def sync_banner_message(game: str, banners: List[dict], state: Dict[str, Any], n
             if response.status_code >= 500 and attempt < 2:
                 time.sleep(1.5 * (attempt + 1))
                 continue
-            print(f"固定ガチャ投稿の更新失敗 [{game}] ({response.status_code}): {response.text[:500]}")
+            detail = f"HTTP {response.status_code}: {response.text[:250]}"
+            print(f"固定ガチャ投稿の更新失敗 [{game}] ({response.status_code}): {safe_error_text(response.text[:250])}")
+            record_runtime_issue("error", game, "固定ガチャ投稿の更新", detail)
             return False
         except (requests.RequestException, ValueError) as exc:
-            print(f"固定ガチャ投稿の通信エラー [{game}]: {exc}")
+            print(f"固定ガチャ投稿の通信エラー [{game}]: {safe_error_text(exc)}")
             if attempt < 2:
                 time.sleep(1.5 * (attempt + 1))
+            else:
+                record_runtime_issue("error", game, "固定ガチャ投稿の更新（3回再試行後）", exc)
     return False
 
 
@@ -774,7 +805,7 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
         try:
             news_entries = fetch_news_entries(game)
         except (requests.RequestException, ValueError, TypeError) as news_exc:
-            print(f"イベント記事URL取得エラー [{game}]。検索リンクを使用します: {news_exc}")
+            record_runtime_issue("warning", game, "イベント記事一覧の取得", f"代替リンクを使用します: {news_exc}")
             news_entries = []
         items = calendar_payload_to_items(game, payload, current_time, news_entries)
         banner_items = [item for item in items if item.get("kind") == "banner"]
@@ -785,15 +816,15 @@ def check_calendar(game: str, state: Dict[str, Any], now: Optional[int] = None) 
             f"banners={len(banner_items)}, challenges={challenge_count}"
         )
         if not banner_items:
-            print(f"警告 [{game}]: ガチャ情報がカレンダーAPIから返されていません。")
+            record_runtime_issue("warning", game, "ガチャ情報が0件", "固定ガチャ案内は既存の内容を維持します。")
         sync_banner_message(game, banner_items, state, current_time)
         fetch_succeeded = True
     except (requests.RequestException, ValueError, TypeError) as exc:
-        print(f"カレンダー取得エラー [{game}]: {exc}")
+        record_runtime_issue("error", game, "カレンダー情報の取得・解析", exc)
         items = []
         fetch_succeeded = False
     except Exception as exc:
-        print(f"カレンダー処理エラー [{game}]: {exc}")
+        record_runtime_issue("error", game, "カレンダー処理", exc)
         items = []
         fetch_succeeded = False
 
@@ -918,7 +949,7 @@ def check_codes(game: str, state: Dict[str, Any]) -> None:
     try:
         items = extract_code_list(fetch_json(CODE_URLS[game]))
     except (requests.RequestException, ValueError, TypeError) as exc:
-        print(f"シリアルコード取得エラー [{game}]: {exc}")
+        record_runtime_issue("error", game, "シリアルコード情報の取得・解析", exc)
         return
 
     notified = state.setdefault("codes", [])
@@ -948,9 +979,11 @@ def check_codes(game: str, state: Dict[str, Any]) -> None:
 
 
 def main() -> None:
+    RUNTIME_ERRORS.clear()
+    RUNTIME_WARNINGS.clear()
     for game, webhook in WEBHOOKS.items():
         if not webhook:
-            print(f"警告：{game} のWebhook Secretが未設定です。")
+            record_runtime_issue("error", game, "Discord Webhook未設定", "GitHub Secretsを確認してください。")
 
     state = load_state()
     before = json.dumps(state, ensure_ascii=False, sort_keys=True)
@@ -966,6 +999,13 @@ def main() -> None:
         print("通知履歴を更新しました。")
     else:
         print("通知履歴に変更はありません。")
+
+    if RUNTIME_WARNINGS:
+        print(f"注意：警告 {len(RUNTIME_WARNINGS)} 件。詳細はActionsログを確認してください。")
+    if RUNTIME_ERRORS:
+        print(f"エラー：{len(RUNTIME_ERRORS)} 件。障害通知ワークフローへ引き継ぎます。")
+        raise SystemExit(1)
+    print("全処理が正常に完了しました。")
 
 
 if __name__ == "__main__":
