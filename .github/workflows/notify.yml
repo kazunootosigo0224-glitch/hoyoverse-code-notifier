@@ -165,8 +165,15 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add notified_codes.json ops_state.json
+          git add notified_codes.json
+          if [ -f ops_state.json ]; then
+            git add ops_state.json
+          fi
           if ! git diff --cached --quiet; then
             git commit -m "Update notifier state [skip ci]"
             git push
           fi
+
+      - name: Fail the workflow when notifier processing failed
+        if: ${{ steps.notifier.outcome == 'failure' }}
+        run: exit 1
