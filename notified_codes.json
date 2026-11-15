@@ -890,12 +890,208 @@
         "3h": false,
         "ended": false
       }
+    },
+    "hsr:banner:101": {
+      "signature": "e5e13dbfc65862ca90f7e30029f0f8c215d9f8183ef5be59d687f60fb51c4524",
+      "data": {
+        "key": "hsr:banner:101",
+        "game": "hsr",
+        "kind": "banner",
+        "event_subtype": null,
+        "name": "キャラクター跳躍｜銀狼LV.999",
+        "description": "",
+        "start": 1794362400,
+        "end": 1796209140,
+        "image_url": null,
+        "url": null,
+        "version": "4.7",
+        "type_name": null,
+        "characters": "銀狼LV.999（★5）、火花（★5）、爻光（★5）、アスター（★4）、リンクス（★4）、御空（★4）",
+        "characters_image_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_ubd4re/7382a178049ca251557d5f7472f74022.png",
+        "weapons": "",
+        "weapons_image_url": null,
+        "light_cones": "",
+        "light_cones_image_url": null,
+        "rewards": "",
+        "signature": "e5e13dbfc65862ca90f7e30029f0f8c215d9f8183ef5be59d687f60fb51c4524"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:banner:105": {
+      "signature": "2c684bcc498946bc953cae3ad0415d69ac07b4c0d445d04e3706eab2b4ab0a6b",
+      "data": {
+        "key": "hsr:banner:105",
+        "game": "hsr",
+        "kind": "banner",
+        "event_subtype": null,
+        "name": "キャラクター跳躍｜星神★アッハ",
+        "description": "",
+        "start": 1794362400,
+        "end": 1797948000,
+        "image_url": null,
+        "url": null,
+        "version": "4.7",
+        "type_name": null,
+        "characters": "星神★アッハ（★5）、アスター（★4）、リンクス（★4）、御空（★4）",
+        "characters_image_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_ubd4re/9992dd2ff280e580fe05729d34279568.png",
+        "weapons": "",
+        "weapons_image_url": null,
+        "light_cones": "",
+        "light_cones_image_url": null,
+        "rewards": "",
+        "signature": "2c684bcc498946bc953cae3ad0415d69ac07b4c0d445d04e3706eab2b4ab0a6b"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:banner:102": {
+      "signature": "8950a093269b1bd509c57cfc1fdae6d1e7b4cf095154bcd6b3e11a91e8f64451",
+      "data": {
+        "key": "hsr:banner:102",
+        "game": "hsr",
+        "kind": "banner",
+        "event_subtype": null,
+        "name": "キャラクター跳躍｜黄泉",
+        "description": "",
+        "start": 1796209200,
+        "end": 1797948000,
+        "image_url": null,
+        "url": null,
+        "version": "4.7",
+        "type_name": null,
+        "characters": "黄泉（★5）、丹恒・飲月（★5）、景元（★5）、アスター（★4）、リンクス（★4）、御空（★4）",
+        "characters_image_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_ubd4re/c071bbe4c455985e206fa702b6a56723.png",
+        "weapons": "",
+        "weapons_image_url": null,
+        "light_cones": "",
+        "light_cones_image_url": null,
+        "rewards": "",
+        "signature": "8950a093269b1bd509c57cfc1fdae6d1e7b4cf095154bcd6b3e11a91e8f64451"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:banner:103": {
+      "signature": "89f3a4de5af0efea6b59b0f21b38e1e4e70209d3a0c47b1be80e929f29f2375b",
+      "data": {
+        "key": "hsr:banner:103",
+        "game": "hsr",
+        "kind": "banner",
+        "event_subtype": null,
+        "name": "光円錐跳躍｜銀河シティへようこそ",
+        "description": "",
+        "start": 1794362400,
+        "end": 1796209140,
+        "image_url": null,
+        "url": null,
+        "version": "4.7",
+        "type_name": null,
+        "characters": "",
+        "characters_image_url": null,
+        "weapons": "",
+        "weapons_image_url": null,
+        "light_cones": "銀河シティへようこそ（★5）、きらびやかな世界（★5）、彼女が視ると決めた時（★5）、星間市場のトレンド（★4）、天才たちの休息（★4）、夜は影のように付き纏う（★4）",
+        "light_cones_image_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_ubd4re/4fcda005a458a2f69712f2567caf09c5.png",
+        "rewards": "",
+        "signature": "89f3a4de5af0efea6b59b0f21b38e1e4e70209d3a0c47b1be80e929f29f2375b"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:banner:106": {
+      "signature": "b797507b3994cc39e39490c9afe95ac0a2034d6f39038d958270362eb51f1942",
+      "data": {
+        "key": "hsr:banner:106",
+        "game": "hsr",
+        "kind": "banner",
+        "event_subtype": null,
+        "name": "光円錐跳躍｜はじめの「アッハ」が響く時",
+        "description": "",
+        "start": 1794362400,
+        "end": 1797948000,
+        "image_url": null,
+        "url": null,
+        "version": "4.7",
+        "type_name": null,
+        "characters": "",
+        "characters_image_url": null,
+        "weapons": "",
+        "weapons_image_url": null,
+        "light_cones": "はじめの「アッハ」が響く時（★5）、星間市場のトレンド（★4）、天才たちの休息（★4）、夜は影のように付き纏う（★4）",
+        "light_cones_image_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_ubd4re/51fdfae17038d54f46df6b6b15c4aa9c.png",
+        "rewards": "",
+        "signature": "b797507b3994cc39e39490c9afe95ac0a2034d6f39038d958270362eb51f1942"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "hsr:banner:104": {
+      "signature": "147284d6fb80949bac60dc0cc6668d587898f5930290fd00b0a75c64ea6cc3ae",
+      "data": {
+        "key": "hsr:banner:104",
+        "game": "hsr",
+        "kind": "banner",
+        "event_subtype": null,
+        "name": "光円錐跳躍｜流れ逝く岸を歩いて",
+        "description": "",
+        "start": 1796209200,
+        "end": 1797948000,
+        "image_url": null,
+        "url": null,
+        "version": "4.7",
+        "type_name": null,
+        "characters": "",
+        "characters_image_url": null,
+        "weapons": "",
+        "weapons_image_url": null,
+        "light_cones": "流れ逝く岸を歩いて（★5）、陽光より輝くもの（★5）、夜明け前（★5）、星間市場のトレンド（★4）、天才たちの休息（★4）、夜は影のように付き纏う（★4）",
+        "light_cones_image_url": "https://act-webstatic.hoyoverse.com/darkmatter/hkrpg/prod_gf_cn/item_icon_ubd4re/d8174bc61c339e3283d6d313144cc2cf.png",
+        "rewards": "",
+        "signature": "147284d6fb80949bac60dc0cc6668d587898f5930290fd00b0a75c64ea6cc3ae"
+      },
+      "notifications": {
+        "announced": true,
+        "started": false,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
     }
   },
   "banner_messages": {
     "genshin": {
       "id": "1571399303929274422",
       "signature": "1286c03310a9c1eb9e89018f1305a16bc9c8658acf792062026770d43e1afa7b"
+    },
+    "hsr": {
+      "id": "1571411287370633232",
+      "signature": "6926908f2647c6b7b6393381d0d57caa77bcc9736caaa7f377a7276aa1b29763"
     }
   }
 }
