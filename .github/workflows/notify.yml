@@ -32,16 +32,140 @@ jobs:
         run: python -m unittest discover -v
 
       - name: Run notifier
+        id: notifier
+        continue-on-error: true
         env:
           DISCORD_WEBHOOK_GENSHIN: ${{ secrets.DISCORD_WEBHOOK_GENSHIN }}
           DISCORD_WEBHOOK_HSR: ${{ secrets.DISCORD_WEBHOOK_HSR }}
         run: python main.py
 
-      - name: Commit notification state
+      - name: Notify administrator about a failure
+        if: ${{ failure() || steps.notifier.outcome == 'failure' }}
+        env:
+          ADMIN_ALERT_WEBHOOK: ${{ secrets.ADMIN_ALERT_WEBHOOK }}
+          GH_REPOSITORY: ${{ github.repository }}
+          GH_RUN_ID: ${{ github.run_id }}
+          GH_RUN_NUMBER: ${{ github.run_number }}
+          GH_SERVER_URL: ${{ github.server_url }}
+          GH_SHA: ${{ github.sha }}
+          GH_REF_NAME: ${{ github.ref_name }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import pathlib
+          import urllib.request
+
+          state_path = pathlib.Path("ops_state.json")
+          state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+          if state.get("incident_active"):
+              print("同じ障害は通知済みです。重複通知を抑制します。")
+              raise SystemExit(0)
+
+          webhook = os.environ.get("ADMIN_ALERT_WEBHOOK")
+          if not webhook:
+              print("::error::ADMIN_ALERT_WEBHOOK が未設定です。管理者通知を送信できません。")
+              raise SystemExit(1)
+
+          repo = os.environ["GH_REPOSITORY"]
+          run_url = f'{os.environ["GH_SERVER_URL"]}/{repo}/actions/runs/{os.environ["GH_RUN_ID"]}'
+          payload = {
+              "allowed_mentions": {"parse": []},
+              "embeds": [{
+                  "title": "HoYoverse通知Bot｜障害を検出",
+                  "description": "GitHub Actionsの実行でエラーが発生しました。実行ログを確認してください。",
+                  "color": 15158332,
+                  "fields": [
+                      {"name": "Repository", "value": repo, "inline": True},
+                      {"name": "Run", "value": f'#{os.environ["GH_RUN_NUMBER"]}', "inline": True},
+                      {"name": "Branch", "value": os.environ["GH_REF_NAME"], "inline": True},
+                      {"name": "Commit", "value": os.environ["GH_SHA"][:12], "inline": True},
+                      {"name": "実行ログ", "value": f"[GitHub Actionsを開く]({run_url})"}
+                  ],
+                  "footer": {"text": "同じ障害の通知は復旧まで抑制されます。"}
+              }]
+          }
+          request = urllib.request.Request(
+              webhook,
+              data=json.dumps(payload).encode("utf-8"),
+              headers={"Content-Type": "application/json"},
+              method="POST",
+          )
+          with urllib.request.urlopen(request, timeout=15) as response:
+              if response.status not in (200, 204):
+                  raise RuntimeError(f"管理者通知が拒否されました: HTTP {response.status}")
+
+          state.update({
+              "incident_active": True,
+              "last_failure_run": os.environ["GH_RUN_ID"],
+          })
+          state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print("管理者へ障害通知を送信しました。")
+          PY
+
+      - name: Notify administrator about recovery
+        if: ${{ steps.notifier.outcome == 'success' }}
+        env:
+          ADMIN_ALERT_WEBHOOK: ${{ secrets.ADMIN_ALERT_WEBHOOK }}
+          GH_REPOSITORY: ${{ github.repository }}
+          GH_RUN_ID: ${{ github.run_id }}
+          GH_RUN_NUMBER: ${{ github.run_number }}
+          GH_SERVER_URL: ${{ github.server_url }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import pathlib
+          import urllib.request
+
+          state_path = pathlib.Path("ops_state.json")
+          state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+          if not state.get("incident_active"):
+              print("未解決の障害はありません。")
+              raise SystemExit(0)
+
+          webhook = os.environ.get("ADMIN_ALERT_WEBHOOK")
+          if not webhook:
+              print("::error::ADMIN_ALERT_WEBHOOK が未設定のため、復旧通知を送信できません。")
+              raise SystemExit(1)
+
+          repo = os.environ["GH_REPOSITORY"]
+          run_url = f'{os.environ["GH_SERVER_URL"]}/{repo}/actions/runs/{os.environ["GH_RUN_ID"]}'
+          payload = {
+              "allowed_mentions": {"parse": []},
+              "embeds": [{
+                  "title": "HoYoverse通知Bot｜復旧を確認",
+                  "description": "今回のGitHub Actions実行は正常に完了しました。通知処理が復旧したことを確認しました。",
+                  "color": 3066993,
+                  "fields": [
+                      {"name": "Repository", "value": repo, "inline": True},
+                      {"name": "Run", "value": f'#{os.environ["GH_RUN_NUMBER"]}', "inline": True},
+                      {"name": "実行ログ", "value": f"[GitHub Actionsを開く]({run_url})"}
+                  ]
+              }]
+          }
+          request = urllib.request.Request(
+              webhook,
+              data=json.dumps(payload).encode("utf-8"),
+              headers={"Content-Type": "application/json"},
+              method="POST",
+          )
+          with urllib.request.urlopen(request, timeout=15) as response:
+              if response.status not in (200, 204):
+                  raise RuntimeError(f"復旧通知が拒否されました: HTTP {response.status}")
+
+          state["incident_active"] = False
+          state["last_recovery_run"] = os.environ["GH_RUN_ID"]
+          state_path.write_text(json.dumps(state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print("管理者へ復旧通知を送信しました。")
+          PY
+
+      - name: Commit notification and incident state
+        if: ${{ always() }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add notified_codes.json
+          git add notified_codes.json ops_state.json
           if ! git diff --cached --quiet; then
             git commit -m "Update notifier state [skip ci]"
             git push
