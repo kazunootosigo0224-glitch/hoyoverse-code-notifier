@@ -283,20 +283,22 @@ class NotifierTests(unittest.TestCase):
         state = {"banner_messages": {}}
         created = MagicMock(status_code=200)
         created.json.return_value = {"id": "987654"}
-        with patch.object(main.requests, "post", return_value=created) as post:
-            self.assertTrue(main.sync_banner_message("genshin", [banner], state, now=1000))
-        self.assertTrue(post.call_args.args[0].endswith("?wait=true"))
-        self.assertEqual(state["banner_messages"]["genshin"]["id"], "987654")
-
         updated = MagicMock(status_code=200)
-        with patch.object(main.requests, "patch", return_value=updated) as patch_request:
-            changed = dict(banner, characters="新キャラクター（★5）")
-            self.assertTrue(main.sync_banner_message("genshin", [changed], state, now=1000))
-        self.assertTrue(patch_request.call_args.args[0].endswith("/messages/987654"))
-        self.assertIn(
-            "新キャラクター",
-            patch_request.call_args.kwargs["json"]["embeds"][0]["fields"][0]["value"],
-        )
+
+        with patch.dict(main.WEBHOOKS, {"genshin": "https://discord.example/genshin"}):
+            with patch.object(main.requests, "post", return_value=created) as post:
+                self.assertTrue(main.sync_banner_message("genshin", [banner], state, now=1000))
+            self.assertTrue(post.call_args.args[0].endswith("?wait=true"))
+            self.assertEqual(state["banner_messages"]["genshin"]["id"], "987654")
+
+            with patch.object(main.requests, "patch", return_value=updated) as patch_request:
+                changed = dict(banner, characters="新キャラクター（★5）")
+                self.assertTrue(main.sync_banner_message("genshin", [changed], state, now=1000))
+            self.assertTrue(patch_request.call_args.args[0].endswith("/messages/987654"))
+            self.assertIn(
+                "新キャラクター",
+                patch_request.call_args.kwargs["json"]["embeds"][0]["fields"][0]["value"],
+            )
 
     def test_webhook_is_selected_by_game(self):
         old = dict(main.WEBHOOKS)
