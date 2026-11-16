@@ -663,7 +663,7 @@
         "announced": true,
         "started": true,
         "24h": true,
-        "3h": false,
+        "3h": true,
         "ended": false
       }
     },
@@ -1085,7 +1085,7 @@
       }
     },
     "genshin:challenge:451b1df87b3953d4": {
-      "signature": "46b99eaec33d9d87531998eb737c46b4b28b2e9bacf34c28ab58550261eef726",
+      "signature": "c0e69100306b948d1720e5640b0008e4fae7f4c015c8395b933bb17a619c89b8",
       "data": {
         "key": "genshin:challenge:451b1df87b3953d4",
         "game": "genshin",
