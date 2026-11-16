@@ -24,7 +24,8 @@
     "hsr_schedule_2026-11-15",
     "genshin_spiral_2026_11_phase1",
     "genshin_theater_2026_11",
-    "hsr_endgame_2026_11_phase1"
+    "hsr_endgame_2026_11_phase1",
+    "genshin_ARCHONSANSWERS"
   ],
   "items": {
     "genshin:event:466": {
@@ -664,7 +665,7 @@
         "started": true,
         "24h": true,
         "3h": true,
-        "ended": false
+        "ended": true
       }
     },
     "hsr:challenge:11": {
@@ -789,7 +790,7 @@
       },
       "notifications": {
         "announced": true,
-        "started": false,
+        "started": true,
         "24h": false,
         "3h": false,
         "ended": false
