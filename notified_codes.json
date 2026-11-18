@@ -157,17 +157,18 @@
       }
     },
     "genshin:event:467": {
-      "signature": "4c10eea062b5c854d52413760c709b8c5ddf830f548afb2b3d6fb821edf91071",
+      "signature": "013d56aeafabf4ec4170e71f3ad2ca92e42584a059c957d18cc634149ae8d597",
       "data": {
         "key": "genshin:event:467",
         "game": "genshin",
         "kind": "event",
+        "source_id": 467,
         "event_subtype": null,
         "name": "ブロックスマッシュ・リフレッシュ",
         "description": "「秋沙銭湯」の夢喰い獏のスタッフ二人が「のびのびリゾート」を訪れ、一風変わったゲームの運営を始めた。テストプレイヤーになって思う存分「リフレッシュ」しよう！",
         "start": null,
         "end": null,
-        "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/e/ee/Stress_Block_Smashing_Project.png/revision/latest?cb=20261024092430",
+        "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/e/ee/Stress_Block_Smashing_Project.png/revision/latest?cb=20261118041400",
         "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
         "type_name": "ActTypeOther",
@@ -178,7 +179,7 @@
         "light_cones": "",
         "light_cones_image_url": null,
         "rewards": "",
-        "signature": "4c10eea062b5c854d52413760c709b8c5ddf830f548afb2b3d6fb821edf91071"
+        "signature": "013d56aeafabf4ec4170e71f3ad2ca92e42584a059c957d18cc634149ae8d597"
       },
       "notifications": {
         "announced": true,
