@@ -25,7 +25,8 @@
     "genshin_spiral_2026_11_phase1",
     "genshin_theater_2026_11",
     "hsr_endgame_2026_11_phase1",
-    "genshin_ARCHONSANSWERS"
+    "genshin_ARCHONSANSWERS",
+    "genshin_POYMANSXF877"
   ],
   "items": {
     "genshin:event:466": {
@@ -157,7 +158,7 @@
       }
     },
     "genshin:event:467": {
-      "signature": "013d56aeafabf4ec4170e71f3ad2ca92e42584a059c957d18cc634149ae8d597",
+      "signature": "078323f1db42e3617b9acf90abec53a6c3da9e8705be33696436beed6e85b60f",
       "data": {
         "key": "genshin:event:467",
         "game": "genshin",
@@ -166,8 +167,8 @@
         "event_subtype": null,
         "name": "ブロックスマッシュ・リフレッシュ",
         "description": "「秋沙銭湯」の夢喰い獏のスタッフ二人が「のびのびリゾート」を訪れ、一風変わったゲームの運営を始めた。テストプレイヤーになって思う存分「リフレッシュ」しよう！",
-        "start": null,
-        "end": null,
+        "start": 1795140000,
+        "end": 1795982399,
         "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/e/ee/Stress_Block_Smashing_Project.png/revision/latest?cb=20261118041400",
         "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
@@ -178,12 +179,12 @@
         "weapons_image_url": null,
         "light_cones": "",
         "light_cones_image_url": null,
-        "rewards": "",
-        "signature": "013d56aeafabf4ec4170e71f3ad2ca92e42584a059c957d18cc634149ae8d597"
+        "rewards": "大英雄の経験 ×0、「角逐」の導き ×4、「焚燼」の導き ×4、「紛争」の導き ×4、仕上げ用魔鉱 ×0、祈聖のオイル ×0、モラ ×0",
+        "signature": "078323f1db42e3617b9acf90abec53a6c3da9e8705be33696436beed6e85b60f"
       },
       "notifications": {
         "announced": true,
-        "started": false,
+        "started": true,
         "24h": false,
         "3h": false,
         "ended": false
