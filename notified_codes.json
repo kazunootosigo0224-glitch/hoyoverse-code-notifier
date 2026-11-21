@@ -223,16 +223,17 @@
       }
     },
     "genshin:event:469": {
-      "signature": "c1f411d60490b1ea910fa8d1011a75ad0b0e76bf4b6a9d756b8d466a4efbcf54",
+      "signature": "1753db54045db80ee82c2a764e8480420b8ac81b9399826610919369112e3f98",
       "data": {
         "key": "genshin:event:469",
         "game": "genshin",
         "kind": "event",
+        "source_id": 469,
         "event_subtype": null,
         "name": "熱闘モード：奇策！スピード勝負",
         "description": "キャッツテールで定期的に開催されるユニークな対戦では、特殊な「熱闘モード」ルールが採用される。\\n今回のルールは下記となっている。\\n両者はその場で選んだキャラカードを用い、ランダムに生成されたアクションカードを使って対戦する！",
-        "start": null,
-        "end": null,
+        "start": 1795226400,
+        "end": 1796587199,
         "image_url": null,
         "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
@@ -244,11 +245,11 @@
         "light_cones": "",
         "light_cones_image_url": null,
         "rewards": "",
-        "signature": "c1f411d60490b1ea910fa8d1011a75ad0b0e76bf4b6a9d756b8d466a4efbcf54"
+        "signature": "1753db54045db80ee82c2a764e8480420b8ac81b9399826610919369112e3f98"
       },
       "notifications": {
         "announced": true,
-        "started": false,
+        "started": true,
         "24h": false,
         "3h": false,
         "ended": false
