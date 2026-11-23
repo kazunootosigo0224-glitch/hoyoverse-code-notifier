@@ -282,7 +282,7 @@
       "notifications": {
         "announced": true,
         "started": true,
-        "24h": false,
+        "24h": true,
         "3h": false,
         "ended": false
       }
@@ -314,7 +314,7 @@
       "notifications": {
         "announced": true,
         "started": true,
-        "24h": false,
+        "24h": true,
         "3h": false,
         "ended": false
       }
@@ -346,7 +346,7 @@
       "notifications": {
         "announced": true,
         "started": true,
-        "24h": false,
+        "24h": true,
         "3h": false,
         "ended": false
       }
@@ -601,7 +601,7 @@
       },
       "notifications": {
         "announced": true,
-        "started": false,
+        "started": true,
         "24h": false,
         "3h": false,
         "ended": false
@@ -1125,7 +1125,7 @@
   "banner_messages": {
     "genshin": {
       "id": "1571399303929274422",
-      "signature": "1286c03310a9c1eb9e89018f1305a16bc9c8658acf792062026770d43e1afa7b"
+      "signature": "1629fb196220dc4ecc7b32b107ee5e8210ce3dd6cc0a3f4cc5186c657b2d5f55"
     },
     "hsr": {
       "id": "1571411287370633232",
