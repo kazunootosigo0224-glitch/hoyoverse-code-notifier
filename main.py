@@ -747,6 +747,13 @@ def check_official_announcements(
             key=lambda entry: to_timestamp(entry.get("created_at") or entry.get("createdAt")) or 0,
             reverse=True,
         )
+        print(f"公式ニュース取得 [{game}/{category}]: entries={len(ordered)}")
+        for recent_entry in ordered[:3]:
+            print(
+                f"  公式ニュース [{game}/{category}]: "
+                f"title={clip(recent_entry.get('title') or '（タイトルなし）', 120)}, "
+                f"created_at={recent_entry.get('created_at') or recent_entry.get('createdAt')}"
+            )
         catchup_sent = 0
         for entry in ordered:
             key = official_news_key(game, category, entry)
