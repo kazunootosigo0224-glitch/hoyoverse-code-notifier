@@ -189,9 +189,11 @@ def record_runtime_issue(severity: str, game: str, context: str, detail: Any) ->
     target = RUNTIME_ERRORS if severity == "error" else RUNTIME_WARNINGS
     if message not in target:
         target.append(message)
-    escaped = message.replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
-    annotation = "::error::" if severity == "error" else "::warning::"
-    print(f"{annotation}{escaped}")
+    # Do not emit GitHub workflow command annotations here. The function is
+    # also exercised by unit tests that intentionally simulate failures; using
+    # ::error:: made successful test runs appear failed in the Actions UI.
+    level = "ERROR" if severity == "error" else "WARNING"
+    print(f"[{level}] {message}")
 
 
 def send_discord(
