@@ -2,7 +2,9 @@ name: HoYoverse Notifier
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # 30分ごと（終了前リマインド用）
+    # Avoid minute 0, when GitHub documents higher scheduled-workflow load.
+    # Four checks per hour reduce the expected detection delay to about 15 minutes.
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
 
 permissions:
