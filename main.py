@@ -41,6 +41,14 @@ NEWS_URLS = {
     "hsr": "https://api.ennead.cc/mihoyo/starrail/news/events?lang=ja",
 }
 
+NOTICE_URLS = {
+    "genshin": "https://api.ennead.cc/mihoyo/genshin/news/notices?lang=ja-jp",
+    "hsr": "https://api.ennead.cc/mihoyo/starrail/news/notices?lang=ja",
+}
+
+NEWS_LOOKBACK_SECONDS = 14 * 24 * 60 * 60
+NEWS_SEEN_LIMIT = 500
+
 GAME_CONFIG = {
     "genshin": {
         "bot_name": "のこ原神bot",
@@ -58,7 +66,10 @@ GAME_CONFIG = {
 def load_state(path: str = NOTIFIED_FILE) -> Dict[str, Any]:
     """Load state, migrating the previous list-only JSON format in-place."""
     if not os.path.exists(path):
-        return {"schema_version": 2, "codes": [], "items": {}, "banner_messages": {}}
+        return {
+            "schema_version": 2, "codes": [], "items": {}, "banner_messages": {},
+            "news_seen": [], "news_initialized": {},
+        }
 
     try:
         with open(path, "r", encoding="utf-8") as file:
@@ -70,7 +81,10 @@ def load_state(path: str = NOTIFIED_FILE) -> Dict[str, Any]:
 
     # Existing repository state is a JSON array of notified serial-code keys.
     if isinstance(content, list):
-        return {"schema_version": 2, "codes": content, "items": {}, "banner_messages": {}}
+        return {
+            "schema_version": 2, "codes": content, "items": {}, "banner_messages": {},
+            "news_seen": [], "news_initialized": {},
+        }
 
     if not isinstance(content, dict):
         raise RuntimeError("通知履歴の形式が不正です。既存データを保護するため処理を中止します。")
@@ -83,6 +97,8 @@ def load_state(path: str = NOTIFIED_FILE) -> Dict[str, Any]:
         "codes": codes if isinstance(codes, list) else [],
         "items": items if isinstance(items, dict) else {},
         "banner_messages": banner_messages if isinstance(banner_messages, dict) else {},
+        "news_seen": content.get("news_seen", []) if isinstance(content.get("news_seen", []), list) else [],
+        "news_initialized": content.get("news_initialized", {}) if isinstance(content.get("news_initialized", {}), dict) else {},
     }
 
 
@@ -615,6 +631,160 @@ def fetch_news_entries(game: str) -> Any:
     return fetch_json(NEWS_URLS[game])
 
 
+def extract_news_entries(payload: Any) -> List[dict]:
+    """Normalize the documented list and common wrapped news response shapes."""
+    if isinstance(payload, list):
+        return [entry for entry in payload if isinstance(entry, dict)]
+    if isinstance(payload, dict):
+        for key in ("data", "result", "news", "entries"):
+            value = payload.get(key)
+            if isinstance(value, list):
+                return [entry for entry in value if isinstance(entry, dict)]
+            if isinstance(value, dict):
+                nested = extract_news_entries(value)
+                if nested:
+                    return nested
+    return []
+
+
+def is_relevant_official_notice(game: str, title: str) -> bool:
+    """Select official banner and event-preview notices, not routine maintenance posts."""
+    normalized = normalize_search_text(title)
+    japanese_event_preview = any(
+        token in normalized
+        for token in ("イベント予告", "イベント概要", "イベント情報", "イベント紹介")
+    )
+    english_event_preview = any(
+        token in normalized
+        for token in ("eventsoverview", "eventpreview", "upcomingevents")
+    )
+    if japanese_event_preview or english_event_preview:
+        return True
+
+    if game == "genshin":
+        japanese_wish = "祈願" in title and ("お知らせ" in title or "予告" in title)
+        english_wish = any(
+            token in normalized
+            for token in ("eventwishesnotice", "eventwishnotice", "wishbannerannouncement")
+        )
+        return japanese_wish or english_wish
+
+    japanese_warp = "跳躍" in title and ("お知らせ" in title or "予告" in title)
+    english_warp = any(
+        token in normalized
+        for token in ("eventwarpsnotice", "eventwarpnotice", "warpannouncement")
+    )
+    return japanese_warp or english_warp
+
+
+def official_news_key(game: str, category: str, entry: dict) -> str:
+    source_id = entry.get("id") or entry.get("post_id")
+    if source_id is not None:
+        identity = str(source_id)
+    else:
+        identity = f"{entry.get('title', '')}|{entry.get('created_at', '')}|{entry.get('url', '')}"
+    digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:20]
+    return f"{game}:{category}:{digest}"
+
+
+def send_official_news(game: str, category: str, entry: dict) -> bool:
+    title = clip(entry.get("title") or "公式からのお知らせ", 240)
+    description = entry.get("description") or "公式から新しいお知らせが公開されました。"
+    published = to_timestamp(entry.get("created_at") or entry.get("createdAt"))
+    url = entry.get("url") or entry.get("article_url")
+    image_url = entry.get("banner") or entry.get("image_url")
+    fields = []
+    if published is not None:
+        fields.append({"name": "公開日時", "value": discord_time(published)})
+    fields.append({
+        "name": "公式記事",
+        "value": "[HoYoLABの公式記事を開く]" + (f"({url})" if isinstance(url, str) and url.startswith("https://") else ""),
+    })
+    prefix = "【イベント予告】" if category == "events" else "【公式祈願・イベント予告】"
+    return send_discord(
+        game=game,
+        title=f"{prefix}{title}",
+        description=str(description),
+        fields=fields,
+        url=url if isinstance(url, str) and url.startswith("https://") else None,
+        image_url=image_url if isinstance(image_url, str) and image_url.startswith("https://") else None,
+        color=NOTIFICATION_COLORS["preview"],
+    )
+
+
+def check_official_announcements(
+    game: str, state: Dict[str, Any], now: Optional[int] = None
+) -> None:
+    """Poll official HoYoLAB event posts and notices independently of the calendar."""
+    current_time = now if now is not None else int(time.time())
+    seen = state.setdefault("news_seen", [])
+    if not isinstance(seen, list):
+        seen = []
+        state["news_seen"] = seen
+    initialized = state.setdefault("news_initialized", {})
+    if not isinstance(initialized, dict):
+        initialized = {}
+        state["news_initialized"] = initialized
+
+    categories = (
+        ("events", NEWS_URLS[game]),
+        ("notices", NOTICE_URLS[game]),
+    )
+    for category, url in categories:
+        init_key = f"{game}:{category}"
+        first_scan = not initialized.get(init_key)
+        try:
+            entries = extract_news_entries(fetch_json(url))
+        except (requests.RequestException, ValueError, TypeError) as exc:
+            record_runtime_issue(
+                "warning", game, f"公式ニュース（{category}）の取得",
+                f"この回はスキップし、次回再取得します: {exc}",
+            )
+            continue
+
+        ordered = sorted(
+            entries,
+            key=lambda entry: to_timestamp(entry.get("created_at") or entry.get("createdAt")) or 0,
+            reverse=True,
+        )
+        catchup_sent = 0
+        for entry in ordered:
+            key = official_news_key(game, category, entry)
+            if key in seen:
+                continue
+
+            title = str(entry.get("title") or "")
+            published = to_timestamp(entry.get("created_at") or entry.get("createdAt"))
+            recent = published is not None and 0 <= current_time - published <= NEWS_LOOKBACK_SECONDS
+            relevant = category == "events" or is_relevant_official_notice(game, title)
+
+            # On the first deployment, backfill recent wish/event-overview notices
+            # (for example a phase announcement published several days earlier),
+            # while seeding the event feed silently to avoid a notification flood.
+            should_notify = recent and relevant and (
+                not first_scan or category == "notices"
+            )
+            if first_scan and category == "notices" and catchup_sent >= 8:
+                should_notify = False
+
+            if should_notify:
+                article_url = entry.get("url") or entry.get("article_url")
+                if not isinstance(article_url, str) or not article_url.startswith("https://"):
+                    seen.append(key)
+                    continue
+                if not send_official_news(game, category, entry):
+                    # Leave it unseen so a later run can retry delivery.
+                    continue
+                catchup_sent += 1
+            seen.append(key)
+
+        initialized[init_key] = True
+
+    # Bound state growth while retaining enough history to avoid repeat notices.
+    if len(seen) > NEWS_SEEN_LIMIT:
+        del seen[:-NEWS_SEEN_LIMIT]
+
+
 def banner_message_payload(game: str, banners: List[dict], now: int) -> Dict[str, Any]:
     ordered = sorted(banners, key=lambda item: (item.get("start") or 0, item.get("name") or ""))
     active = [
@@ -1093,6 +1263,7 @@ def main() -> None:
     # Keep each game's data and notifications isolated, including webhook routing.
     for game in GAME_CONFIG:
         check_codes(game, state)
+        check_official_announcements(game, state)
         check_calendar(game, state)
 
     after = json.dumps(state, ensure_ascii=False, sort_keys=True)
