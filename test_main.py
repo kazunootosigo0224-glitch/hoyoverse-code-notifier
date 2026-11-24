@@ -22,6 +22,112 @@ class NotifierTests(unittest.TestCase):
         self.assertNotIn(secret, main.RUNTIME_ERRORS[0])
         self.assertIn("[Webhook URL redacted]", main.RUNTIME_ERRORS[0])
 
+    def test_news_entries_support_list_and_wrapped_payloads(self):
+        entry = {"id": "123", "title": "公式予告"}
+        self.assertEqual(main.extract_news_entries([entry]), [entry])
+        self.assertEqual(main.extract_news_entries({"data": [entry]}), [entry])
+        self.assertEqual(main.extract_news_entries({"result": {"news": [entry]}}), [entry])
+
+    def test_official_notice_filter_matches_wish_and_event_previews(self):
+        self.assertTrue(
+            main.is_relevant_official_notice(
+                "genshin", "Ver.7.2イベント祈願のお知らせ 第2期"
+            )
+        )
+        self.assertTrue(
+            main.is_relevant_official_notice(
+                "hsr", "Ver.4.7 イベント跳躍のお知らせ"
+            )
+        )
+        self.assertTrue(
+            main.is_relevant_official_notice(
+                "genshin", "Ver.7.2イベント概要 第2期"
+            )
+        )
+        self.assertFalse(
+            main.is_relevant_official_notice(
+                "genshin", "既知の不具合について"
+            )
+        )
+
+    def test_recent_official_wish_notice_is_backfilled_once(self):
+        now = 1_800_000_000
+        entry = {
+            "id": "phase-2-wish",
+            "title": "Ver.7.2イベント祈願のお知らせ 第2期",
+            "description": "次回のイベント祈願についてのお知らせです。",
+            "created_at": now - 5 * 86400,
+            "url": "https://www.hoyolab.com/article/123456",
+        }
+        state = {
+            "schema_version": 2, "codes": [], "items": {},
+            "banner_messages": {}, "news_seen": [], "news_initialized": {},
+        }
+
+        def fake_fetch(url):
+            return [entry] if "/news/notices?" in url else []
+
+        with patch.object(main, "fetch_json", side_effect=fake_fetch), \\
+             patch.object(main, "send_discord", return_value=True) as send:
+            main.check_official_announcements("genshin", state, now=now)
+            self.assertEqual(send.call_count, 1)
+            self.assertIn("イベント祈願のお知らせ 第2期", send.call_args.kwargs["title"])
+            self.assertEqual(send.call_args.kwargs["url"], entry["url"])
+
+        with patch.object(main, "fetch_json", side_effect=fake_fetch), \\
+             patch.object(main, "send_discord", return_value=True) as send_again:
+            main.check_official_announcements("genshin", state, now=now + 900)
+            send_again.assert_not_called()
+
+    def test_new_official_event_post_is_sent_after_initial_baseline(self):
+        now = 1_800_000_000
+        state = {
+            "schema_version": 2, "codes": [], "items": {},
+            "banner_messages": {}, "news_seen": [], "news_initialized": {},
+        }
+        empty_fetch = lambda url: []
+
+        with patch.object(main, "fetch_json", side_effect=empty_fetch), \\
+             patch.object(main, "send_discord", return_value=True):
+            main.check_official_announcements("hsr", state, now=now)
+
+        entry = {
+            "id": "new-event-post",
+            "title": "新イベント開催予告",
+            "description": "新しいイベントが発表されました。",
+            "created_at": now,
+            "url": "https://www.hoyolab.com/article/789012",
+        }
+
+        def fake_fetch(url):
+            return [entry] if "/news/events?" in url else []
+
+        with patch.object(main, "fetch_json", side_effect=fake_fetch), \\
+             patch.object(main, "send_discord", return_value=True) as send:
+            main.check_official_announcements("hsr", state, now=now + 900)
+
+        self.assertEqual(send.call_count, 1)
+        self.assertIn("新イベント開催予告", send.call_args.kwargs["title"])
+
+    def test_load_state_preserves_official_news_deduplication_state(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = os.path.join(directory, "state.json")
+            source = {
+                "schema_version": 2,
+                "codes": [],
+                "items": {},
+                "banner_messages": {},
+                "news_seen": ["genshin:notices:abc"],
+                "news_initialized": {"genshin:notices": True},
+            }
+            with open(path, "w", encoding="utf-8") as file:
+                json.dump(source, file)
+
+            loaded = main.load_state(path)
+
+        self.assertEqual(loaded["news_seen"], source["news_seen"])
+        self.assertEqual(loaded["news_initialized"], source["news_initialized"])
+
     def test_corrupt_state_is_not_silently_reset(self):
         with tempfile.TemporaryDirectory() as directory:
             path = os.path.join(directory, "state.json")
