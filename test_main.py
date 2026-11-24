@@ -14,6 +14,15 @@ class NotifierTests(unittest.TestCase):
         main.record_runtime_issue("error", "genshin", "テスト障害", "接続失敗")
         self.assertEqual(len(main.RUNTIME_ERRORS), 1)
 
+    def test_runtime_issue_logs_do_not_emit_github_error_annotations(self):
+        main.RUNTIME_ERRORS.clear()
+        with patch("builtins.print") as mocked_print:
+            main.record_runtime_issue("error", "genshin", "想定内のテスト障害", "simulated")
+        output = " ".join(str(call.args[0]) for call in mocked_print.call_args_list)
+        self.assertIn("[ERROR]", output)
+        self.assertNotIn("::error::", output)
+        self.assertNotIn("::warning::", output)
+
     def test_runtime_issue_redacts_webhook_secret(self):
         main.RUNTIME_ERRORS.clear()
         secret = "https://discord.example/webhook-secret"
