@@ -28,20 +28,15 @@ class NotifierTests(unittest.TestCase):
         self.assertEqual(main.extract_news_entries({"data": [entry]}), [entry])
         self.assertEqual(main.extract_news_entries({"result": {"news": [entry]}}), [entry])
 
-    def test_official_notice_filter_matches_wish_and_event_previews(self):
-        self.assertTrue(
-            main.is_relevant_official_notice(
-                "genshin", "Ver.7.2イベント祈願のお知らせ 第2期"
-            )
-        )
-        self.assertTrue(
-            main.is_relevant_official_notice(
-                "hsr", "Ver.4.7 イベント跳躍のお知らせ"
-            )
-        )
+    def test_official_notice_filter_matches_event_previews_only(self):
         self.assertTrue(
             main.is_relevant_official_notice(
                 "genshin", "Ver.7.2イベント概要 第2期"
+            )
+        )
+        self.assertTrue(
+            main.is_relevant_official_notice(
+                "hsr", "新イベント予告"
             )
         )
         self.assertFalse(
@@ -49,13 +44,23 @@ class NotifierTests(unittest.TestCase):
                 "genshin", "既知の不具合について"
             )
         )
+        self.assertFalse(
+            main.is_relevant_official_notice(
+                "genshin", "Ver.7.2イベント祈願のお知らせ 第2期"
+            )
+        )
+        self.assertFalse(
+            main.is_relevant_official_notice(
+                "hsr", "イベント跳躍のお知らせ"
+            )
+        )
 
-    def test_recent_official_wish_notice_is_backfilled_once(self):
+    def test_recent_official_event_overview_is_backfilled_once(self):
         now = 1_800_000_000
         entry = {
-            "id": "phase-2-wish",
-            "title": "Ver.7.2イベント祈願のお知らせ 第2期",
-            "description": "次回のイベント祈願についてのお知らせです。",
+            "id": "version-event-overview",
+            "title": "Ver.7.2イベント概要 第2期",
+            "description": "次回のイベントについてのお知らせです。",
             "created_at": now - 5 * 86400,
             "url": "https://www.hoyolab.com/article/123456",
         }
@@ -71,7 +76,7 @@ class NotifierTests(unittest.TestCase):
              patch.object(main, "send_discord", return_value=True) as send:
             main.check_official_announcements("genshin", state, now=now)
             self.assertEqual(send.call_count, 1)
-            self.assertIn("イベント祈願のお知らせ 第2期", send.call_args.kwargs["title"])
+            self.assertIn("イベント概要 第2期", send.call_args.kwargs["title"])
             self.assertEqual(send.call_args.kwargs["url"], entry["url"])
 
         with patch.object(main, "fetch_json", side_effect=fake_fetch), \
