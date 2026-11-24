@@ -255,102 +255,6 @@
         "ended": false
       }
     },
-    "genshin:banner:239": {
-      "signature": "33683883a75a6f3a5109b6c0ca8bc5505c1834b1402415cbfac7c8020db6c30d",
-      "data": {
-        "key": "genshin:banner:239",
-        "game": "genshin",
-        "kind": "banner",
-        "event_subtype": null,
-        "name": "キャラクター祈願",
-        "description": "",
-        "start": 1793746800,
-        "end": 1795514340,
-        "image_url": null,
-        "url": null,
-        "version": "7.2",
-        "type_name": null,
-        "characters": "ミティヤ（★5）、バレリー（★4）、シャルロット（★4）、ロサリア（★4）",
-        "characters_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/6aea6776/a024f93489bf998b23dd8a41746bbc17.png",
-        "weapons": "",
-        "weapons_image_url": null,
-        "light_cones": "",
-        "light_cones_image_url": null,
-        "rewards": "",
-        "signature": "33683883a75a6f3a5109b6c0ca8bc5505c1834b1402415cbfac7c8020db6c30d"
-      },
-      "notifications": {
-        "announced": true,
-        "started": true,
-        "24h": true,
-        "3h": false,
-        "ended": false
-      }
-    },
-    "genshin:banner:240": {
-      "signature": "9dec0f804adb9fc1864afdf7e3aee1d33efaf3dced8795c570dc5a28d32beb4d",
-      "data": {
-        "key": "genshin:banner:240",
-        "game": "genshin",
-        "kind": "banner",
-        "event_subtype": null,
-        "name": "キャラクター祈願2",
-        "description": "",
-        "start": 1793746800,
-        "end": 1795514340,
-        "image_url": null,
-        "url": null,
-        "version": "7.2",
-        "type_name": null,
-        "characters": "フリーナ（★5）、バレリー（★4）、シャルロット（★4）、ロサリア（★4）",
-        "characters_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/67c7f6c8/0a024f0f2e06e99d67f112cd12eef4af.png",
-        "weapons": "",
-        "weapons_image_url": null,
-        "light_cones": "",
-        "light_cones_image_url": null,
-        "rewards": "",
-        "signature": "9dec0f804adb9fc1864afdf7e3aee1d33efaf3dced8795c570dc5a28d32beb4d"
-      },
-      "notifications": {
-        "announced": true,
-        "started": true,
-        "24h": true,
-        "3h": false,
-        "ended": false
-      }
-    },
-    "genshin:banner:241": {
-      "signature": "20beb4fa75a7b35fe939535b788e36ea84e823a4c728f35bacf03d14f820788d",
-      "data": {
-        "key": "genshin:banner:241",
-        "game": "genshin",
-        "kind": "banner",
-        "event_subtype": null,
-        "name": "武器祈願",
-        "description": "",
-        "start": 1793746800,
-        "end": 1795514340,
-        "image_url": null,
-        "url": null,
-        "version": "7.2",
-        "type_name": null,
-        "characters": "",
-        "characters_image_url": null,
-        "weapons": "秘星の聖典（★5）、静水流転の輝き（★5）、船渠剣（★4）、プロスペクタードリル（★4）、霜辰（★4）、雨裁（★4）、弓蔵（★4）",
-        "weapons_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/6aea6776/ec4643eca7890833b5b415f7ad5dc79b.png",
-        "light_cones": "",
-        "light_cones_image_url": null,
-        "rewards": "",
-        "signature": "20beb4fa75a7b35fe939535b788e36ea84e823a4c728f35bacf03d14f820788d"
-      },
-      "notifications": {
-        "announced": true,
-        "started": true,
-        "24h": true,
-        "3h": false,
-        "ended": false
-      }
-    },
     "hsr:event:293": {
       "signature": "969bff39620f4cc991b4a4ba63464e8d579283f8dcc8ab675103e3ae771274bc",
       "data": {
@@ -1120,12 +1024,144 @@
         "3h": true,
         "ended": false
       }
+    },
+    "genshin:banner:242": {
+      "signature": "33683883a75a6f3a5109b6c0ca8bc5505c1834b1402415cbfac7c8020db6c30d",
+      "data": {
+        "key": "genshin:banner:242",
+        "game": "genshin",
+        "kind": "banner",
+        "source_id": 242,
+        "event_subtype": null,
+        "name": "キャラクター祈願",
+        "description": "",
+        "start": 1795514400,
+        "end": 1797317999,
+        "image_url": null,
+        "url": null,
+        "version": "7.2",
+        "type_name": null,
+        "characters": "兹白（★5）、イルーガ（★4）、アイノ（★4）、凝光（★4）",
+        "characters_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/6966dc8c/b7ea76f3f77eec4997dad6576c183939.png",
+        "weapons": "",
+        "weapons_image_url": null,
+        "light_cones": "",
+        "light_cones_image_url": null,
+        "rewards": "",
+        "signature": "098c73932d4ac41265219217259046b3f6bab7982d89af8af1fcd02a995402a4"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": true,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:banner:243": {
+      "signature": "9dec0f804adb9fc1864afdf7e3aee1d33efaf3dced8795c570dc5a28d32beb4d",
+      "data": {
+        "key": "genshin:banner:243",
+        "game": "genshin",
+        "kind": "banner",
+        "source_id": 243,
+        "event_subtype": null,
+        "name": "キャラクター祈願2",
+        "description": "",
+        "start": 1795514400,
+        "end": 1797317999,
+        "image_url": null,
+        "url": null,
+        "version": "7.2",
+        "type_name": null,
+        "characters": "リンネア（★5）、イルーガ（★4）、アイノ（★4）、凝光（★4）",
+        "characters_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/69d58c7d/d1c44e49e1fcfdf9474ba6c2d2c9369d.png",
+        "weapons": "",
+        "weapons_image_url": null,
+        "light_cones": "",
+        "light_cones_image_url": null,
+        "rewards": "",
+        "signature": "b60b118bf234d68ec6294ea732e9f15f697248cb63e206720623e9bff200dc12"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": true,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:banner:244": {
+      "signature": "20beb4fa75a7b35fe939535b788e36ea84e823a4c728f35bacf03d14f820788d",
+      "data": {
+        "key": "genshin:banner:244",
+        "game": "genshin",
+        "kind": "banner",
+        "source_id": 244,
+        "event_subtype": null,
+        "name": "武器祈願",
+        "description": "",
+        "start": 1795514400,
+        "end": 1797317999,
+        "image_url": null,
+        "url": null,
+        "version": "7.2",
+        "type_name": null,
+        "characters": "",
+        "characters_image_url": null,
+        "weapons": "三日月の含光（★5）、霜契の金枝（★5）、携帯型チェーンソー（★4）、レンジゲージ（★4）、祭礼の剣（★4）、西風長槍（★4）、昭心（★4）",
+        "weapons_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/6966dc8c/fa2ac4d5a0238fb674c44670652fc284.png",
+        "light_cones": "",
+        "light_cones_image_url": null,
+        "rewards": "",
+        "signature": "3a7e20941ad1c229b7f55fb10c374d795bda9c3d1dad1e5c25d4f14578b43905"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": true,
+        "3h": false,
+        "ended": false
+      }
+    },
+    "genshin:banner:245": {
+      "signature": "6a41e08467d3878e710e1e49b199df976032c2a70628dd57d03b8c672bee1afe",
+      "data": {
+        "key": "genshin:banner:245",
+        "game": "genshin",
+        "kind": "banner",
+        "source_id": 245,
+        "event_subtype": null,
+        "name": "集録祈願/追憶祈願",
+        "description": "",
+        "start": 1795514400,
+        "end": 1797317999,
+        "image_url": null,
+        "url": null,
+        "version": "7.2",
+        "type_name": null,
+        "characters": "ヴァレサ（★5）、チャスカ（★5）、シロネン（★5）、ムアラニ（★5）、キィニチ（★5）",
+        "characters_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/67e3357c/34596fcb08c5c4b4e91379507e75dba7.png",
+        "weapons": "ヴィヴィッド・ハート（★5）、星鷲の紅き羽（★5）、岩峰を巡る歌（★5）、サーフィンタイム（★5）、山の王の長牙（★5）",
+        "weapons_image_url": "https://act-webstatic.hoyoverse.com/hk4e/e20200928calculate/item_icon/67e3357c/db3c23247fa556442b7d1fdd5e4a4fb6.png",
+        "light_cones": "",
+        "light_cones_image_url": null,
+        "rewards": "",
+        "signature": "6a41e08467d3878e710e1e49b199df976032c2a70628dd57d03b8c672bee1afe"
+      },
+      "notifications": {
+        "announced": true,
+        "started": true,
+        "24h": false,
+        "3h": false,
+        "ended": false
+      }
     }
   },
   "banner_messages": {
     "genshin": {
       "id": "1571399303929274422",
-      "signature": "1629fb196220dc4ecc7b32b107ee5e8210ce3dd6cc0a3f4cc5186c657b2d5f55"
+      "signature": "318d2bea7edf3e7a64261b6a32240cdd41d96f8995edb52f909a3c4faf7eaf00"
     },
     "hsr": {
       "id": "1571411287370633232",
