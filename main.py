@@ -648,7 +648,7 @@ def extract_news_entries(payload: Any) -> List[dict]:
 
 
 def is_relevant_official_notice(game: str, title: str) -> bool:
-    """Select official banner and event-preview notices, not routine maintenance posts."""
+    """Select official event-preview notices, excluding unrelated game notices."""
     normalized = normalize_search_text(title)
     japanese_event_preview = any(
         token in normalized
@@ -658,23 +658,7 @@ def is_relevant_official_notice(game: str, title: str) -> bool:
         token in normalized
         for token in ("eventsoverview", "eventpreview", "upcomingevents")
     )
-    if japanese_event_preview or english_event_preview:
-        return True
-
-    if game == "genshin":
-        japanese_wish = "祈願" in title and ("お知らせ" in title or "予告" in title)
-        english_wish = any(
-            token in normalized
-            for token in ("eventwishesnotice", "eventwishnotice", "wishbannerannouncement")
-        )
-        return japanese_wish or english_wish
-
-    japanese_warp = "跳躍" in title and ("お知らせ" in title or "予告" in title)
-    english_warp = any(
-        token in normalized
-        for token in ("eventwarpsnotice", "eventwarpnotice", "warpannouncement")
-    )
-    return japanese_warp or english_warp
+    return japanese_event_preview or english_event_preview
 
 
 def official_news_key(game: str, category: str, entry: dict) -> str:
@@ -700,7 +684,7 @@ def send_official_news(game: str, category: str, entry: dict) -> bool:
         "name": "公式記事",
         "value": "[HoYoLABの公式記事を開く]" + (f"({url})" if isinstance(url, str) and url.startswith("https://") else ""),
     })
-    prefix = "【イベント予告】" if category == "events" else "【公式祈願・イベント予告】"
+    prefix = "【イベント予告】" if category == "events" else "【公式イベント予告】"
     return send_discord(
         game=game,
         title=f"{prefix}{title}",
