@@ -67,14 +67,14 @@ class NotifierTests(unittest.TestCase):
         def fake_fetch(url):
             return [entry] if "/news/notices?" in url else []
 
-        with patch.object(main, "fetch_json", side_effect=fake_fetch), \\
+        with patch.object(main, "fetch_json", side_effect=fake_fetch), \
              patch.object(main, "send_discord", return_value=True) as send:
             main.check_official_announcements("genshin", state, now=now)
             self.assertEqual(send.call_count, 1)
             self.assertIn("イベント祈願のお知らせ 第2期", send.call_args.kwargs["title"])
             self.assertEqual(send.call_args.kwargs["url"], entry["url"])
 
-        with patch.object(main, "fetch_json", side_effect=fake_fetch), \\
+        with patch.object(main, "fetch_json", side_effect=fake_fetch), \
              patch.object(main, "send_discord", return_value=True) as send_again:
             main.check_official_announcements("genshin", state, now=now + 900)
             send_again.assert_not_called()
@@ -87,7 +87,7 @@ class NotifierTests(unittest.TestCase):
         }
         empty_fetch = lambda url: []
 
-        with patch.object(main, "fetch_json", side_effect=empty_fetch), \\
+        with patch.object(main, "fetch_json", side_effect=empty_fetch), \
              patch.object(main, "send_discord", return_value=True):
             main.check_official_announcements("hsr", state, now=now)
 
@@ -102,7 +102,7 @@ class NotifierTests(unittest.TestCase):
         def fake_fetch(url):
             return [entry] if "/news/events?" in url else []
 
-        with patch.object(main, "fetch_json", side_effect=fake_fetch), \\
+        with patch.object(main, "fetch_json", side_effect=fake_fetch), \
              patch.object(main, "send_discord", return_value=True) as send:
             main.check_official_announcements("hsr", state, now=now + 900)
 
