@@ -126,17 +126,18 @@
       }
     },
     "genshin:event:468": {
-      "signature": "e198acaecebf88d79d29e7b37c3285bfdaeefe2d14991b6734d9994d36dae803",
+      "signature": "3b695abda7646e5b1ba5fd286e551e13ad35d52b5ffc91f18ffd4e09c3b04cb2",
       "data": {
         "key": "genshin:event:468",
         "game": "genshin",
         "kind": "event",
+        "source_id": 468,
         "event_subtype": null,
         "name": "凛影の記録",
         "description": "撮影技術の研究に情熱を注ぐエスフィルに、協力を依頼された。彼女は、映像の力でスネージナヤの人々に元気を与えたいそうだ…",
         "start": null,
         "end": null,
-        "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/d/da/Frames_of_Fierce_Splendor.png/revision/latest?cb=20261024092424",
+        "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/d/da/Frames_of_Fierce_Splendor.png/revision/latest?cb=20261125045855",
         "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
         "type_name": "ActTypeOther",
@@ -147,7 +148,7 @@
         "light_cones": "",
         "light_cones_image_url": null,
         "rewards": "",
-        "signature": "e198acaecebf88d79d29e7b37c3285bfdaeefe2d14991b6734d9994d36dae803"
+        "signature": "3b695abda7646e5b1ba5fd286e551e13ad35d52b5ffc91f18ffd4e09c3b04cb2"
       },
       "notifications": {
         "announced": true,
