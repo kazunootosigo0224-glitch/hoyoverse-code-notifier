@@ -1225,7 +1225,9 @@
     "hsr:notices:f232f595676391678944",
     "hsr:notices:2bcc2c97e239f787c290",
     "hsr:notices:dcb797cc1dbca194dd4f",
-    "hsr:notices:6b2ea6369cc35e1ee650"
+    "hsr:notices:6b2ea6369cc35e1ee650",
+    "genshin:events:2b190c90c459b3306a6a",
+    "hsr:events:b45a431e31ec55763767"
   ],
   "news_initialized": {
     "genshin:events": true,
