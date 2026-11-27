@@ -127,7 +127,7 @@
       }
     },
     "genshin:event:468": {
-      "signature": "3b695abda7646e5b1ba5fd286e551e13ad35d52b5ffc91f18ffd4e09c3b04cb2",
+      "signature": "5eeaadc2515b5fbbfb32ae2cb993f3de46debc883436fc48a5b684689533b208",
       "data": {
         "key": "genshin:event:468",
         "game": "genshin",
@@ -136,8 +136,8 @@
         "event_subtype": null,
         "name": "凛影の記録",
         "description": "撮影技術の研究に情熱を注ぐエスフィルに、協力を依頼された。彼女は、映像の力でスネージナヤの人々に元気を与えたいそうだ…",
-        "start": null,
-        "end": null,
+        "start": 1795744800,
+        "end": 1796587199,
         "image_url": "https://static.wikia.nocookie.net/gensin-impact/images/d/da/Frames_of_Fierce_Splendor.png/revision/latest?cb=20261125045855",
         "url": "https://gamewith.jp/genshin/article/show/232506",
         "version": null,
@@ -148,12 +148,12 @@
         "weapons_image_url": null,
         "light_cones": "",
         "light_cones_image_url": null,
-        "rewards": "",
-        "signature": "3b695abda7646e5b1ba5fd286e551e13ad35d52b5ffc91f18ffd4e09c3b04cb2"
+        "rewards": "大英雄の経験 ×0、蒼星軍勢の集結 ×6、蔵に眠る霊薬の酩酊 ×6、氷の皇帝の祝儀 ×6、仕上げ用魔鉱 ×0、モラ ×0",
+        "signature": "5eeaadc2515b5fbbfb32ae2cb993f3de46debc883436fc48a5b684689533b208"
       },
       "notifications": {
         "announced": true,
-        "started": false,
+        "started": true,
         "24h": false,
         "3h": false,
         "ended": false
